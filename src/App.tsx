@@ -4,16 +4,12 @@ import React from 'react';
 import MomentAdapter from "@mui/lab/AdapterMoment";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 
-function App() {
+export const App = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <LocalizationProvider dateAdapter={MomentAdapter}>
-          <Homepage/>
-        </LocalizationProvider>
+        <Homepage/>
       </header>
     </div>
   );
 }
-
-export default App;
