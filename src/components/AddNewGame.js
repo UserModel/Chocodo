@@ -38,7 +38,10 @@ function AddNewGame(props) {
                 timezone: timezone,
                 weeklyResetDOW: weeklyDOW,
                 weeklyResetTime: weeklyResetTime,
-                dailyResetTime: dailyResetTime
+                dailyResetTime: dailyResetTime,
+                tasks: [],
+                dailyTasks: [],
+                weeklyTasks: []
             }
             props.addGame(newGame);
             setGameTitle("");

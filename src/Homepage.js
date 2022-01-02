@@ -9,7 +9,7 @@ import GamePage from './components/GamePage';
 function Homepage() {
     const [userData, setUserData] = useState(localStorageUtils.getUserData());
     const [modalOpen, setModalOpen] = useState(false);
-    const [activeGame, setActiveGame] = useState(0);
+    const [activeGame, setActiveGame] = useState(-1);
 
     function addGame(gameData) {
         let newUserData = userData;
@@ -17,10 +17,22 @@ function Homepage() {
         setUserData(newUserData);
         localStorageUtils.saveUserData(newUserData);
         setModalOpen(false);
+        setActiveGame(newUserData.games.length - 1);
+    }
+
+    function addTask(gameIndex, taskData, taskType) {
+        let newUserData = userData;
+        if ( taskType === "Weekly" ) {
+            newUserData.games[gameIndex].weeklyTasks.push(taskData);
+        } else if ( taskType === "Daily" ) {
+            newUserData.games[gameIndex].dailyTasks.push(taskData);
+        } else {
+            newUserData.games[gameIndex].tasks.push(taskData);
+        }
+        localStorageUtils.saveUserData(newUserData);
     }
 
     function changeActiveGame(newGame) {
-        console.log(newGame);
         setActiveGame(newGame);
     }
 
@@ -38,6 +50,8 @@ function Homepage() {
         boxShadow: 24,
         p: 4,
     };
+
+    console.log(activeGame);
 
     return (
         <Box sx={{ width: '100%', height: '100%' }}>…
@@ -62,9 +76,9 @@ function Homepage() {
                     <GameBar games={userData.games} openModal={openModal} activeGame={activeGame} changeActiveGame={changeActiveGame} /> 
                 </Grid>
                 <Grid item xs={11} alignItems="center">
-                    { activeGame !== null && (
+                    { activeGame >= 0 && userData.games.length > 0 && (
                         <Paper variant="outlined" style={{ width: '100%', height: '98%' }}>
-                            <GamePage game={userData.games[activeGame]} />
+                            <GamePage game={userData.games[activeGame]} addTask={addTask} index={activeGame} />
                         </Paper>
                     )}
                 </Grid>

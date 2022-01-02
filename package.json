@@ -13,6 +13,7 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "case-sensitive-paths-webpack-plugin": "^2.4.0",
+    "countdown": "^2.6.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.34",
     "prop-types": "^15.8.0",
