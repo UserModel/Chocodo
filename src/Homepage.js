@@ -2,12 +2,14 @@ import {useState} from 'react';
 import React from 'react';
 import GameBar from './GameBar';
 import localStorageUtils from './LocalStorageUtils.js';
-import { Modal, Box, Typography } from '@mui/material';
+import { Modal, Box, Typography, Grid } from '@mui/material';
 import AddNewGame from './components/AddNewGame';
+import GamePage from './components/GamePage';
 
 function Homepage() {
     const [userData, setUserData] = useState(localStorageUtils.getUserData());
     const [modalOpen, setModalOpen] = useState(false);
+    const [activeGame, setActiveGame] = useState(0);
 
     function addGame(gameData) {
         let newUserData = userData;
@@ -15,6 +17,11 @@ function Homepage() {
         setUserData(newUserData);
         localStorageUtils.saveUserData(newUserData);
         setModalOpen(false);
+    }
+
+    function changeActiveGame(newGame) {
+        console.log(newGame);
+        setActiveGame(newGame);
     }
 
     const openModal = () => setModalOpen(true);
@@ -33,7 +40,7 @@ function Homepage() {
     };
 
     return (
-        <div>
+        <Box>
             {modalOpen && (
                 <Modal
                     open={modalOpen}
@@ -49,8 +56,18 @@ function Homepage() {
                     </Box>
                 </Modal>
             )}
-            <GameBar games={userData.games} openModal={openModal} /> 
-        </div>
+
+            <Grid container spacing={2}>
+                <Grid item xs={4}>
+                    <GameBar games={userData.games} openModal={openModal} activeGame={activeGame} changeActiveGame={changeActiveGame} /> 
+                </Grid>
+                <Grid item xs={8}>
+                    { activeGame !== null && (
+                        <GamePage game={userData.games[activeGame]} />
+                    )}
+                </Grid>
+            </Grid>
+        </Box>
     );
 }
 

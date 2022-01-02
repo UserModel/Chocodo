@@ -4,9 +4,7 @@ const localStorageUtils = {
     getUserData() {
         if (ls('userData') === null) {
             let userData = {
-                games: [],
-                darkMode: true,
-                otherThing: "No"
+                games: []
             };
             ls('userData', JSON.stringify(userData));
         }
