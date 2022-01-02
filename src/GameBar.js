@@ -9,12 +9,12 @@ function GameBar(props) {
 
     useEffect(() => {
         props.changeActiveGame(newActiveGame);
-    }, newActiveGame);
+    }, [newActiveGame]);
 
     let gameList = props.games.map((game, index) => {
         return (
-            <ListItem key={index}>
-                <ListItemButton onClick={setNewActiveGame(index)}>
+            <ListItem key={index} style={{padding: '0'}}>
+                <ListItemButton onClick={() => setNewActiveGame(index)}>
                     { game.gameIconUrl !== "" && (
                         <Avatar alt={game.name} src={game.gameIconURL} />
                     ) }
@@ -27,17 +27,17 @@ function GameBar(props) {
     });
 
     let newGameModal = (
-        <ListItem>
-            <ListItemButton>
+        <ListItem sx={{padding: '0'}}>
+            <ListItemButton onClick={props.openModal} >
                 <Avatar>
-                    <AddCircleIcon onClick={props.openModal} />
+                    <AddCircleIcon/>
                 </Avatar>
             </ListItemButton>
         </ListItem>
     );  
 
     return (
-        <List>
+        <List sx={{width: '100%', height: '100%', padding: '5px'}}>
             {gameList}
             {newGameModal}
         </List>

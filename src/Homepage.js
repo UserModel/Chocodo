@@ -40,7 +40,7 @@ function Homepage() {
     };
 
     return (
-        <Box>
+        <Box sx={{ width: '100%', height: '100%' }}>…
             {modalOpen && (
                 <Modal
                     open={modalOpen}
@@ -57,11 +57,11 @@ function Homepage() {
                 </Modal>
             )}
 
-            <Grid container spacing={2}>
-                <Grid item xs={4}>
+            <Grid container spacing={0} sx={{ width: '100%', height: '100%' }} >
+                <Grid item xs={1}>
                     <GameBar games={userData.games} openModal={openModal} activeGame={activeGame} changeActiveGame={changeActiveGame} /> 
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={11} alignItems="center">
                     { activeGame !== null && (
                         <GamePage game={userData.games[activeGame]} />
                     )}
