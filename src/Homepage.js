@@ -2,7 +2,7 @@ import {useState} from 'react';
 import React from 'react';
 import GameBar from './GameBar';
 import localStorageUtils from './LocalStorageUtils.js';
-import { Modal, Box, Typography, Grid } from '@mui/material';
+import { Modal, Box, Typography, Grid, Paper } from '@mui/material';
 import AddNewGame from './components/AddNewGame';
 import GamePage from './components/GamePage';
 
@@ -63,7 +63,9 @@ function Homepage() {
                 </Grid>
                 <Grid item xs={11} alignItems="center">
                     { activeGame !== null && (
-                        <GamePage game={userData.games[activeGame]} />
+                        <Paper variant="outlined" style={{ width: '100%', height: '98%' }}>
+                            <GamePage game={userData.games[activeGame]} />
+                        </Paper>
                     )}
                 </Grid>
             </Grid>
