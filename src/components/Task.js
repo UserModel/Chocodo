@@ -9,7 +9,7 @@ function Task(props) {
     const [completed, setCompleted] = useState(props.task.completed);
 
     let task = props.task;
-    let taskType = task.taskType;
+    let taskType = props.taskType;
     let gameIndex = props.gameIndex;
     let taskIndex = props.taskIndex;
 

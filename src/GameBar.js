@@ -1,19 +1,16 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
-import PropTypes from 'prop-types';
-import { Button, Avatar, List, ListItemButton, ListItem, ListItemIcon } from '@mui/material';
+import { Avatar, List, ListItemButton, ListItem } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 function GameBar(props) {
     const [newActiveGame, setNewActiveGame] = useState(0);
 
     useEffect(() => {
-        console.log(newActiveGame);
         props.changeActiveGame(newActiveGame);
     }, [newActiveGame]);
 
     let gameList = props.games.map((game, index) => {
-        console.log(game.gameIconURL === "");
         return (
             <ListItem key={index} style={{padding: '0'}}>
                 <ListItemButton onClick={() => setNewActiveGame(index)}>

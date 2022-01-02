@@ -39,8 +39,6 @@ function Homepage() {
         p: 4,
     };
 
-    console.log(activeGame);
-
     return (
         <Box sx={{ width: '100%', height: '100%' }}>…
             {modalOpen && (

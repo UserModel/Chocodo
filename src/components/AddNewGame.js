@@ -1,9 +1,7 @@
 import React from 'react';
 import {useState} from 'react';
-import PropTypes from 'prop-types';
-import { TextField, Box, Select, MenuItem, FormControl, InputLabel, Menu, Button } from '@mui/material';
+import { TextField, Box, Select, MenuItem, FormControl, InputLabel, Button } from '@mui/material';
 import TimePicker from '@mui/lab/TimePicker';
-import DatePicker from '@mui/lab/DatePicker';
 import moment from 'moment-timezone';
 
 function AddNewGame(props) {
@@ -87,7 +85,7 @@ function AddNewGame(props) {
 
             {/* Display Game Icon */}
             { gameIconURL.match(/\.(jpeg|jpg|gif|png)$/) != null && (
-                <img src={gameIconURL} />
+                <img alt="Game Icon" src={gameIconURL} />
             )}
 
             {/* Timezone Select */}

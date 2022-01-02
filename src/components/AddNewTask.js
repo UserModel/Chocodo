@@ -1,5 +1,5 @@
-import { FormControl, ToggleButton, ToggleButtonGroup, Modal, Box, Button, Typography, Divider, Accordion, AccordionSummary, AccordionDetails, TextField } from '@mui/material';
-import React, { useEffect } from 'react';
+import { FormControl, ToggleButton, ToggleButtonGroup, Box, Button, Typography, TextField } from '@mui/material';
+import React from 'react';
 import { useState } from 'react';
 
 function AddNewTask(props) {
@@ -70,7 +70,6 @@ function AddNewTask(props) {
                     onChange={(event) => setTaskText(event.target.value)} 
                     value={taskText} 
                     required 
-                    id="outlined-basic" 
                     label="Task Text" 
                     variant="outlined" 
                 />
