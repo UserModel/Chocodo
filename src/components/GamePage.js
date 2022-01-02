@@ -1,16 +1,42 @@
-import { Modal, Box, Button, Typography, Divider, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import { List, ListItem, Modal, Box, Button, Typography, Divider, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import AddNewTask from './AddNewTask';
+import localStorageUtils from '../LocalStorageUtils.js';
+import Task from './Task';
 
 function GamePage(props) {
-
-    let game = props.game;
+    
+    const [game, setGame] = useState(props.game);
     const [modalOpen, setModalOpen] = useState(false);
 
     const openModal = () => setModalOpen(true);
     const closeModal = () => setModalOpen(false);
+
+    function addTask(taskData, taskType) {
+        let newUserData = props.userData;
+        if ( taskType === "Weekly" ) {
+            newUserData.games[props.index].weeklyTasks.push(taskData);
+        } else if ( taskType === "Daily" ) {
+            newUserData.games[props.index].dailyTasks.push(taskData);
+        } else {
+            newUserData.games[props.index].tasks.push(taskData);
+        }
+        localStorageUtils.saveUserData(newUserData);
+    }
+
+    function deleteTask(taskIndex, taskType) {
+        let newUserData = props.userData;
+        if ( taskType === "Weekly" ) {
+            newUserData.games[props.index].weeklyTasks.splice(taskIndex);
+        } else if ( taskType === "Daily" ) {
+            newUserData.games[props.index].dailyTasks.splice(taskIndex);
+        } else {
+            newUserData.games[props.index].tasks.splice(taskIndex);
+        }
+        localStorageUtils.saveUserData(newUserData);
+    }
 
     const taskAccordion = (array, name) => {
         if ( array.length > 0 ) {
@@ -25,11 +51,38 @@ function GamePage(props) {
                             <Typography>{name}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            {
-                                array.map((task, index) => {
-                                    return <p key={index}>{task.taskText}</p>
-                                })
-                            }
+                            <List dense={true}>
+                                <ListItem>
+                                    <p>Uncompleted Tasks</p>
+                                </ListItem>
+                                {
+                                    array.map((task, index) => {
+                                        if ( !task.completed ) {
+                                            return (
+                                                <ListItem item sx={12}>
+                                                    <Task task={task} key={index} taskIndex={index} gameIndex={props.index} userData={props.userData} deleteTask={deleteTask} />
+                                                </ListItem>
+                                            )
+                                        }
+                                        return;
+                                    })
+                                }
+                                <ListItem>
+                                    <p>Completed Tasks</p>
+                                </ListItem>
+                                {
+                                    array.map((task, index) => {
+                                        if ( task.completed ) {
+                                            return (
+                                                <ListItem item sx={12}>
+                                                    <Task task={task} key={index} taskIndex={index} gameIndex={props.index} userData={props.userData} />
+                                                </ListItem>
+                                            )
+                                        }
+                                        return;
+                                    })
+                                }
+                            </List>
                         </AccordionDetails>
                     </Accordion>
                 </>
@@ -51,7 +104,7 @@ function GamePage(props) {
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                 >
-                    <AddNewTask addTask={props.addTask} index={props.index} closeModal={closeModal}/>
+                    <AddNewTask addTask={addTask} index={props.index} closeModal={closeModal}/>
                 </Modal>
             )}
             {taskAccordion(game.tasks, "Non-Time Based Tasks")}

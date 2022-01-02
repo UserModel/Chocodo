@@ -23,9 +23,10 @@ function AddNewTask(props) {
     const submitTask = () => {
         if ( taskText !== "" ) {
             let newTask = {
-                taskText: taskText
+                taskText: taskText,
+                completed: false
             }
-            props.addTask(props.index, newTask, typeOfTask);
+            props.addTask(newTask, typeOfTask);
             setTypeOfTask("");
             setTaskText("");
             props.closeModal();
@@ -33,10 +34,6 @@ function AddNewTask(props) {
             setErrorMessage("Must enter a game title.");
         }
     }
-
-    useEffect(() => {
-        console.log(typeOfTask);
-    }, [typeOfTask]);
 
     return (
         <Box sx={style}>

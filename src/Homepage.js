@@ -20,18 +20,6 @@ function Homepage() {
         setActiveGame(newUserData.games.length - 1);
     }
 
-    function addTask(gameIndex, taskData, taskType) {
-        let newUserData = userData;
-        if ( taskType === "Weekly" ) {
-            newUserData.games[gameIndex].weeklyTasks.push(taskData);
-        } else if ( taskType === "Daily" ) {
-            newUserData.games[gameIndex].dailyTasks.push(taskData);
-        } else {
-            newUserData.games[gameIndex].tasks.push(taskData);
-        }
-        localStorageUtils.saveUserData(newUserData);
-    }
-
     function changeActiveGame(newGame) {
         setActiveGame(newGame);
     }
@@ -78,7 +66,7 @@ function Homepage() {
                 <Grid item xs={11} alignItems="center">
                     { activeGame >= 0 && userData.games.length > 0 && (
                         <Paper variant="outlined" style={{ width: '100%', height: '98%' }}>
-                            <GamePage game={userData.games[activeGame]} addTask={addTask} index={activeGame} />
+                            <GamePage game={userData.games[activeGame]} userData={userData} index={activeGame} />
                         </Paper>
                     )}
                 </Grid>
