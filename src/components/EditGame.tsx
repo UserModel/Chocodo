@@ -2,6 +2,7 @@ import { Select, Switch, FormControl, FormLabel, Avatar, VStack, Spacer, Wrap, T
 import { Game } from '../models/game';
 import { useState, useEffect } from 'react';
 import { setCurrentGame } from '../slices/gamesSlice';
+import TimePicker, {TimePickerValue} from 'react-time-picker';
 
 type PropTypes = {
     isModalOpen: boolean,
@@ -16,8 +17,8 @@ export const EditGame = (props: PropTypes) => {
     const [gameName, setGameName] = useState(gameData.name);
     const [gameIconURL, setGameIconURL] = useState(gameData.gameIconURL);
     const [weeklyResetDOW, setWeeklyResetDOW] = useState(gameData.weeklyResetDOW);
-    const [weeklyResetTime, setWeeklyResetTime] = useState(gameData.weeklyResetTime);
-    const [dailyResetTime, setDailyResetTime] = useState(gameData.dailyResetTime);
+    const [weeklyResetTime, setWeeklyResetTime] = useState("");
+    const [dailyResetTime, setDailyResetTime] = useState("");
     const [hasDaily, setHasDaily] = useState(false);
     const [hasWeekly, setHasWeekly] = useState(false);
 
@@ -25,10 +26,26 @@ export const EditGame = (props: PropTypes) => {
         setGameName("");
         setGameIconURL("");
         setWeeklyResetDOW(null);
-        setWeeklyResetTime(null);
-        setDailyResetTime(null);
+        setWeeklyResetTime("");
+        setDailyResetTime("");
         setCurrentStep(0);
         props.onClose();
+    }
+
+    const updateDailyTime = (value: TimePickerValue | null) => {
+        if ( value === null ) {
+            setDailyResetTime("");
+        } else {
+            setDailyResetTime(value.toString());
+        }
+    }
+
+    const updateWeeklyTime = (value: TimePickerValue | null) => {
+        if ( value === null ) {
+            setWeeklyResetTime("");
+        } else {
+            setWeeklyResetTime(value.toString());
+        }
     }
 
     function stepZero() {
@@ -61,13 +78,39 @@ export const EditGame = (props: PropTypes) => {
 
     function stepOne() {
         return (
-            <VStack spacing="8px" align='center'>
+            <VStack spacing="15px" align='center'>
                 <FormControl display='flex' alignItems='center'>
-                    <FormLabel htmlFor='email-alerts' mb='0'>
+                    <FormLabel htmlFor='has-daily-reset' mb='0'>
                         Does this game have a daily reset?
                     </FormLabel>
-                    <Switch id='email-alerts' onChange={(event) => setHasDaily(event.target.checked)} isChecked={hasDaily} />
+                    <Switch id='has-daily-reset' onChange={(event) => setHasDaily(event.target.checked)} isChecked={hasDaily} />
                 </FormControl>
+                {
+                    hasDaily && (
+                        <FormControl display='flex' alignItems='center'>
+                            <FormLabel htmlFor='dailyTimeSelect' mb='0'>
+                                Daily Reset Time:
+                            </FormLabel>
+                            <TimePicker required value={dailyResetTime} onChange={(value) => updateDailyTime(value)} />
+                        </FormControl>
+                    )
+                }
+                <FormControl display='flex' alignItems='center'>
+                    <FormLabel htmlFor='has-weekly-reset' mb='0'>
+                        Does this game have a weekly reset?
+                    </FormLabel>
+                    <Switch id='has-weekly-reset' onChange={(event) => setHasWeekly(event.target.checked)} isChecked={hasWeekly} />
+                </FormControl>
+                {
+                    hasWeekly && (
+                        <FormControl display='flex' alignItems='center'>
+                            <FormLabel htmlFor='weeklyTimeSelect' mb='0'>
+                                Weekly Reset Time:
+                            </FormLabel>
+                            <TimePicker required value={weeklyResetTime} onChange={(event) =>  updateWeeklyTime(event)} />
+                        </FormControl>
+                    )
+                }
             </VStack>
         );
     }
