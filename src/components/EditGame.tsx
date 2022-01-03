@@ -3,6 +3,7 @@ import { Game } from '../models/game';
 import { useState, useEffect } from 'react';
 import { setCurrentGame } from '../slices/gamesSlice';
 import TimePicker, {TimePickerValue} from 'react-time-picker';
+import TimezoneSelect, {ITimezone} from "react-timezone-select"
 
 type PropTypes = {
     isModalOpen: boolean,
@@ -19,6 +20,7 @@ export const EditGame = (props: PropTypes) => {
     const [weeklyResetDOW, setWeeklyResetDOW] = useState(gameData.weeklyResetDOW);
     const [weeklyResetTime, setWeeklyResetTime] = useState("");
     const [dailyResetTime, setDailyResetTime] = useState("");
+    const [timezone, setTimezone] = useState({});
     const [hasDaily, setHasDaily] = useState(false);
     const [hasWeekly, setHasWeekly] = useState(false);
 
@@ -29,6 +31,7 @@ export const EditGame = (props: PropTypes) => {
         setWeeklyResetTime("");
         setDailyResetTime("");
         setCurrentStep(0);
+        setTimezone({});
         props.onClose();
     }
 
@@ -108,6 +111,16 @@ export const EditGame = (props: PropTypes) => {
                                 Weekly Reset Time:
                             </FormLabel>
                             <TimePicker required value={weeklyResetTime} onChange={(event) =>  updateWeeklyTime(event)} />
+                        </FormControl>
+                    )
+                }
+                {
+                    hasDaily || hasWeekly && (
+                        <FormControl display='flex' alignItems='center'>
+                            <FormLabel htmlFor='timezoneSelect' mb='0'>
+                                Server Timezone:
+                            </FormLabel>
+                            {/*<TimezoneSelect value={timezone} onChange={setTimezone} />*/}
                         </FormControl>
                     )
                 }
