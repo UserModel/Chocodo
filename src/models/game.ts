@@ -6,9 +6,10 @@ export type Game = {
     gameIconURL: string,
     hasWeekly: boolean,
     hasDaily: boolean,
+    timezone: string,
     weeklyResetDOW: number | null,
-    weeklyResetTime: Date | null,
-    dailyResetTime: Date | null,
+    weeklyResetTime: string | null,
+    dailyResetTime: string | null,
     tasks: Task[],
     dailyTasks: Task[],
     weeklyTasks: Task[]

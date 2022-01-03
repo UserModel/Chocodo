@@ -19,9 +19,10 @@ export const GameBar = () => {
     gameIconURL: "",
     hasDaily: false,
     hasWeekly: false,
+    timezone: "",
     weeklyResetDOW: null,
-    weeklyResetTime: null,
-    dailyResetTime: null,
+    weeklyResetTime: "",
+    dailyResetTime: "",
     tasks: [],
     dailyTasks: [],
     weeklyTasks: []
