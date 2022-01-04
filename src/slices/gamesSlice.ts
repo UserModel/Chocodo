@@ -33,10 +33,28 @@ const gamesSlice = createSlice({
     },
     updateGame(state, action: PayloadAction<Game>) {
       state.gameList = state.gameList.map((game) =>
-        game.id === action.payload.id
-          ? { ...game, ...action.payload }
-          : game
+        game.id === action.payload.id ? { ...game, ...action.payload } : game
       );
+    },
+    setAllDailyTasksUncompleted(state) {
+      state.gameList = state.gameList.map((game) => {
+        return {
+          ...game,
+          dailyTasks: game.dailyTasks.map((task) => {
+            return { ...task, completed: false };
+          }),
+        };
+      });
+    },
+    setAllWeeklyTasksUncompleted(state) {
+      state.gameList = state.gameList.map((game) => {
+        return {
+          ...game,
+          weeklyTasks: game.weeklyTasks.map((task) => {
+            return { ...task, completed: false };
+          }),
+        };
+      });
     },
   },
 });
@@ -50,17 +68,19 @@ export const {
 } = gamesSlice.actions;
 
 // Thunk to add new game
-export const addNewGame = (gameObject: Game) => async (dispatch: Dispatch<any>) => {
-  dispatch(updateGameLoading(true));
-  dispatch(addGame(gameObject));
-  dispatch(updateGameLoading(false));
-};
+export const addNewGame =
+  (gameObject: Game) => async (dispatch: Dispatch<any>) => {
+    dispatch(updateGameLoading(true));
+    dispatch(addGame(gameObject));
+    dispatch(updateGameLoading(false));
+  };
 
-export const setCurrentGame = (id: number) => async (dispatch: Dispatch<any>) => {
-  dispatch(updateGameLoading(true));
-  dispatch(updateCurrentGame(id));
-  dispatch(updateGameLoading(false));
-}
+export const setCurrentGame =
+  (id: number) => async (dispatch: Dispatch<any>) => {
+    dispatch(updateGameLoading(true));
+    dispatch(updateCurrentGame(id));
+    dispatch(updateGameLoading(false));
+  };
 
 const gamesList = (state: RootState) => state.games.gameList;
 const currentGame = (state: RootState) =>
