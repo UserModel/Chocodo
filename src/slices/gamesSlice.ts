@@ -83,10 +83,12 @@ export const setCurrentGame =
   };
 
 const gamesList = (state: RootState) => state.games.gameList;
-const currentGame = (state: RootState) =>
+const currentGame = (state: RootState) => 
   state.games.currentGame === null
     ? null
-    : state.games.gameList[state.games.currentGame];
+    : state.games.gameList.filter(game => {
+      return game.id === state.games.currentGame
+    })[0];
 
 export const gamesSelectors = {
   gamesList,

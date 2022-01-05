@@ -9,7 +9,6 @@ import { EditGame } from "./components/EditGame";
 import { Game } from "./models/game";
 
 export const GameBar = () => {
-
   const dispatch = useDispatch();
   const gamesList = useSelector(gamesSelectors.gamesList);
   const newGame: Game = {
@@ -41,7 +40,8 @@ export const GameBar = () => {
   }
 
   function changeCurrentGame(id: number) {
-    dispatch(setCurrentGame(id))
+    console.log(id);
+    dispatch(setCurrentGame(id));
   }
 
   return (
@@ -50,10 +50,10 @@ export const GameBar = () => {
       <VStack spacing="10%" align="center" >
         { 
           gamesList.map((game, index) => {
-            return <RoundButton key={index} name={game.name} onClick={changeCurrentGame} imageURL={game.gameIconURL} />
+            return <RoundButton key={index} name={game.name} gameId={game.id} onClick={changeCurrentGame} imageURL={game.gameIconURL} />
           })
         }
-        <RoundButton name="Add a Game" onClick={openGameModal} imageURL="" />
+        <RoundButton name="Add a Game" onClick={openGameModal} imageURL="" gameId={0} />
       </VStack>
     </Box>
   );

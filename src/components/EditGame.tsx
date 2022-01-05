@@ -139,7 +139,6 @@ export const EditGame = (props: PropTypes) => {
             {/* moment.tz(1641254400000, "America/New_York").clone().tz("America/Denver") */}
             <TimePicker
               disableClock={true}
-              required
               value={dailyResetTime}
               onChange={(value) => {
                 updateDailyTime(value);
@@ -165,7 +164,6 @@ export const EditGame = (props: PropTypes) => {
                 </FormLabel>
                 <TimePicker
                 disableClock={true}
-                required
                 value={weeklyResetTime}
                 onChange={(event) => updateWeeklyTime(event)}
                 />
@@ -175,13 +173,13 @@ export const EditGame = (props: PropTypes) => {
                     Weekly Reset Day:
                 </FormLabel>
                 <HStack>
-                    <Button onClick={() => setWeeklyResetDOW(0)} colorScheme={weeklyResetDOW === 0 ? "teal" : "gray" }>Su</Button>
-                    <Button onClick={() => setWeeklyResetDOW(1)} colorScheme={weeklyResetDOW === 1 ? "teal" : "gray" }>M</Button>
-                    <Button onClick={() => setWeeklyResetDOW(2)} colorScheme={weeklyResetDOW === 2 ? "teal" : "gray" }>Tu</Button>
-                    <Button onClick={() => setWeeklyResetDOW(3)} colorScheme={weeklyResetDOW === 3 ? "teal" : "gray" }>W</Button>
-                    <Button onClick={() => setWeeklyResetDOW(4)} colorScheme={weeklyResetDOW === 4 ? "teal" : "gray" }>Th</Button>
-                    <Button onClick={() => setWeeklyResetDOW(5)} colorScheme={weeklyResetDOW === 5 ? "teal" : "gray" }>F</Button>
-                    <Button onClick={() => setWeeklyResetDOW(6)} colorScheme={weeklyResetDOW === 6 ? "teal" : "gray" }>Sa</Button>
+                    <Button onClick={() => setWeeklyResetDOW(0)} colorScheme={weeklyResetDOW === 0 ? "blue" : "gray" }>Su</Button>
+                    <Button onClick={() => setWeeklyResetDOW(1)} colorScheme={weeklyResetDOW === 1 ? "blue" : "gray" }>M</Button>
+                    <Button onClick={() => setWeeklyResetDOW(2)} colorScheme={weeklyResetDOW === 2 ? "blue" : "gray" }>Tu</Button>
+                    <Button onClick={() => setWeeklyResetDOW(3)} colorScheme={weeklyResetDOW === 3 ? "blue" : "gray" }>W</Button>
+                    <Button onClick={() => setWeeklyResetDOW(4)} colorScheme={weeklyResetDOW === 4 ? "blue" : "gray" }>Th</Button>
+                    <Button onClick={() => setWeeklyResetDOW(5)} colorScheme={weeklyResetDOW === 5 ? "blue" : "gray" }>F</Button>
+                    <Button onClick={() => setWeeklyResetDOW(6)} colorScheme={weeklyResetDOW === 6 ? "blue" : "gray" }>Sa</Button>
                 </HStack>
             </FormControl>
           </>

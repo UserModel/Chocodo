@@ -6,6 +6,7 @@ type PropTypes = {
   name: string;
   onClick: Function;
   imageURL: string;
+  gameId: number;
 };
 
 export const RoundButton = (props: PropTypes) => {
@@ -22,7 +23,7 @@ export const RoundButton = (props: PropTypes) => {
   };
 
   return (
-    <Wrap className="avatar-button" onClick={() => onClickFunction()}>
+    <Wrap className="avatar-button" onClick={() => onClickFunction(props.gameId)}>
       <Tooltip
         hasArrow
         label={name}
