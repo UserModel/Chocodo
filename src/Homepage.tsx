@@ -1,17 +1,15 @@
-import { useState } from "react";
-import React from "react";
-import { Game } from "./models/game";
 import { GameBar } from "./GameBar";
-import { Stack, HStack, VStack, Button, Box } from '@chakra-ui/react'
+import { HStack, Box } from '@chakra-ui/react'
+import { GamePanel } from "./GamePanel";
 
 export const Homepage = () => {
   return (
     <HStack w='100%' h='100%'>
-      <Box w='10%' h='97%'>
+      <Box w='5%' h='97%' overflow="auto" className="hide-scrollbar">
         <GameBar />
       </Box>
-      <Box w='100%' h='100%'>
-
+      <Box w='95%' h='100%'>
+        <GamePanel />
       </Box>
     </HStack>
   );

@@ -13,16 +13,22 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  Alert,
+  AlertIcon,
+  HStack,
+  
 } from "@chakra-ui/react";
+import {ArrowForwardIcon, ArrowBackIcon} from "@chakra-ui/icons";
 import { Game } from "../models/game";
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import TimePicker, { TimePickerValue } from "react-time-picker";
-import TimezoneSelect, { ITimezone } from "react-timezone-select";
+import TimezoneSelect from "react-timezone-select";
 
 type PropTypes = {
   isModalOpen: boolean;
   onClose: Function;
   gameData: Game;
+  addGame: Function;
 };
 
 export const EditGame = (props: PropTypes) => {
@@ -31,13 +37,22 @@ export const EditGame = (props: PropTypes) => {
   const [gameName, setGameName] = useState(gameData.name);
   const [gameIconURL, setGameIconURL] = useState(gameData.gameIconURL);
   const [weeklyResetDOW, setWeeklyResetDOW] = useState(gameData.weeklyResetDOW);
-  const [weeklyResetTime, setWeeklyResetTime] = useState("");
-  const [dailyResetTime, setDailyResetTime] = useState("");
-  const [timezone, setTimezone] = useState<ITimezone>("");
-  const [hasDaily, setHasDaily] = useState(false);
-  const [hasWeekly, setHasWeekly] = useState(false);
+  const [weeklyResetTime, setWeeklyResetTime] = useState(gameData.weeklyResetTime);
+  const [dailyResetTime, setDailyResetTime] = useState(gameData.dailyResetTime);
+  const [timezone, setTimezone] = useState(gameData.timezone);
+  const [hasDaily, setHasDaily] = useState(gameData.hasDaily);
+  const [hasWeekly, setHasWeekly] = useState(gameData.hasWeekly);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const closeModal = () => {
+    enum errorMessages {
+        NoGameTitle = "Must set a game title.",
+        NoDailyResetTime = "Must set a daily reset time.",
+        NoWeeklyResetTime = "Must set a weekly reset time.",
+        NoWeeklyResetDOW = "Must set a weekly reset day.",
+        NoTimezone = "Must set a timezone."
+    }
+
+  const clearStates = () => {
     setGameName("");
     setGameIconURL("");
     setWeeklyResetDOW(null);
@@ -45,6 +60,13 @@ export const EditGame = (props: PropTypes) => {
     setDailyResetTime("");
     setCurrentStep(0);
     setTimezone("");
+    setHasDaily(false);
+    setHasWeekly(false);
+    setErrorMessage("");
+  }
+
+  const closeModal = () => {
+    clearStates();
     props.onClose();
   };
 
@@ -64,15 +86,18 @@ export const EditGame = (props: PropTypes) => {
     }
   };
 
-  function stepZero() {
+  const stepZero = () => {
     return (
       <VStack spacing="8px" align="center">
+        {errorMessage !== "" && <Alert status='error'><AlertIcon />{errorMessage}</Alert>}
         <Avatar size="2xl" name={gameName} src={gameIconURL} />
 
         {/* Game Title */}
         <FormControl w="100%">
-          <FormLabel mb="8px">Game Title:</FormLabel>
+          <FormLabel htmlFor="game-title" mb="8px">Game Title:</FormLabel>
           <Input
+            id="game-title"
+            isRequired={true}
             value={gameName}
             onChange={(event) => setGameName(event.target.value)}
             size="sm"
@@ -92,10 +117,11 @@ export const EditGame = (props: PropTypes) => {
     );
   }
 
-  function stepOne() {
+  const stepOne = () => {
     return (
       <VStack spacing="15px" align="center">
-        <FormControl display="flex" alignItems="center">
+        {errorMessage !== "" && <Alert status='error'><AlertIcon />{errorMessage}</Alert>}
+        <FormControl w="100%" display="flex" alignItems="center">
           <FormLabel htmlFor="has-daily-reset" mb="0">
             Does this game have a daily reset?
           </FormLabel>
@@ -106,22 +132,22 @@ export const EditGame = (props: PropTypes) => {
           />
         </FormControl>
         {hasDaily && (
-          <FormControl display="flex" alignItems="center">
+          <FormControl w="100%" display="flex" alignItems="center">
             <FormLabel htmlFor="dailyTimeSelect" mb="0">
               Daily Reset Time:
             </FormLabel>
             {/* moment.tz(1641254400000, "America/New_York").clone().tz("America/Denver") */}
             <TimePicker
+              disableClock={true}
               required
               value={dailyResetTime}
               onChange={(value) => {
                 updateDailyTime(value);
-                console.log(value.valueOf());
               }}
             />
           </FormControl>
         )}
-        <FormControl display="flex" alignItems="center">
+        <FormControl w="100%" display="flex" alignItems="center">
           <FormLabel htmlFor="has-weekly-reset" mb="0">
             Does this game have a weekly reset?
           </FormLabel>
@@ -132,19 +158,36 @@ export const EditGame = (props: PropTypes) => {
           />
         </FormControl>
         {hasWeekly && (
-          <FormControl display="flex" alignItems="center">
-            <FormLabel htmlFor="weeklyTimeSelect" mb="0">
-              Weekly Reset Time:
-            </FormLabel>
-            <TimePicker
-              required
-              value={weeklyResetTime}
-              onChange={(event) => updateWeeklyTime(event)}
-            />
-          </FormControl>
+          <>
+            <FormControl w="100%" display="flex" alignItems="center">
+                <FormLabel htmlFor="weeklyTimeSelect" mb="0">
+                Weekly Reset Time:
+                </FormLabel>
+                <TimePicker
+                disableClock={true}
+                required
+                value={weeklyResetTime}
+                onChange={(event) => updateWeeklyTime(event)}
+                />
+            </FormControl>
+            <FormControl w="100%" alignItems="center">
+                <FormLabel htmlFor="weeklyResetDay" mb="0">
+                    Weekly Reset Day:
+                </FormLabel>
+                <HStack>
+                    <Button onClick={() => setWeeklyResetDOW(0)} colorScheme={weeklyResetDOW === 0 ? "teal" : "gray" }>Su</Button>
+                    <Button onClick={() => setWeeklyResetDOW(1)} colorScheme={weeklyResetDOW === 1 ? "teal" : "gray" }>M</Button>
+                    <Button onClick={() => setWeeklyResetDOW(2)} colorScheme={weeklyResetDOW === 2 ? "teal" : "gray" }>Tu</Button>
+                    <Button onClick={() => setWeeklyResetDOW(3)} colorScheme={weeklyResetDOW === 3 ? "teal" : "gray" }>W</Button>
+                    <Button onClick={() => setWeeklyResetDOW(4)} colorScheme={weeklyResetDOW === 4 ? "teal" : "gray" }>Th</Button>
+                    <Button onClick={() => setWeeklyResetDOW(5)} colorScheme={weeklyResetDOW === 5 ? "teal" : "gray" }>F</Button>
+                    <Button onClick={() => setWeeklyResetDOW(6)} colorScheme={weeklyResetDOW === 6 ? "teal" : "gray" }>Sa</Button>
+                </HStack>
+            </FormControl>
+          </>
         )}
         {(hasDaily || hasWeekly) && (
-          <FormControl display="flex" alignItems="center">
+          <FormControl w="100%" alignItems="center">
             <FormLabel htmlFor="timezoneSelect" mb="0">
               Server Timezone:
             </FormLabel>
@@ -155,12 +198,60 @@ export const EditGame = (props: PropTypes) => {
     );
   }
 
+  useEffect(() => {
+      if ( errorMessage === errorMessages.NoGameTitle && gameName !== "" ) {
+          setErrorMessage("");
+      } else if ( errorMessage === errorMessages.NoDailyResetTime && (dailyResetTime !== "" || !hasDaily) ) {
+          setErrorMessage("");
+      } else if ( errorMessage === errorMessages.NoWeeklyResetTime && (weeklyResetTime !== "" || !hasWeekly) ) {
+          setErrorMessage("");
+      } else if ( errorMessage === errorMessages.NoTimezone && (timezone === "" || (!hasDaily && !hasWeekly)) ) {
+          setErrorMessage("");
+      } else if ( errorMessage === errorMessages.NoWeeklyResetDOW && (weeklyResetDOW !== null || !hasWeekly) ) {
+          setErrorMessage("");
+      }
+  }, [gameName, dailyResetTime, weeklyResetTime, timezone, hasDaily, hasWeekly, weeklyResetDOW, errorMessages, errorMessage])
+
+  const addGame = () => {
+      if ( gameName === "" ) {
+        setErrorMessage(errorMessages.NoGameTitle);
+      } else if ( hasDaily && dailyResetTime === "" ) {
+        setErrorMessage(errorMessages.NoDailyResetTime)
+      } else if ( hasWeekly && weeklyResetTime === "" ) {
+        setErrorMessage(errorMessages.NoWeeklyResetTime)
+      } else if ( (hasWeekly || hasDaily) && timezone === "" ) {
+        setErrorMessage(errorMessages.NoTimezone);
+      } else if ( hasWeekly && weeklyResetDOW === null ) {
+        setErrorMessage(errorMessages.NoWeeklyResetDOW);
+      } else {
+        const id = gameData.id !== 0 ? gameData.id : Math.floor(Math.random() * Date.now());
+        const newGame: Game = {
+            name: gameName,
+            id: id,
+            gameIconURL: gameIconURL,
+            hasWeekly: hasWeekly,
+            hasDaily: hasDaily,
+            timezone: timezone,
+            weeklyResetDOW: weeklyResetDOW,
+            weeklyResetTime: weeklyResetTime,
+            nextWeeklyReset: "",
+            dailyResetTime: dailyResetTime,
+            nextDailyReset: "",
+            tasks: gameData.tasks,
+            dailyTasks: gameData.dailyTasks,
+            weeklyTasks: gameData.weeklyTasks
+        }
+        clearStates();
+        props.addGame(newGame);
+      }
+  }
+
   return (
     <Modal isOpen={props.isModalOpen} onClose={() => closeModal()}>
       <ModalOverlay />
       <ModalContent>
-        {gameName === "" && <ModalHeader>Add a New Game</ModalHeader>}
-        {gameName !== "" && <ModalHeader>Edit Existing Game</ModalHeader>}
+        {gameData.id === 0 && <ModalHeader>Add a New Game</ModalHeader>}
+        {gameData.id !== 0 && <ModalHeader>Edit Existing Game</ModalHeader>}
         <ModalCloseButton />
         <ModalBody>
           {currentStep === 0 && stepZero()}
@@ -168,19 +259,36 @@ export const EditGame = (props: PropTypes) => {
         </ModalBody>
 
         <ModalFooter>
-          <Button
-            colorScheme="blue"
-            mr={3}
-            onClick={() => setCurrentStep(currentStep - 1)}
-          >
-            Back
-          </Button>
-          <Button
-            variant="ghost"
-            onClick={() => setCurrentStep(currentStep + 1)}
-          >
-            Next
-          </Button>
+            { currentStep !== 0 && (
+                <Button
+                    colorScheme="blue"
+                    variant="outline"
+                    mr={3}
+                    onClick={() => setCurrentStep(currentStep - 1)}
+                    leftIcon={<ArrowBackIcon />}
+                >
+                    Back
+                </Button>
+            ) }
+            { currentStep !== 1 && (
+                <Button
+                    colorScheme="blue"
+                    variant="solid"
+                    onClick={() => setCurrentStep(currentStep + 1)}
+                    rightIcon={<ArrowForwardIcon />}
+                >
+                    Next
+                </Button>
+            )}
+            { currentStep === 1 && (
+                <Button
+                    colorScheme="blue"
+                    variant="solid"
+                    onClick={() => addGame()}
+                >
+                    Submit
+                </Button>
+            ) }
         </ModalFooter>
       </ModalContent>
     </Modal>

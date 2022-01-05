@@ -1,11 +1,10 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { gamesSelectors } from "./slices/gamesSlice";
 import { useSelector } from "react-redux";
 import { RoundButton } from "./components/RoundButton";
 import { useDispatch } from "react-redux";
 import { setCurrentGame, addNewGame } from "./slices/gamesSlice";
-import { Modal, Stack, HStack, VStack, Button, Box } from '@chakra-ui/react'
+import { VStack, Box } from '@chakra-ui/react'
 import { EditGame } from "./components/EditGame";
 import { Game } from "./models/game";
 
@@ -15,14 +14,14 @@ export const GameBar = () => {
   const gamesList = useSelector(gamesSelectors.gamesList);
   const newGame: Game = {
     name: "",
-    id: Math.floor(Math.random() * Date.now()),
+    id: 0,
     gameIconURL: "",
     hasDaily: false,
     hasWeekly: false,
-    timezone: null,
+    timezone: "",
     weeklyResetDOW: null,
-    weeklyResetTime: null,
-    dailyResetTime: null,
+    weeklyResetTime: "",
+    dailyResetTime: "",
     nextDailyReset: null,
     nextWeeklyReset: null,
     tasks: [],
@@ -32,8 +31,13 @@ export const GameBar = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  function addGame() {
+  function openGameModal() {
     setIsModalOpen(true);
+  }
+
+  function addGame(gameData: Game) {
+    setIsModalOpen(false);
+    dispatch(addNewGame(gameData));
   }
 
   function changeCurrentGame(id: number) {
@@ -41,16 +45,16 @@ export const GameBar = () => {
   }
 
   return (
-    <>
-      <EditGame isModalOpen={isModalOpen} onClose={() => setIsModalOpen(false)} gameData={newGame} />
-      <VStack spacing="15%">
+    <Box>
+      <EditGame isModalOpen={isModalOpen} onClose={() => setIsModalOpen(false)} gameData={newGame} addGame={addGame} />
+      <VStack spacing="10%" align="center" >
         { 
           gamesList.map((game, index) => {
-            return <RoundButton key={index} name={game.name} onClick={changeCurrentGame} imageURL="" />
+            return <RoundButton key={index} name={game.name} onClick={changeCurrentGame} imageURL={game.gameIconURL} />
           })
         }
-        <RoundButton name="Add a Game" onClick={addGame} imageURL="" />
+        <RoundButton name="Add a Game" onClick={openGameModal} imageURL="" />
       </VStack>
-    </>
+    </Box>
   );
 }

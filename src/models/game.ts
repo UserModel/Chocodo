@@ -1,4 +1,6 @@
 import { Task } from "./task";
+import { ITimezone } from "react-timezone-select";
+import { TimePickerValue } from "react-time-picker";
 
 export type Game = {
     name: string,
@@ -6,11 +8,11 @@ export type Game = {
     gameIconURL: string,
     hasWeekly: boolean,
     hasDaily: boolean,
-    timezone: string | null,
+    timezone: ITimezone,
     weeklyResetDOW: number | null,
-    weeklyResetTime: string | null,
+    weeklyResetTime: string,
     nextWeeklyReset: string | null,
-    dailyResetTime: string | null,
+    dailyResetTime: string,
     nextDailyReset: string | null,
     tasks: Task[],
     dailyTasks: Task[],

@@ -15,7 +15,7 @@ export const RoundButton = (props: PropTypes) => {
 
   const avatarRender = () => {
     if (name === "Add a Game") {
-      return <Avatar icon={<AddIcon />} />;
+      return <Avatar bgColor="#36393E" icon={<AddIcon color="green" />} />;
     } else {
       return <Avatar src={imageURL} name={name} />;
     }
