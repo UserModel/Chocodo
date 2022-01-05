@@ -4,9 +4,10 @@ import { useSelector } from "react-redux";
 import { RoundButton } from "./components/RoundButton";
 import { useDispatch } from "react-redux";
 import { setCurrentGame, addNewGame } from "./slices/gamesSlice";
-import { VStack, Box } from '@chakra-ui/react'
+import { VStack, Box, Divider, HStack } from '@chakra-ui/react'
 import { EditGame } from "./components/EditGame";
 import { Game } from "./models/game";
+import { TaskType } from "./models/task";
 
 export const GameBar = () => {
   const dispatch = useDispatch();
@@ -25,7 +26,21 @@ export const GameBar = () => {
     nextWeeklyReset: null,
     tasks: [],
     dailyTasks: [],
-    weeklyTasks: []
+    weeklyTasks: [],
+    sections: [
+      {
+        sectionName: "General Tasks",
+        taskType: TaskType.NORMAL
+      },
+      {
+        sectionName: "General Daily Tasks",
+        taskType: TaskType.DAILY
+      },
+      {
+          sectionName: "General Weekly Tasks",
+          taskType: TaskType.WEEKLY
+      }
+    ]
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,9 +63,13 @@ export const GameBar = () => {
     <Box>
       <EditGame isModalOpen={isModalOpen} onClose={() => setIsModalOpen(false)} gameData={newGame} addGame={addGame} />
       <VStack spacing="10%" align="center" >
+        <RoundButton name="Home" onClick={changeCurrentGame} imageURL="" gameId={0} />
+        <Divider w="50%" colorScheme="black" />
         { 
           gamesList.map((game, index) => {
-            return <RoundButton key={index} name={game.name} gameId={game.id} onClick={changeCurrentGame} imageURL={game.gameIconURL} />
+            return (
+              <RoundButton key={index} name={game.name} gameId={game.id} onClick={changeCurrentGame} imageURL={game.gameIconURL} />
+            )
           })
         }
         <RoundButton name="Add a Game" onClick={openGameModal} imageURL="" gameId={0} />

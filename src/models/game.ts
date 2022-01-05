@@ -1,4 +1,5 @@
 import { Task } from "./task";
+import { Section } from "./section";
 import { ITimezone } from "react-timezone-select";
 import { TimePickerValue } from "react-time-picker";
 
@@ -16,5 +17,6 @@ export type Game = {
     nextDailyReset: string | null,
     tasks: Task[],
     dailyTasks: Task[],
-    weeklyTasks: Task[]
+    weeklyTasks: Task[],
+    sections: Section[]
 }

@@ -23,6 +23,7 @@ import { Game } from "../models/game";
 import { useState, useEffect } from "react";
 import TimePicker, { TimePickerValue } from "react-time-picker";
 import TimezoneSelect from "react-timezone-select";
+import { TaskType } from '../models/task';
 
 type PropTypes = {
   isModalOpen: boolean;
@@ -237,7 +238,8 @@ export const EditGame = (props: PropTypes) => {
             nextDailyReset: "",
             tasks: gameData.tasks,
             dailyTasks: gameData.dailyTasks,
-            weeklyTasks: gameData.weeklyTasks
+            weeklyTasks: gameData.weeklyTasks,
+            sections: gameData.sections
         }
         clearStates();
         props.addGame(newGame);

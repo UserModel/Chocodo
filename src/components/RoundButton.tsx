@@ -1,6 +1,6 @@
 import { Wrap, Tooltip, Avatar } from "@chakra-ui/react";
 import React from "react";
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, QuestionIcon } from "@chakra-ui/icons";
 
 type PropTypes = {
   name: string;
@@ -16,9 +16,11 @@ export const RoundButton = (props: PropTypes) => {
 
   const avatarRender = () => {
     if (name === "Add a Game") {
-      return <Avatar bgColor="#36393E" icon={<AddIcon color="green" />} />;
+      return <Avatar className="gamebar-avatar trans" bgColor="#36393E" icon={<AddIcon color="green" />} />;
+    } else if (name === "Home") {
+      return <Avatar className="gamebar-avatar trans" bgColor="#36393E" icon={<QuestionIcon />} />;
     } else {
-      return <Avatar src={imageURL} name={name} />;
+      return <Avatar className="gamebar-avatar trans" src={imageURL} name={name} />;
     }
   };
 
