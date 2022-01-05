@@ -14,11 +14,11 @@ const initialState: User = {
   gameList: [],
 };
 
-const sectionsSlice = createSlice({
-  name: "sections",
+const userSlice = createSlice({
+  name: "user",
   initialState,
   reducers: {
-    updateGameLoading(state, action: PayloadAction<boolean>) {
+    updateUserLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
     updateCurrentGame(state, action: PayloadAction<number>) {
@@ -33,67 +33,57 @@ const sectionsSlice = createSlice({
       );
     },
     updateGame(state, action: PayloadAction<Game>) {
+      console.log(state.gameList.map((game) =>
+        game.id === action.payload.id ? action.payload : game
+      ));
       state.gameList = state.gameList.map((game) =>
-        game.id === action.payload.id ? { ...game, ...action.payload } : game
+        game.id === action.payload.id ? action.payload : game
       );
-    },
-    setAllDailyTasksUncompleted(state) {
-      state.gameList = state.gameList.map((game) => {
-        return {
-          ...game,
-          dailyTasks: game.dailyTasks.map((task) => {
-            return { ...task, completed: false };
-          }),
-        };
-      });
-    },
-    setAllWeeklyTasksUncompleted(state) {
-      state.gameList = state.gameList.map((game) => {
-        return {
-          ...game,
-          weeklyTasks: game.weeklyTasks.map((task) => {
-            return { ...task, completed: false };
-          }),
-        };
-      });
     },
   },
 });
 
 export const {
-  updateGameLoading,
+  updateUserLoading,
   updateCurrentGame,
   addGame,
   deleteGame,
-  updateGame,
-} = sectionsSlice.actions;
+  updateGame
+} = userSlice.actions;
 
 // Thunk to add new game
 export const addNewGame =
   (gameObject: Game) => async (dispatch: Dispatch<any>) => {
-    dispatch(updateGameLoading(true));
+    dispatch(updateUserLoading(true));
     dispatch(addGame(gameObject));
-    dispatch(updateGameLoading(false));
+    dispatch(updateUserLoading(false));
   };
+
+export const editGame = 
+  (gameObject: Game) => async (dispatch: Dispatch<any>) => {
+    dispatch(updateUserLoading(true));
+    dispatch(updateGame(gameObject));
+    dispatch(updateUserLoading(false));
+  }
 
 export const setCurrentGame =
   (id: number) => async (dispatch: Dispatch<any>) => {
-    dispatch(updateGameLoading(true));
+    dispatch(updateUserLoading(true));
     dispatch(updateCurrentGame(id));
-    dispatch(updateGameLoading(false));
+    dispatch(updateUserLoading(false));
   };
 
-const gamesList = (state: RootState) => state.games.gameList;
+const gamesList = (state: RootState) => state.user.gameList;
 const currentGame = (state: RootState) => 
-  state.games.currentGame === null
+  state.user.currentGame === null
     ? null
-    : state.games.gameList.filter(game => {
-      return game.id === state.games.currentGame
+    : state.user.gameList.filter(game => {
+      return game.id === state.user.currentGame
     })[0];
 
-export const gamesSelectors = {
+export const userSelectors = {
   gamesList,
   currentGame,
 };
 
-export default sectionsSlice;
+export default userSlice;

@@ -42,3 +42,8 @@ $fullWhite: #ffffff;
 .hide-scrollbar {
   -ms-overflow-style: none;
 }
+
+.dropdown:focus {
+  outline: none;
+  box-shadow: none;
+}

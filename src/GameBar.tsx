@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { gamesSelectors } from "./slices/gamesSlice";
+import { userSelectors } from "./slices/userSlice";
 import { useSelector } from "react-redux";
 import { RoundButton } from "./components/RoundButton";
 import { useDispatch } from "react-redux";
-import { setCurrentGame, addNewGame } from "./slices/gamesSlice";
+import { setCurrentGame, addNewGame } from "./slices/userSlice";
 import { VStack, Box, Divider, HStack } from '@chakra-ui/react'
 import { EditGame } from "./components/EditGame";
 import { Game } from "./models/game";
@@ -11,7 +11,7 @@ import { TaskType } from "./models/task";
 
 export const GameBar = () => {
   const dispatch = useDispatch();
-  const gamesList = useSelector(gamesSelectors.gamesList);
+  const gamesList = useSelector(userSelectors.gamesList);
   const newGame: Game = {
     name: "",
     id: 0,
@@ -30,15 +30,18 @@ export const GameBar = () => {
     sections: [
       {
         sectionName: "General Tasks",
-        taskType: TaskType.NORMAL
+        taskType: TaskType.NORMAL,
+        id: Math.floor(Math.random() * Date.now())
       },
       {
         sectionName: "General Daily Tasks",
-        taskType: TaskType.DAILY
+        taskType: TaskType.DAILY,
+        id: Math.floor(Math.random() * Date.now())
       },
       {
-          sectionName: "General Weekly Tasks",
-          taskType: TaskType.WEEKLY
+        sectionName: "General Weekly Tasks",
+        taskType: TaskType.WEEKLY,
+        id: Math.floor(Math.random() * Date.now())
       }
     ]
   };

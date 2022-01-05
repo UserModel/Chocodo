@@ -1,5 +1,5 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import gamesSlice from "./slices/gamesSlice";
+import userSlice from "./slices/userSlice";
 import {
   FLUSH,
   PAUSE,
@@ -12,10 +12,10 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-export const whiteList = ["games"];
+export const whiteList = ["user"];
 
 const reducers = combineReducers({
-  games: gamesSlice.reducer,
+  user: userSlice.reducer,
 });
 
 const persistConfig = {
