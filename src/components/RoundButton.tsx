@@ -28,7 +28,7 @@ export const RoundButton = (props: PropTypes) => {
                 <Avatar
                     className="gamebar-avatar trans"
                     bgColor="#36393E"
-                    icon={<QuestionIcon />}
+                    icon={<QuestionIcon color="white" />}
                 />
             )
         } else {

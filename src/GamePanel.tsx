@@ -1,6 +1,6 @@
 import { Box, Flex, VStack, Spacer, Heading } from '@chakra-ui/layout'
 import { Button, IconButton } from '@chakra-ui/react'
-import { ChevronDownIcon, ChevronRightIcon, AddIcon } from '@chakra-ui/icons'
+import { ChevronDownIcon, ChevronRightIcon, AddIcon, SettingsIcon } from '@chakra-ui/icons'
 import { useSelector } from 'react-redux'
 import { addSection, userSelectors } from './slices/userSlice'
 import { InformationPanel } from './InformationPanel'
@@ -9,6 +9,9 @@ import { useDispatch } from 'react-redux'
 import { useState, useEffect } from 'react'
 import { EditSection } from './components/EditSection'
 import { Section } from './models/section'
+import { EditGame } from './components/EditGame';
+import { Game } from './models/game';
+import { TaskPanel } from './TaskPanel'
 
 export const GamePanel = () => {
     const currentGame = useSelector(userSelectors.currentGame);
@@ -18,6 +21,11 @@ export const GamePanel = () => {
     const [weeklyTasksOpen, setWeeklyTasksOpen] = useState(true);
     const [isNewSectionModalOpen, setIsNewSectionModalOpen] = useState(false);
     const [selectedSection, setSelectedSection] = useState(0);
+    const [editGameModal, setEditGameModal] = useState(false);
+
+    useEffect(() => {
+        console.log(selectedSection);
+    }, [selectedSection])
 
     useEffect(() => {
         setGeneralTasksOpen(true)
@@ -36,6 +44,12 @@ export const GamePanel = () => {
         if (currentGame) {
             dispatch(addSection(currentGame.id, sectionObject))
         }
+    }
+
+    const editGame = (gameData: Game) => {
+        setEditGameModal(false);
+        console.log(gameData);
+        dispatch(editGame(gameData));
     }
 
     return (
@@ -59,7 +73,8 @@ export const GamePanel = () => {
             )}
             {currentGame !== undefined && currentGame !== null && (
                 <VStack h="100%" spacing={0}>
-                    <Flex w="100%" h="8%" borderBottom="1px">
+                    { editGameModal && (<EditGame isModalOpen={editGameModal} onClose={() => setEditGameModal(false)} gameData={currentGame} addGame={editGame} />)  }
+                    <Flex w="100%" h="8%" borderBottom="1px" borderColor="#232428">
                         <Heading paddingTop="0.7%" paddingLeft="1.5%">
                             {currentGame.name}
                         </Heading>
@@ -68,6 +83,7 @@ export const GamePanel = () => {
                             <Heading size="xs">Time until daily reset</Heading>
                             <Heading size="xs">Time until weekly reset</Heading>
                         </VStack>
+                        <SettingsIcon onClick={() => setEditGameModal(true)} className='show-click' h="100%" w="3.5%" marginLeft="3%" paddingTop="0.0%" paddingRight="1.5%" />
                     </Flex>
                     <Flex w="100%" h="92%" bgColor="#36393E">
                         <VStack
@@ -75,7 +91,7 @@ export const GamePanel = () => {
                             bgColor="#2E3136"
                             w="20%"
                             h="100%"
-                            borderRight="1px"
+                            borderRight="0px"
                         >
                             <Flex
                                 padding="5%"
@@ -95,7 +111,7 @@ export const GamePanel = () => {
                                     icon={<AddIcon color="blue" />}
                                 />
                             </Flex>
-                            <Box w="100%">
+                            <VStack w="100%" spacing={0}>
                                 <Button
                                     w="100%"
                                     className="dropdown"
@@ -126,9 +142,9 @@ export const GamePanel = () => {
                                                 {section.sectionName}
                                             </Button>
                                         ))}
-                            </Box>
+                            </VStack>
                             {currentGame.hasDaily && (
-                                <Box w="100%">
+                                <VStack w="100%" spacing={0}>
                                     <Button
                                         w="100%"
                                         className="dropdown"
@@ -159,10 +175,10 @@ export const GamePanel = () => {
                                                     {section.sectionName}
                                                 </Button>
                                             ))}
-                                </Box>
+                                </VStack>
                             )}
                             {currentGame.hasWeekly && (
-                                <Box w="100%">
+                                <VStack w="100%" spacing={0}>
                                     <Button
                                         w="100%"
                                         className="dropdown"
@@ -193,10 +209,17 @@ export const GamePanel = () => {
                                                     {section.sectionName}
                                                 </Button>
                                             ))}
-                                </Box>
+                                </VStack>
                             )}
                             <Spacer />
                         </VStack>
+                        <Box
+                            align="center"
+                            w="80%"
+                            h="100%"
+                        >
+                            <TaskPanel gameData={currentGame} sectionId={selectedSection} />
+                        </Box>
                     </Flex>
                 </VStack>
             )}

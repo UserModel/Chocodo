@@ -1,7 +1,7 @@
 export type Task = {
     taskText: string
     completed: boolean
-    sectionId: string
+    sectionId: number
     id: number
     taskType: TaskType
 }

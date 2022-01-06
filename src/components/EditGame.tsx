@@ -335,9 +335,9 @@ export const EditGame = (props: PropTypes) => {
                 nextDailyReset: '',
                 tasks: gameData.tasks,
                 sections: gameData.sections,
-            }
-            clearStates()
-            props.addGame(newGame)
+            };
+            clearStates();
+            props.addGame(newGame);
         }
     }
 

@@ -216,9 +216,14 @@ const currentGame = (state: RootState) =>
 const tasks = (state: RootState, gameId: number, taskType: TaskType) =>
     state.user.gameList.find((game) => game.id === gameId)?.tasks.filter((task) => task.taskType === taskType)
 
+const section = (state: RootState, gameId: number, sectionId: number) =>
+    state.user.gameList.find((game) => game.id === gameId)?.sections.find((section) => section.id === sectionId)
+
 export const userSelectors = {
     gamesList,
     currentGame,
+    tasks,
+    section
 }
 
 export default userSlice
