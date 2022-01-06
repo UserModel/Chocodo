@@ -1,22 +1,21 @@
-import { Task } from "./task";
-import { Section } from "./section";
-import { ITimezone } from "react-timezone-select";
-import { TimePickerValue } from "react-time-picker";
+import { Task } from './task'
+import { Section } from './section'
+import { ITimezone } from 'react-timezone-select'
 
 export type Game = {
-    name: string,
-    id: number,
-    gameIconURL: string,
-    hasWeekly: boolean,
-    hasDaily: boolean,
-    timezone: ITimezone,
-    weeklyResetDOW: number | null,
-    weeklyResetTime: string,
-    nextWeeklyReset: string | null,
-    dailyResetTime: string,
-    nextDailyReset: string | null,
-    tasks: Task[],
-    dailyTasks: Task[],
-    weeklyTasks: Task[],
+    name: string
+    id: number
+    gameIconURL: string
+    hasWeekly: boolean
+    hasDaily: boolean
+    timezone: ITimezone
+    weeklyResetDOW: number | null
+    weeklyResetTime: string
+    nextWeeklyReset: string | null
+    dailyResetTime: string
+    nextDailyReset: string | null
+    tasks: Task[]
+    dailyTasks: Task[]
+    weeklyTasks: Task[]
     sections: Section[]
 }
