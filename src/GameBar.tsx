@@ -25,8 +25,6 @@ export const GameBar = () => {
         nextDailyReset: null,
         nextWeeklyReset: null,
         tasks: [],
-        dailyTasks: [],
-        weeklyTasks: [],
         sections: [
             {
                 sectionName: 'General Tasks',

@@ -4,6 +4,7 @@ import { User } from '../models/user'
 import { Game } from '../models/game'
 import { Section } from '../models/section'
 import { RootState } from '../store'
+import { Task, TaskType } from '../models/task'
 
 /**
  * The initial state of the GamesSlice
@@ -129,6 +130,81 @@ export const editSection =
         dispatch(updateUserLoading(false))
     }
 
+export const addTask =
+    (gameId: number, taskObject: Task) =>
+    async (dispatch: Dispatch<any>, getState: () => RootState) => {
+        dispatch(updateUserLoading(true))
+        const game = getState().user.gameList.find((game) => game.id === gameId)
+        if (game) {
+            dispatch(
+                updateGame({
+                    ...game,
+                    tasks: [...game.tasks, taskObject],
+                })
+            )
+        }
+        dispatch(updateUserLoading(false))
+    }
+
+export const deleteTask =
+    (gameId: number, taskId: number) =>
+    async (dispatch: Dispatch<any>, getState: () => RootState) => {
+        dispatch(updateUserLoading(true))
+        const game = getState().user.gameList.find((game) => game.id === gameId)
+        if (game) {
+            dispatch(
+                updateGame({
+                    ...game,
+                    tasks: game.tasks.filter(
+                        (task) => task.id !== taskId
+                    ),
+                })
+            )
+        }
+        dispatch(updateUserLoading(false))
+    }
+
+export const editTask =
+    (gameId: number, taskObject: Task) =>
+    async (dispatch: Dispatch<any>, getState: () => RootState) => {
+        dispatch(updateUserLoading(true))
+        const game = getState().user.gameList.find((game) => game.id === gameId)
+        if (game) {
+            dispatch(
+                updateGame({
+                    ...game,
+                    tasks: game.tasks.map((task) =>
+                        task.id === taskObject.id
+                            ? taskObject
+                            : task
+                    ),
+                })
+            )
+        }
+        dispatch(updateUserLoading(false))
+    }
+
+export const toggleCompletedTask =
+    (gameId: number, taskId: number) =>
+    async (dispatch: Dispatch<any>, getState: () => RootState) => {
+        dispatch(updateUserLoading(true))
+        const game = getState().user.gameList.find((game) => game.id === gameId)
+        if (game) {
+            dispatch(
+                updateGame({
+                    ...game,
+                    tasks: game.tasks.map((task) =>
+                        task.id === taskId
+                            ? {...task, completed: !task.completed}
+                            : task
+                    ),
+                })
+            )
+        }
+        dispatch(updateUserLoading(false))
+    }
+
+
 const gamesList = (state: RootState) => state.user.gameList
 const currentGame = (state: RootState) =>
     state.user.currentGame === null
@@ -136,6 +212,9 @@ const currentGame = (state: RootState) =>
         : state.user.gameList.filter((game) => {
               return game.id === state.user.currentGame
           })[0]
+
+const tasks = (state: RootState, gameId: number, taskType: TaskType) =>
+    state.user.gameList.find((game) => game.id === gameId)?.tasks.filter((task) => task.taskType === taskType)
 
 export const userSelectors = {
     gamesList,

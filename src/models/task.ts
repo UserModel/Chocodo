@@ -1,8 +1,9 @@
 export type Task = {
     taskText: string
     completed: boolean
-    section: string
+    sectionId: string
     id: number
+    taskType: TaskType
 }
 
 export enum TaskType {

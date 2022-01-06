@@ -11,12 +11,13 @@ import { EditSection } from './components/EditSection'
 import { Section } from './models/section'
 
 export const GamePanel = () => {
-    const currentGame = useSelector(userSelectors.currentGame)
-    const dispatch = useDispatch()
-    const [generalTasksOpen, setGeneralTasksOpen] = useState(true)
-    const [dailyTasksOpen, setDailyTasksOpen] = useState(true)
-    const [weeklyTasksOpen, setWeeklyTasksOpen] = useState(true)
-    const [isNewSectionModalOpen, setIsNewSectionModalOpen] = useState(false)
+    const currentGame = useSelector(userSelectors.currentGame);
+    const dispatch = useDispatch();
+    const [generalTasksOpen, setGeneralTasksOpen] = useState(true);
+    const [dailyTasksOpen, setDailyTasksOpen] = useState(true);
+    const [weeklyTasksOpen, setWeeklyTasksOpen] = useState(true);
+    const [isNewSectionModalOpen, setIsNewSectionModalOpen] = useState(false);
+    const [selectedSection, setSelectedSection] = useState(0);
 
     useEffect(() => {
         setGeneralTasksOpen(true)
@@ -72,7 +73,7 @@ export const GamePanel = () => {
                         <VStack
                             align="center"
                             bgColor="#2E3136"
-                            w="25%"
+                            w="20%"
                             h="100%"
                             borderRight="1px"
                         >
@@ -121,9 +122,9 @@ export const GamePanel = () => {
                                                 TaskType.NORMAL
                                         )
                                         .map((section, index) => (
-                                            <Heading size="sm">
+                                            <Button onClick={() => setSelectedSection(section.id)} colorScheme="black" key={index} size="sm">
                                                 {section.sectionName}
-                                            </Heading>
+                                            </Button>
                                         ))}
                             </Box>
                             {currentGame.hasDaily && (
@@ -154,9 +155,9 @@ export const GamePanel = () => {
                                                     TaskType.DAILY
                                             )
                                             .map((section, index) => (
-                                                <Heading size="sm">
+                                                <Button onClick={() => setSelectedSection(section.id)} colorScheme="black" key={index} size="sm">
                                                     {section.sectionName}
-                                                </Heading>
+                                                </Button>
                                             ))}
                                 </Box>
                             )}
@@ -188,9 +189,9 @@ export const GamePanel = () => {
                                                     TaskType.WEEKLY
                                             )
                                             .map((section, index) => (
-                                                <Heading size="sm">
+                                                <Button onClick={() => setSelectedSection(section.id)} colorScheme="black" key={index} size="sm">
                                                     {section.sectionName}
-                                                </Heading>
+                                                </Button>
                                             ))}
                                 </Box>
                             )}

@@ -334,8 +334,6 @@ export const EditGame = (props: PropTypes) => {
                 dailyResetTime: dailyResetTime,
                 nextDailyReset: '',
                 tasks: gameData.tasks,
-                dailyTasks: gameData.dailyTasks,
-                weeklyTasks: gameData.weeklyTasks,
                 sections: gameData.sections,
             }
             clearStates()

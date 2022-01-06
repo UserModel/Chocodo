@@ -15,7 +15,5 @@ export type Game = {
     dailyResetTime: string
     nextDailyReset: string | null
     tasks: Task[]
-    dailyTasks: Task[]
-    weeklyTasks: Task[]
     sections: Section[]
 }
