@@ -78,9 +78,6 @@ export const GamePanel = () => {
                             <Heading size="xs">Time until daily reset</Heading>
                             <Heading size="xs">Time until weekly reset</Heading>
                         </VStack>
-                                        }
-                                        leftIcon={
-                                                <ChevronRightIcon />
                         <SettingsIcon
                             onClick={() => setEditGameModal(true)}
                             className="show-click"
