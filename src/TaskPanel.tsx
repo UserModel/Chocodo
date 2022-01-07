@@ -82,6 +82,7 @@ export const TaskPanel = (props: PropTypes) => {
                                 value={newTaskText}
                                 onChange={(event) => setNewTaskText(event.target.value)}
                                 size="md"
+                                onKeyPress={(event) => event.code === "Enter" ? submitNewTask() : null}
                             />
                             <IconButton onClick={() => submitNewTask()} colorScheme="green" marginLeft="1%" aria-label="AddNewTask" icon={<CheckIcon />} />
                             <IconButton onClick={() => resetNewTask()} colorScheme="red" marginLeft="1%" aria-label="AddNewTask" icon={<CloseIcon />} />

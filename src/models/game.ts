@@ -11,9 +11,9 @@ export type Game = {
     timezone: ITimezone
     weeklyResetDOW: number | null
     weeklyResetTime: string
-    nextWeeklyReset: string | null
+    nextWeeklyReset: number | null
     dailyResetTime: string
-    nextDailyReset: string | null
+    nextDailyReset: number | null
     tasks: Task[]
     sections: Section[]
 }
