@@ -1,4 +1,4 @@
-import { Wrap, Tooltip, Avatar } from '@chakra-ui/react'
+import { Wrap, Tooltip, Avatar, useColorModeValue } from '@chakra-ui/react'
 import React from 'react'
 import { AddIcon, QuestionIcon } from '@chakra-ui/icons'
 
@@ -10,6 +10,8 @@ type PropTypes = {
 }
 
 export const RoundButton = (props: PropTypes) => {
+    const bgColor = useColorModeValue('#F0F0F0', '#36393E')
+
     let imageURL = props.imageURL
     let onClickFunction = props.onClick
     let name = props.name
@@ -19,7 +21,7 @@ export const RoundButton = (props: PropTypes) => {
             return (
                 <Avatar
                     className="gamebar-avatar trans"
-                    bgColor="#36393E"
+                    bgColor={bgColor}
                     icon={<AddIcon color="green" />}
                 />
             )
@@ -27,7 +29,7 @@ export const RoundButton = (props: PropTypes) => {
             return (
                 <Avatar
                     className="gamebar-avatar trans"
-                    bgColor="#36393E"
+                    bgColor={bgColor}
                     icon={<QuestionIcon color="white" />}
                 />
             )

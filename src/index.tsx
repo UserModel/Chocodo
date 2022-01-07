@@ -5,6 +5,7 @@ import App from './App'
 import { store, persistor } from './store'
 import { PersistGate } from 'redux-persist/integration/react'
 import { Provider } from 'react-redux'
+import 'focus-visible/dist/focus-visible'
 
 ReactDOM.render(
     <React.StrictMode>

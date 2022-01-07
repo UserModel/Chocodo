@@ -22,8 +22,8 @@ import { Game } from '../models/game'
 import { useState, useEffect } from 'react'
 import TimePicker, { TimePickerValue } from 'react-time-picker'
 import TimezoneSelect from 'react-timezone-select'
-import { setNextDailyReset } from '../timeUtils';
-import moment from 'moment-timezone';
+import { getNextDailyReset } from '../timeUtils'
+import moment from 'moment-timezone'
 
 type PropTypes = {
     isModalOpen: boolean
@@ -333,14 +333,21 @@ export const EditGame = (props: PropTypes) => {
                 weeklyResetTime: weeklyResetTime,
                 nextWeeklyReset: null,
                 dailyResetTime: dailyResetTime,
-                nextDailyReset: setNextDailyReset(dailyResetTime, timezone),
+                nextDailyReset: getNextDailyReset(
+                    dailyResetTime,
+                    typeof timezone === 'string' ? timezone : timezone.value
+                ),
                 tasks: gameData.tasks,
                 sections: gameData.sections,
-            };
-            console.log(newGame);
-            console.log( moment(newGame.nextDailyReset).tz(newGame.timezone.toString()).toString() )
-            clearStates();
-            props.addGame(newGame);
+            }
+            console.log(newGame)
+            console.log(
+                moment(newGame.nextDailyReset)
+                    .tz(newGame.timezone.toString())
+                    .toString()
+            )
+            clearStates()
+            props.addGame(newGame)
         }
     }
 
@@ -384,7 +391,7 @@ export const EditGame = (props: PropTypes) => {
                         <Button
                             colorScheme="blue"
                             variant="solid"
-                            onClick={() => addGame()}
+                            onClick={addGame}
                         >
                             Submit
                         </Button>
