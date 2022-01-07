@@ -28,7 +28,7 @@ export const SectionList = ({
     const [dailyTasksOpen, setDailyTasksOpen] = useState(true)
     const [weeklyTasksOpen, setWeeklyTasksOpen] = useState(true)
     const bgColor = useColorModeValue('#F0F0F0', '#2E3136')
-    const textColor = useColorModeValue('black', 'white')
+    const textColor = useColorModeValue('#23272A', 'white')
 
     useEffect(() => {
         setGeneralTasksOpen(true)

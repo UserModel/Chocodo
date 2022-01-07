@@ -11,6 +11,8 @@ type PropTypes = {
 
 export const RoundButton = (props: PropTypes) => {
     const bgColor = useColorModeValue('#F0F0F0', '#36393E')
+    const iconBg = useColorModeValue('white', '#36393E')
+    const iconColor = useColorModeValue('black', 'white')
 
     let imageURL = props.imageURL
     let onClickFunction = props.onClick
@@ -29,8 +31,8 @@ export const RoundButton = (props: PropTypes) => {
             return (
                 <Avatar
                     className="gamebar-avatar trans"
-                    bgColor={bgColor}
-                    icon={<QuestionIcon color="white" />}
+                    bgColor={iconBg}
+                    icon={<QuestionIcon color={iconColor} />}
                 />
             )
         } else {

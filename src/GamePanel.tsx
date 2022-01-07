@@ -11,14 +11,14 @@ import { EditGame } from './components/EditGame'
 import { Game } from './models/game'
 import { TaskPanel } from './TaskPanel'
 import { SectionList } from './SectionList'
-import { useColorModeValue } from '@chakra-ui/react'
+import { useBgColor, useBorderColor, useTextColor } from './theme'
 
 export const GamePanel = () => {
     const currentGame = useSelector(userSelectors.currentGame)
     const dispatch = useDispatch()
-    const bgColor = useColorModeValue('#FAFAFA', '#36393E')
-    const borderColor = useColorModeValue('#BABABA', '#232428')
-    const textColor = useColorModeValue('black', 'white')
+    const bgColor = useBgColor()
+    const borderColor = useBorderColor()
+    const textColor = useTextColor()
 
     const [isNewSectionModalOpen, setIsNewSectionModalOpen] = useState(false)
     const [selectedSection, setSelectedSection] = useState(0)

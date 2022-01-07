@@ -9,8 +9,6 @@ import {
     IconButton,
     Input,
     Text,
-    Textarea,
-    useColorModeValue,
     VStack,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
@@ -19,6 +17,7 @@ import { Game } from './models/game'
 import { addTask, toggleCompletedTask } from './slices/userSlice'
 import { Task } from './models/task'
 import { Section } from './models/section'
+import { useTextColor } from './theme'
 
 type PropTypes = {
     gameData: Game
@@ -34,7 +33,7 @@ export const TaskPanel = (props: PropTypes) => {
     const section: Section | undefined = props.gameData?.sections?.find(
         (section) => section.id === props.sectionId
     )
-    const textColor = useColorModeValue('black', 'white')
+    const textColor = useTextColor()
     const dispatch = useDispatch()
 
     const resetNewTask = () => {
