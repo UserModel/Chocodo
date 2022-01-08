@@ -16,8 +16,7 @@ import {
     Alert,
     AlertIcon,
     HStack,
-    Spacer,
-    Select
+    Spacer
 } from '@chakra-ui/react'
 import { ArrowForwardIcon, ArrowBackIcon, DeleteIcon } from '@chakra-ui/icons'
 import { Game } from '../models/game'
@@ -141,13 +140,6 @@ export const EditGame = (props: PropTypes) => {
     }
 
     const stepOne = () => {
-        const timezones = [
-            { value: 'value1', label: 'option1' },
-            { value: 'value2', label: 'option2' },
-            { value: 'value3', label: 'option3' },
-            { value: 'value4', label: 'option4' },
-        ]
-
         return (
             <VStack spacing="15px" align="center">
                 {errorMessage !== '' && (
