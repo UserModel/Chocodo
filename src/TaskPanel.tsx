@@ -248,6 +248,7 @@ export const TaskPanel = (props: PropTypes) => {
                     {addingNewTask && (
                         <Flex w="100%" padding="1%">
                             <Input
+                                autoComplete='off'
                                 autoFocus={true}
                                 id="task-text"
                                 isRequired={true}

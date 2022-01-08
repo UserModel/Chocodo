@@ -106,6 +106,7 @@ export const EditSectionList = (props: PropTypes) => {
                         ) : (
                             <>
                                 <Input
+                                    autocomplete="off"
                                     padding="5px"
                                     autoFocus
                                     onFocus={(e) =>

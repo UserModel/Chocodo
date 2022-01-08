@@ -96,6 +96,7 @@ export const EditSection = (props: PropTypes) => {
                                 Section Name:
                             </FormLabel>
                             <Input
+                                autocomplete="off"
                                 id="section-name"
                                 isRequired={true}
                                 value={sectionName}
