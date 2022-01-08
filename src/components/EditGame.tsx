@@ -267,7 +267,7 @@ export const EditGame = (props: PropTypes) => {
                 )}
                 {(hasDaily || hasWeekly) && (
                     <FormControl w="100%" alignItems="center">
-                        <FormLabel htmlFor="timezoneSelect" mb="0">
+                        <FormLabel htmlFor="timezoneSelect" paddingBottom="8px" mb="0">
                             Server Timezone:
                         </FormLabel>
                         <TimezoneSelect
