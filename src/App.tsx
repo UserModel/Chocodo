@@ -2,6 +2,7 @@ import './scss/app.scss'
 import { Homepage } from './Homepage'
 import { ChakraProvider } from '@chakra-ui/react'
 import { css, Global } from '@emotion/react'
+import theme from './theme'
 
 const GlobalStyles = css`
     /*
@@ -16,7 +17,7 @@ const GlobalStyles = css`
 function App() {
     return (
         <div className="App">
-            <ChakraProvider>
+            <ChakraProvider theme={theme}>
                 <Global styles={GlobalStyles} />
                 <Homepage />
             </ChakraProvider>
