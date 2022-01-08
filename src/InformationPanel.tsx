@@ -7,7 +7,7 @@ export const InformationPanel = () => {
 
     return (
         <VStack padding="5%">
-            <Heading color={textColor}>Welcome to Chocotodo</Heading>
+            <Heading color={textColor}>Welcome to Chocodo</Heading>
             <Heading size="sm">
                 Dark Mode Switcher: <ThemeSwitch />
             </Heading>
