@@ -6,10 +6,11 @@ import {
     editGame,
     userSelectors,
     toggleTasksFromReset,
+    editGameById,
 } from './slices/userSlice'
 import { InformationPanel } from './InformationPanel'
 import { useDispatch } from 'react-redux'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { EditSection } from './components/EditSection'
 import { Section } from './models/section'
 import { EditGame } from './components/EditGame'
@@ -22,13 +23,14 @@ import {
     useTextColor,
     useLightestBgColor,
 } from './theme'
-import Countdown from 'react-countdown'
+import Countdown, { zeroPad } from 'react-countdown'
 import {
     getDateTimeWithTimezone,
     getNextDailyReset,
     getNextWeeklyReset,
 } from './timeUtils'
 import { TaskType } from './models/task'
+import { DateTime } from 'luxon'
 
 export const GamePanel = () => {
     const currentGame = useSelector(userSelectors.currentGame)
@@ -38,28 +40,104 @@ export const GamePanel = () => {
     const borderColor = useBorderColor()
     const textColor = useTextColor()
 
-    const [isNewSectionModalOpen, setIsNewSectionModalOpen] = useState(false)
+    const [isNewSectionModalOpen, setIsNewSectionModalOpen] = useState({open: false, taskType: TaskType.NORMAL})
     const [selectedSection, setSelectedSection] = useState(0)
     const [editGameModal, setEditGameModal] = useState(false)
 
-    const nextDailyReset =
-        currentGame &&
-        currentGame.nextDailyReset !== null &&
-        typeof currentGame.timezone !== 'string'
-            ? getDateTimeWithTimezone(
-                  currentGame.nextDailyReset,
-                  currentGame?.timezone.value
-              )
-            : null
-    const nextWeeklyReset =
-        currentGame &&
-        currentGame.nextWeeklyReset !== null &&
-        typeof currentGame.timezone !== 'string'
-            ? getDateTimeWithTimezone(
-                  currentGame.nextWeeklyReset,
-                  currentGame?.timezone.value
-              )
-            : null
+    useEffect(() => {
+        if ( !currentGame ) {
+            return;
+        }
+        if ( currentGame.nextDailyReset && DateTime.now() >= DateTime.fromMillis(currentGame.nextDailyReset) ) {
+            resetTasks(TaskType.DAILY);
+        }
+        if ( currentGame.nextWeeklyReset && DateTime.now() >= DateTime.fromMillis(currentGame.nextWeeklyReset) ) {
+            resetTasks(TaskType.WEEKLY);
+        }
+    }, [currentGame?.id])
+
+    const resetTasks = (taskType: TaskType) => {
+        if (currentGame) {
+            dispatch(toggleTasksFromReset(currentGame.id, taskType))
+            if (taskType === TaskType.DAILY) {
+                dispatch(
+                    editGameById(currentGame.id, {
+                        nextDailyReset: getNextDailyReset(
+                            currentGame.dailyResetTime,
+                            typeof currentGame.timezone === 'string'
+                                ? currentGame.timezone
+                                : currentGame.timezone.value
+                        ),
+                    })
+                )
+            } else if (
+                taskType === TaskType.WEEKLY &&
+                currentGame.weeklyResetDOW
+            ) {
+                dispatch(
+                    editGameById(currentGame.id, {
+                        nextWeeklyReset: getNextWeeklyReset(
+                            currentGame.weeklyResetDOW,
+                            currentGame.dailyResetTime,
+                            typeof currentGame.timezone === 'string'
+                                ? currentGame.timezone
+                                : currentGame.timezone.value
+                        ),
+                    })
+                )
+            }
+        }
+    }
+
+    const [nextDailyReset, setNextDailyReset] =
+        useState(
+            currentGame &&
+            currentGame.nextDailyReset !== null &&
+            typeof currentGame.timezone !== 'string'
+                ? getDateTimeWithTimezone(
+                    currentGame.nextDailyReset,
+                    currentGame?.timezone.value
+                )
+                : null
+        );
+
+    useEffect(() => {
+        setNextDailyReset(
+            currentGame &&
+            currentGame.nextDailyReset !== null &&
+            typeof currentGame.timezone !== 'string'
+                ? getDateTimeWithTimezone(
+                    currentGame.nextDailyReset,
+                    currentGame?.timezone.value
+                )
+                : null
+        )
+    }, [currentGame?.nextDailyReset])
+
+    const [nextWeeklyReset, setNextWeeklyReset] =
+        useState(
+            currentGame &&
+            currentGame.nextWeeklyReset !== null &&
+            typeof currentGame.timezone !== 'string'
+                ? getDateTimeWithTimezone(
+                    currentGame.nextWeeklyReset,
+                    currentGame?.timezone.value
+                )
+                : null
+        )
+
+    useEffect(() => {
+        setNextWeeklyReset(
+            currentGame &&
+            currentGame.nextWeeklyReset !== null &&
+            typeof currentGame.timezone !== 'string'
+                ? getDateTimeWithTimezone(
+                    currentGame.nextWeeklyReset,
+                    currentGame?.timezone.value
+                )
+                : null
+        )
+    }, [currentGame?.nextWeeklyReset])
 
     const newSection: Section = {
         sectionName: '',
@@ -68,7 +146,7 @@ export const GamePanel = () => {
     }
 
     const addNewSection = (sectionObject: Section) => {
-        setIsNewSectionModalOpen(false)
+        setIsNewSectionModalOpen({open: false, taskType: TaskType.NORMAL})
         if (currentGame) {
             dispatch(addSection(currentGame.id, sectionObject))
         }
@@ -88,69 +166,13 @@ export const GamePanel = () => {
     }
 
     const timeRenderer = (props: RendererProps, taskType: TaskType) => {
-        if (props.completed && currentGame) {
-            dispatch(toggleTasksFromReset(currentGame.id, taskType))
-            if (typeof currentGame.timezone !== 'string') {
-                if (taskType === TaskType.DAILY) {
-                    dispatch(
-                        editGame({
-                            ...currentGame,
-                            nextDailyReset: getNextDailyReset(
-                                currentGame.dailyResetTime,
-                                currentGame.timezone.value
-                            ),
-                        })
-                    )
-                } else if (
-                    taskType === TaskType.WEEKLY &&
-                    currentGame.weeklyResetDOW
-                ) {
-                    dispatch(
-                        editGame({
-                            ...currentGame,
-                            nextWeeklyReset: getNextWeeklyReset(
-                                currentGame.weeklyResetDOW,
-                                currentGame.weeklyResetTime,
-                                currentGame.timezone.value
-                            ),
-                        })
-                    )
-                }
-            }
-            return <></>
-        } else {
-            const daysLeft =
-                props.days > 0
-                    ? props.days +
-                      (props.hours > 0
-                          ? props.days > 1
-                              ? ' days, '
-                              : ' day, '
-                          : props.days > 1
-                          ? ' days'
-                          : ' day')
-                    : ''
-            const hoursLeft =
-                props.hours > 0
-                    ? props.hours + (props.minutes > 0 ? ' hours, ' : ' hours')
-                    : ''
-            const minutesLeft =
-                props.minutes > 0
-                    ? props.minutes +
-                      (props.seconds > 0 ? ' minutes, ' : ' minutes')
-                    : ''
-            const secondsLeft =
-                props.seconds > 0 ? props.seconds + ' seconds' : ''
-            return (
-                <span>
-                    {' '}
-                    {daysLeft}
-                    {hoursLeft}
-                    {minutesLeft}
-                    {secondsLeft}
-                </span>
-            )
-        }
+        return (
+            <span>
+                {' ' + (props.days ? props.days + ':' : '')}
+                {zeroPad(props.hours)}:{zeroPad(props.minutes)}:
+                {zeroPad(props.seconds)}
+            </span>
+        )    
     }
 
     return (
@@ -166,7 +188,7 @@ export const GamePanel = () => {
                     section={newSection}
                     gameData={currentGame}
                     isModalOpen={isNewSectionModalOpen}
-                    closeModal={() => setIsNewSectionModalOpen(false)}
+                    closeModal={() => setIsNewSectionModalOpen({open: false, taskType: TaskType.NORMAL})}
                     onClick={addNewSection}
                 />
             )}
@@ -189,31 +211,45 @@ export const GamePanel = () => {
                         <VStack alignItems="end" paddingTop="0.7%" h="100%">
                             {currentGame.hasDaily && (
                                 <Heading size="xs">
-                                    Time until daily reset:
+                                    Next daily reset:
                                     <Countdown
                                         date={
                                             nextDailyReset !== null
                                                 ? nextDailyReset
                                                 : 0
                                         }
-                                        renderer={(props) =>
-                                            timeRenderer(props, TaskType.DAILY)
+                                        renderer={(timeProps) =>
+                                            timeRenderer(
+                                                timeProps,
+                                                TaskType.DAILY
+                                            )
                                         }
+                                        onComplete={() =>
+                                            resetTasks(TaskType.DAILY)
+                                        }
+                                        overtime={true}
                                     />
                                 </Heading>
                             )}
                             {currentGame.hasWeekly && (
                                 <Heading size="xs">
-                                    Time until weekly reset:
+                                    Next weekly reset:
                                     <Countdown
                                         date={
                                             nextWeeklyReset !== null
                                                 ? nextWeeklyReset
                                                 : 0
                                         }
-                                        renderer={(props) =>
-                                            timeRenderer(props, TaskType.WEEKLY)
+                                        renderer={(timeProps) =>
+                                            timeRenderer(
+                                                timeProps,
+                                                TaskType.WEEKLY
+                                            )
                                         }
+                                        onComplete={() =>
+                                            resetTasks(TaskType.WEEKLY)
+                                        }
+                                        overtime={true}
                                     />
                                 </Heading>
                             )}

@@ -5,6 +5,7 @@ import { Game } from '../models/game'
 import { Section } from '../models/section'
 import { RootState } from '../store'
 import { Task, TaskType } from '../models/task'
+import { assign } from 'lodash'
 
 /**
  * The initial state of the GamesSlice
@@ -61,6 +62,17 @@ export const editGame =
     (gameObject: Game) => async (dispatch: Dispatch<any>) => {
         dispatch(updateUserLoading(true))
         dispatch(updateGame(gameObject))
+        dispatch(updateUserLoading(false))
+    }
+export const editGameById =
+    (gameId: number, gameObject: Partial<Game>) => 
+    async (dispatch: Dispatch<any>, getState: () => RootState) => {
+        dispatch(updateUserLoading(true))
+        const game = getState().user.gameList.find((game) => game.id === gameId)
+        console.log(gameObject);
+        if ( game ) {
+            dispatch(updateGame({...game, ...gameObject}))
+        }
         dispatch(updateUserLoading(false))
     }
 

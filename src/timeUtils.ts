@@ -11,7 +11,7 @@ export const getNextDailyReset = (resetTime: string, timeZone: string) => {
             millisecond: 0,
         })
         let addDayReset = nextReset
-        if (DateTime.now() > nextReset) {
+        if (DateTime.now() >= nextReset) {
             addDayReset = nextReset.plus({ days: 1 })
         }
         return addDayReset.valueOf()

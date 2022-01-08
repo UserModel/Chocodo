@@ -21,7 +21,7 @@ import { TaskType } from './models/task'
 import { useMediumBgColor, useTextColor } from './theme'
 
 export type SectionListProps = {
-    setIsNewSectionModalOpen: (value: boolean) => void
+    setIsNewSectionModalOpen: (value: {open: boolean, taskType: TaskType}) => void
     setSelectedSection: (value: number) => void
     currentGame: Game
 }
@@ -124,7 +124,7 @@ export const SectionList = ({
                     h="100%"
                     w="10%"
                     mr="5%"
-                    onClick={() => setIsNewSectionModalOpen(true)}
+                    onClick={() => setIsNewSectionModalOpen({open: true, taskType: TaskType.NORMAL})}
                     aria-label="Search database"
                     icon={<AddIcon />}
                 />
@@ -161,7 +161,7 @@ export const SectionList = ({
                             h="100%"
                             w="10%"
                             mr="5%"
-                            onClick={() => setIsNewSectionModalOpen(true)}
+                            onClick={() => setIsNewSectionModalOpen({open: true, taskType: TaskType.DAILY})}
                             aria-label="Search database"
                             icon={<AddIcon />}
                         />
@@ -201,7 +201,7 @@ export const SectionList = ({
                             h="100%"
                             w="10%"
                             mr="5%"
-                            onClick={() => setIsNewSectionModalOpen(true)}
+                            onClick={() => setIsNewSectionModalOpen({open: true, taskType: TaskType.WEEKLY})}
                             aria-label="Search database"
                             icon={<AddIcon />}
                         />
