@@ -23,24 +23,21 @@ import { TaskType } from '../models/task'
 type PropTypes = {
     section: Section
     gameData: Game | null
-    isModalOpen: boolean
+    isModalOpen: {open: boolean, taskType: TaskType}
     closeModal: Function
     onClick: Function
 }
 
 enum ErrorMessages {
-    NoSectionName = 'You must set a section name.',
-    NoSectionType = 'You must set a section type.',
+    NoSectionName = 'You must set a section name.'
 }
 
 export const EditSection = (props: PropTypes) => {
     const [sectionName, setSectionName] = useState(props.section.sectionName)
-    const [taskType, setTaskType] = useState(props.section.taskType)
     const [errorMessage, setErrorMessage] = useState('')
 
     const closeModal = () => {
         setSectionName('')
-        setTaskType(null)
         setErrorMessage('')
         props.closeModal()
     }
@@ -51,19 +48,12 @@ export const EditSection = (props: PropTypes) => {
             sectionName !== ''
         ) {
             setErrorMessage('')
-        } else if (
-            errorMessage === ErrorMessages.NoSectionType &&
-            taskType !== null
-        ) {
-            setErrorMessage('')
         }
-    }, [errorMessage, taskType, sectionName])
+    }, [errorMessage, sectionName])
 
     const addSection = () => {
         if (sectionName === '') {
             setErrorMessage(ErrorMessages.NoSectionName)
-        } else if (taskType === null) {
-            setErrorMessage(ErrorMessages.NoSectionType)
         } else {
             const id =
                 props.section.id !== 0
@@ -71,13 +61,12 @@ export const EditSection = (props: PropTypes) => {
                     : Math.floor(Math.random() * Date.now())
             const newSection: Section = {
                 sectionName: sectionName,
-                taskType: taskType,
+                taskType: props.isModalOpen.taskType,
                 id: id,
             }
             if (props.gameData !== null) {
                 props.onClick(newSection, props.gameData.id)
                 setSectionName('')
-                setTaskType(null)
                 setErrorMessage('')
                 props.closeModal()
             }
@@ -85,7 +74,7 @@ export const EditSection = (props: PropTypes) => {
     }
 
     return (
-        <Modal isOpen={props.isModalOpen} onClose={() => closeModal()}>
+        <Modal isOpen={props.isModalOpen.open} onClose={() => closeModal()}>
             <ModalOverlay />
             <ModalContent>
                 {props.section.id === 0 && (
@@ -116,47 +105,6 @@ export const EditSection = (props: PropTypes) => {
                                 }
                                 size="sm"
                             />
-                        </FormControl>
-                        <FormControl w="100%">
-                            <FormLabel htmlFor="section-type" mb="8px">
-                                Section Type:
-                            </FormLabel>
-                            <HStack>
-                                <Button
-                                    colorScheme={
-                                        taskType === TaskType.NORMAL
-                                            ? 'blue'
-                                            : 'gray'
-                                    }
-                                    onClick={() => setTaskType(TaskType.NORMAL)}
-                                >
-                                    General
-                                </Button>
-                                { props.gameData !== null && props.gameData.hasDaily &&
-                                    <Button
-                                        colorScheme={
-                                            taskType === TaskType.DAILY
-                                                ? 'blue'
-                                                : 'gray'
-                                        }
-                                        onClick={() => setTaskType(TaskType.DAILY)}
-                                    >
-                                        Daily
-                                    </Button>
-                                }
-                                { props.gameData !== null && props.gameData.hasWeekly &&
-                                    <Button
-                                        colorScheme={
-                                            taskType === TaskType.WEEKLY
-                                                ? 'blue'
-                                                : 'gray'
-                                        }
-                                        onClick={() => setTaskType(TaskType.WEEKLY)}
-                                    >
-                                        Weekly
-                                    </Button>
-                                }
-                            </HStack>
                         </FormControl>
                     </VStack>
                 </ModalBody>

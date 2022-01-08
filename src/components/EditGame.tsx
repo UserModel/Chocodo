@@ -16,13 +16,16 @@ import {
     Alert,
     AlertIcon,
     HStack,
+    Spacer,
 } from '@chakra-ui/react'
-import { ArrowForwardIcon, ArrowBackIcon } from '@chakra-ui/icons'
+import { ArrowForwardIcon, ArrowBackIcon, DeleteIcon } from '@chakra-ui/icons'
 import { Game } from '../models/game'
 import { useState, useEffect } from 'react'
 import TimePicker, { TimePickerValue } from 'react-time-picker'
 import TimezoneSelect from 'react-timezone-select'
 import { getNextDailyReset, getNextWeeklyReset } from '../timeUtils'
+import { useDispatch } from 'react-redux'
+import { deleteGame } from '../slices/userSlice'
 
 type PropTypes = {
     isModalOpen: boolean
@@ -33,6 +36,7 @@ type PropTypes = {
 
 export const EditGame = (props: PropTypes) => {
     let gameData = props.gameData
+    const dispatch = useDispatch()
     const [currentStep, setCurrentStep] = useState(0)
     const [gameName, setGameName] = useState(gameData.name)
     const [gameIconURL, setGameIconURL] = useState(gameData.gameIconURL)
@@ -330,11 +334,15 @@ export const EditGame = (props: PropTypes) => {
                 timezone: timezone,
                 weeklyResetDOW: weeklyResetDOW,
                 weeklyResetTime: weeklyResetTime,
-                nextWeeklyReset: weeklyResetDOW ? getNextWeeklyReset(
-                    weeklyResetDOW,
-                    weeklyResetTime,
-                    typeof timezone === 'string' ? timezone : timezone.value
-                ) : null,
+                nextWeeklyReset: weeklyResetDOW
+                    ? getNextWeeklyReset(
+                          weeklyResetDOW,
+                          weeklyResetTime,
+                          typeof timezone === 'string'
+                              ? timezone
+                              : timezone.value
+                      )
+                    : null,
                 dailyResetTime: dailyResetTime,
                 nextDailyReset: getNextDailyReset(
                     dailyResetTime,
@@ -346,6 +354,12 @@ export const EditGame = (props: PropTypes) => {
             clearStates()
             props.addGame(newGame)
         }
+    }
+
+    const removeCurrentGame = () => {
+        clearStates()
+        dispatch(deleteGame(gameData.id))
+        props.onClose()
     }
 
     return (
@@ -363,6 +377,18 @@ export const EditGame = (props: PropTypes) => {
                 </ModalBody>
 
                 <ModalFooter>
+                    {gameData.id !== 0 && (
+                        <Button
+                            colorScheme="red"
+                            variant="outline"
+                            mr={3}
+                            onClick={() => removeCurrentGame()}
+                            leftIcon={<DeleteIcon />}
+                        >
+                            Delete Game
+                        </Button>
+                    )}
+                    <Spacer />
                     {currentStep !== 0 && (
                         <Button
                             colorScheme="blue"

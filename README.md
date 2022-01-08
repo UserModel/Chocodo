@@ -1,6 +1,6 @@
-# Chocotodo
+# Chocodo
 
-Chocotodo is a React site for making tasks for video games, that also includes logic for handling tasks that need to be reset daily and weekly. This is built out using Redux with components built from Chakra-UI.
+Chocodo is a React site for making tasks for video games, that also includes logic for handling tasks that need to be reset daily and weekly. This is built out using Redux with components built from Chakra-UI.
 
 ## Installation
 

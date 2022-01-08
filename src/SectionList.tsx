@@ -11,7 +11,6 @@ import {
     Spacer,
     IconButton,
     Button,
-    Divider,
     useColorModeValue,
 } from '@chakra-ui/react'
 import React, { useState, useEffect } from 'react'
@@ -19,10 +18,13 @@ import { EditSectionList } from './components/EditSectionList'
 import { Game } from './models/game'
 import { Section } from './models/section'
 import { TaskType } from './models/task'
-import { useBorderColor, useMediumBgColor, useTextColor } from './theme'
+import { useMediumBgColor, useTextColor } from './theme'
 
 export type SectionListProps = {
-    setIsNewSectionModalOpen: (value: boolean) => void
+    setIsNewSectionModalOpen: (value: {
+        open: boolean
+        taskType: TaskType
+    }) => void
     setSelectedSection: (value: number) => void
     currentGame: Game
 }
@@ -71,10 +73,10 @@ export const SectionList = ({
             )}
             <Flex w="100%">
                 <Heading
-                    borderBottom="1px"
                     h="100%"
                     width="80%"
                     textAlign="start"
+                    borderBottom="1px"
                     padding="5%"
                     size="md"
                 >
@@ -119,7 +121,12 @@ export const SectionList = ({
                     h="100%"
                     w="10%"
                     mr="5%"
-                    onClick={() => setIsNewSectionModalOpen(true)}
+                    onClick={() =>
+                        setIsNewSectionModalOpen({
+                            open: true,
+                            taskType: TaskType.NORMAL,
+                        })
+                    }
                     aria-label="Search database"
                     icon={<AddIcon />}
                 />
@@ -156,7 +163,12 @@ export const SectionList = ({
                             h="100%"
                             w="10%"
                             mr="5%"
-                            onClick={() => setIsNewSectionModalOpen(true)}
+                            onClick={() =>
+                                setIsNewSectionModalOpen({
+                                    open: true,
+                                    taskType: TaskType.DAILY,
+                                })
+                            }
                             aria-label="Search database"
                             icon={<AddIcon />}
                         />
@@ -196,7 +208,12 @@ export const SectionList = ({
                             h="100%"
                             w="10%"
                             mr="5%"
-                            onClick={() => setIsNewSectionModalOpen(true)}
+                            onClick={() =>
+                                setIsNewSectionModalOpen({
+                                    open: true,
+                                    taskType: TaskType.WEEKLY,
+                                })
+                            }
                             aria-label="Search database"
                             icon={<AddIcon />}
                         />
