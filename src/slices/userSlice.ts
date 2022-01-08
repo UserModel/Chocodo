@@ -5,7 +5,6 @@ import { Game } from '../models/game'
 import { Section } from '../models/section'
 import { RootState } from '../store'
 import { Task, TaskType } from '../models/task'
-import { assign } from 'lodash'
 
 /**
  * The initial state of the GamesSlice

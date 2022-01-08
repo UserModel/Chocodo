@@ -63,6 +63,7 @@ export const GamePanel = () => {
         ) {
             resetTasks(TaskType.WEEKLY)
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentGame?.id])
 
     const resetTasks = (taskType: TaskType) => {
@@ -120,6 +121,7 @@ export const GamePanel = () => {
                   )
                 : null
         )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentGame?.nextDailyReset])
 
     const [nextWeeklyReset, setNextWeeklyReset] = useState(
@@ -144,6 +146,7 @@ export const GamePanel = () => {
                   )
                 : null
         )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentGame?.nextWeeklyReset])
 
     const newSection: Section = {
