@@ -1,9 +1,10 @@
 import { GameBar } from './GameBar'
-import { HStack, Box, useColorModeValue } from '@chakra-ui/react'
+import { HStack, Box } from '@chakra-ui/react'
+import { useDarkestBgColor } from './theme'
 import { GamePanel } from './GamePanel'
 
 export const Homepage = () => {
-    const bgColor = useColorModeValue('#EBEDEF', '#202225')
+    const bgColor = useDarkestBgColor()
     return (
         <HStack
             bg={bgColor}

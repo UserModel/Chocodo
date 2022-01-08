@@ -1,8 +1,9 @@
-import { Heading, useColorModeValue } from '@chakra-ui/react'
+import { Heading } from '@chakra-ui/react'
+import { useMediumBgColor, useBorderColor, useTextColor } from './theme'
 import { ThemeSwitch } from './components/ThemeSwitcher'
 
 export const InformationPanel = () => {
-    const textColor = useColorModeValue('#23272A', 'white')
+    const textColor = useTextColor();
 
     return (
         <>

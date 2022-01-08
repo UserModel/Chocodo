@@ -1,4 +1,4 @@
-import { AddIcon, ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons'
+import { AddIcon, ChevronDownIcon, ChevronRightIcon, SettingsIcon } from '@chakra-ui/icons'
 import {
     VStack,
     Flex,
@@ -6,12 +6,15 @@ import {
     Spacer,
     IconButton,
     Button,
+    Divider,
     useColorModeValue,
 } from '@chakra-ui/react'
 import React, { useState, useEffect } from 'react'
+import { EditSectionList } from './components/EditSectionList'
 import { Game } from './models/game'
 import { Section } from './models/section'
 import { TaskType } from './models/task'
+import { useBorderColor, useMediumBgColor, useTextColor } from './theme'
 
 export type SectionListProps = {
     setIsNewSectionModalOpen: (value: boolean) => void
@@ -24,11 +27,13 @@ export const SectionList = ({
     setSelectedSection,
     currentGame,
 }: SectionListProps) => {
-    const [generalTasksOpen, setGeneralTasksOpen] = useState(true)
-    const [dailyTasksOpen, setDailyTasksOpen] = useState(true)
-    const [weeklyTasksOpen, setWeeklyTasksOpen] = useState(true)
-    const bgColor = useColorModeValue('#F0F0F0', '#2E3136')
-    const textColor = useColorModeValue('#23272A', 'white')
+    const [generalTasksOpen, setGeneralTasksOpen] = useState(true);
+    const [dailyTasksOpen, setDailyTasksOpen] = useState(true);
+    const [weeklyTasksOpen, setWeeklyTasksOpen] = useState(true);
+    const [editSectionListModal, setEditSectionListModal] = useState(false);
+    const bgColor = useMediumBgColor();
+    const textColor = useTextColor();
+    const iconColor = useColorModeValue('black', 'white')
 
     useEffect(() => {
         setGeneralTasksOpen(true)
@@ -58,55 +63,80 @@ export const SectionList = ({
             h="100%"
             borderRight="0px"
         >
-            <Flex padding="5%" align="center" w="100%" h="5%">
-                <Heading size="md">Sections</Heading>
+            { editSectionListModal && <EditSectionList isModalOpen={editSectionListModal} gameData={currentGame} closeModal={() => setEditSectionListModal(false)} /> }
+            <Flex w="100%" h="7%">
+                <Heading h="100%" width="80%" textAlign="start" borderBottom="1px" padding="5%" size="md">
+                    Sections
+                </Heading>
+                <IconButton sx={{borderRadius: "0px"}} bgColor={bgColor} color={iconColor} aria-label='section-settings' h="100%" w="20%" borderBottom="1px" marginBottom="4px" className='show-click' onClick={() => setEditSectionListModal(true)} icon={<SettingsIcon  />} />
+            </Flex>
+            <Flex w="100%">
+                <Button
+                    alignSelf="start"
+                    className="dropdown"
+                    onClick={() => setGeneralTasksOpen(!generalTasksOpen)}
+                    leftIcon={
+                        generalTasksOpen ? (
+                            <ChevronDownIcon />
+                        ) : (
+                            <ChevronRightIcon />
+                        )
+                    }
+                    colorScheme="white"
+                    variant="ghost"
+                >
+                    General Tasks Sections
+                </Button>
                 <Spacer />
                 <IconButton
+                    color={textColor}
+                    bgColor={bgColor}
                     size="xs"
+                    h="100%"
+                    w="10%"
+                    mr="5%"
                     onClick={() => setIsNewSectionModalOpen(true)}
                     aria-label="Search database"
                     icon={<AddIcon />}
                 />
             </Flex>
-            <Button
-                alignSelf="start"
-                className="dropdown"
-                onClick={() => setGeneralTasksOpen(!generalTasksOpen)}
-                leftIcon={
-                    generalTasksOpen ? (
-                        <ChevronDownIcon />
-                    ) : (
-                        <ChevronRightIcon />
-                    )
-                }
-                colorScheme="white"
-                variant="ghost"
-            >
-                General Tasks Sections
-            </Button>
             {generalTasksOpen &&
                 currentGame.sections
                     .filter((section) => section.taskType === TaskType.NORMAL)
                     .map((section) => renderTaskSection(section))}
             {currentGame.hasDaily && (
                 <>
-                    <Button
-                        pb="0"
-                        alignSelf="start"
-                        className="dropdown"
-                        onClick={() => setDailyTasksOpen(!dailyTasksOpen)}
-                        leftIcon={
-                            dailyTasksOpen ? (
-                                <ChevronDownIcon />
-                            ) : (
-                                <ChevronRightIcon />
-                            )
-                        }
-                        colorScheme="white"
-                        variant="ghost"
-                    >
-                        Daily Tasks Sections
-                    </Button>
+                    <Flex w="100%">
+                        <Button
+                            pb="0"
+                            alignSelf="start"
+                            className="dropdown"
+                            onClick={() => setDailyTasksOpen(!dailyTasksOpen)}
+                            leftIcon={
+                                dailyTasksOpen ? (
+                                    <ChevronDownIcon />
+                                ) : (
+                                    <ChevronRightIcon />
+                                )
+                            }
+                            colorScheme="white"
+                            variant="ghost"
+                        >
+                            Daily Tasks Sections
+                        </Button>
+                        <Spacer />
+                        <IconButton
+                            color={textColor}
+                            bgColor={bgColor}
+                            size="xs"
+                            h="100%"
+                            w="10%"
+                            mr="5%"
+                            onClick={() => setIsNewSectionModalOpen(true)}
+                            aria-label="Search database"
+                            icon={<AddIcon />}
+                        />
+                    </Flex>
                     {dailyTasksOpen &&
                         currentGame.sections
                             .filter(
@@ -117,22 +147,36 @@ export const SectionList = ({
             )}
             {currentGame.hasWeekly && (
                 <>
-                    <Button
-                        alignSelf="start"
-                        className="dropdown"
-                        onClick={() => setWeeklyTasksOpen(!weeklyTasksOpen)}
-                        leftIcon={
-                            weeklyTasksOpen ? (
-                                <ChevronDownIcon />
-                            ) : (
-                                <ChevronRightIcon />
-                            )
-                        }
-                        colorScheme="white"
-                        variant="ghost"
-                    >
-                        Weekly Tasks Sections
-                    </Button>
+                    <Flex w="100%">
+                        <Button
+                            alignSelf="start"
+                            className="dropdown"
+                            onClick={() => setWeeklyTasksOpen(!weeklyTasksOpen)}
+                            leftIcon={
+                                weeklyTasksOpen ? (
+                                    <ChevronDownIcon />
+                                ) : (
+                                    <ChevronRightIcon />
+                                )
+                            }
+                            colorScheme="white"
+                            variant="ghost"
+                        >
+                            Weekly Tasks Sections
+                        </Button>
+                        <Spacer />
+                        <IconButton
+                            color={textColor}
+                            bgColor={bgColor}
+                            size="xs"
+                            h="100%"
+                            w="10%"
+                            mr="5%"
+                            onClick={() => setIsNewSectionModalOpen(true)}
+                            aria-label="Search database"
+                            icon={<AddIcon />}
+                        />
+                    </Flex>
                     {weeklyTasksOpen &&
                         currentGame.sections
                             .filter(

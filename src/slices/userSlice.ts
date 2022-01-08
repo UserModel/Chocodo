@@ -34,11 +34,6 @@ const userSlice = createSlice({
             )
         },
         updateGame(state, action: PayloadAction<Game>) {
-            console.log(
-                state.gameList.map((game) =>
-                    game.id === action.payload.id ? action.payload : game
-                )
-            )
             state.gameList = state.gameList.map((game) =>
                 game.id === action.payload.id ? action.payload : game
             )
@@ -183,6 +178,45 @@ export const editTask =
         }
         dispatch(updateUserLoading(false))
     }
+
+export const deleteAllTasksFromSection =
+    (gameId: number, sectionId: number) =>
+    async (dispatch: Dispatch<any>, getState: () => RootState) => {
+        dispatch(updateUserLoading(true))
+        const game = getState().user.gameList.find((game) => game.id === gameId)
+        if (game) {
+            dispatch(
+                updateGame({
+                    ...game,
+                    tasks: game.tasks.filter(
+                        (task) => task.sectionId !== sectionId
+                    ),
+                })
+            )
+        }
+        dispatch(updateUserLoading(false))
+    }
+
+export const toggleTasksFromReset =
+    (gameId: number, taskType: TaskType) =>
+    async (dispatch: Dispatch<any>, getState: () => RootState) => {
+        dispatch(updateUserLoading(true));
+        const game = getState().user.gameList.find((game) => game.id === gameId)
+        if (game) {
+            dispatch(
+                updateGame({
+                    ...game,
+                    tasks: game.tasks.map((task) => 
+                        task.taskType === taskType 
+                            ? { ...task, completed: false }
+                            : task
+                    )
+                })
+            )
+        }
+        dispatch(updateUserLoading(false))
+    }
+
 
 export const toggleCompletedTask =
     (gameId: number, taskId: number) =>

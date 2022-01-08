@@ -56,7 +56,6 @@ export const GameBar = () => {
     }
 
     function changeCurrentGame(id: number) {
-        console.log(id)
         dispatch(setCurrentGame(id))
     }
 

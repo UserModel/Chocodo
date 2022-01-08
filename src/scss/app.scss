@@ -50,3 +50,13 @@ $fullWhite: #ffffff;
 .show-click {
     cursor: pointer;
 }
+
+.textareaElement {
+    max-width: 700px;
+    width: auto;
+    min-height: 17px;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}

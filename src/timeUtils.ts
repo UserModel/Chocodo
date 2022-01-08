@@ -11,11 +11,18 @@ export const getNextDailyReset = (resetTime: string, timeZone: string) => {
                 second: 0,
                 millisecond: 0,
             })
-            .plus({ days: dateNow.hour < Number(hour) ? 0 : 1 })
-        return nextReset.valueOf()
+        let addDayReset = nextReset;
+        if ( DateTime.now() > nextReset ) {
+            addDayReset = nextReset.plus({ days: 1 });
+        }
+        return addDayReset.valueOf()
     } catch (e) {
         return null
     }
+}
+
+export const getDateTimeWithTimezone = ( resetTime: number, timeZone: string ) => {
+    return DateTime.fromMillis(resetTime).setZone(timeZone).toJSDate();
 }
 
 export const getRemainingTime = (timeMilis: number) =>
@@ -36,13 +43,17 @@ export const getNextWeeklyReset = (
         const dateNow = DateTime.now().setZone(timeZone)
         const nextReset = dateNow
             .set({
+                weekday: resetDOW,
                 hour: Number(hour),
                 minute: Number(minutes),
                 second: 0,
                 millisecond: 0,
             })
-            .plus({ days: resetDOW - dateNow.weekday })
-        return nextReset.valueOf()
+        let addWeekReset = nextReset;
+        if ( DateTime.now() > nextReset ) {
+            addWeekReset = nextReset.plus({ days: 7 });
+        }
+        return addWeekReset.valueOf()
     } catch (e) {
         return null
     }
