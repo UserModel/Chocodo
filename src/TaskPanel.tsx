@@ -66,6 +66,7 @@ export const TaskPanel = (props: PropTypes) => {
                 sectionId: section?.id,
                 id: Math.floor(Math.random() * Date.now()),
                 taskType: section?.taskType,
+                subtasks: []
             }
             dispatch(addTask(props.gameData.id, newTask))
         }
@@ -92,6 +93,7 @@ export const TaskPanel = (props: PropTypes) => {
     }
 
     const displayTask = (task: Task) => {
+        console.log(task.subtasks);
         return (
             <>
                 <Checkbox

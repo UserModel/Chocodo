@@ -4,6 +4,7 @@ export type Task = {
     sectionId: number
     id: number
     taskType: TaskType
+    subtasks?: []
 }
 
 export enum TaskType {
