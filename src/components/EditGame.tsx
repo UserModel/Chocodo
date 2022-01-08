@@ -288,7 +288,7 @@ export const EditGame = (props: PropTypes) => {
             setErrorMessage('')
         } else if (
             errorMessage === errorMessages.NoTimezone &&
-            (timezone === '' || (!hasDaily && !hasWeekly))
+            (timezone !== '' || (!hasDaily && !hasWeekly))
         ) {
             setErrorMessage('')
         } else if (
