@@ -110,20 +110,24 @@ export const GamePanel = () => {
                             {currentGame.name}
                         </Heading>
                         <Spacer />
-                        <VStack paddingRight="1.5%" paddingTop="0.7%" h="100%">
-                            <Heading size="xs">Time until daily reset:
-                                <Countdown date={nextDailyReset !== null ? nextDailyReset : 0} renderer={(props) => timeRenderer(props, TaskType.DAILY)} />
-                            </Heading>
-                            <Heading size="xs">Time until weekly reset:
-                                <Countdown date={nextWeeklyReset !== null ? nextWeeklyReset : 0} renderer={(props) => timeRenderer(props, TaskType.WEEKLY)} />
-                            </Heading>
+                        <VStack alignItems="end" paddingTop="0.7%" h="100%">
+                            { currentGame.hasDaily && (
+                                <Heading size="xs">Time until daily reset:
+                                    <Countdown date={nextDailyReset !== null ? nextDailyReset : 0} renderer={(props) => timeRenderer(props, TaskType.DAILY)} />
+                                </Heading>
+                            ) }
+                            { currentGame.hasWeekly && (
+                                <Heading size="xs">Time until weekly reset:
+                                    <Countdown date={nextWeeklyReset !== null ? nextWeeklyReset : 0} renderer={(props) => timeRenderer(props, TaskType.WEEKLY)} />
+                                </Heading>
+                            ) }
                         </VStack>
                         <SettingsIcon
                             onClick={() => setEditGameModal(true)}
                             className="show-click"
                             h="100%"
                             w="3.5%"
-                            marginLeft="3%"
+                            marginLeft="2%"
                             paddingTop="0.0%"
                             paddingRight="1.5%"
                         />

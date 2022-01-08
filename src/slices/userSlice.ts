@@ -64,6 +64,13 @@ export const editGame =
         dispatch(updateUserLoading(false))
     }
 
+export const removeGame =
+    (gameId: number) => async (dispatch: Dispatch<any>) => {
+        dispatch(updateUserLoading(true))
+        dispatch(deleteGame(gameId))
+        dispatch(updateUserLoading(false))
+    }
+
 export const setCurrentGame =
     (id: number) => async (dispatch: Dispatch<any>) => {
         dispatch(updateUserLoading(true))

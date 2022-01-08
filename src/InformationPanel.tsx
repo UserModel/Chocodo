@@ -1,14 +1,16 @@
-import { Heading } from '@chakra-ui/react'
+import { Heading, VStack } from '@chakra-ui/react'
 import { useMediumBgColor, useBorderColor, useTextColor } from './theme'
 import { ThemeSwitch } from './components/ThemeSwitcher'
+import { store } from './store';
 
 export const InformationPanel = () => {
     const textColor = useTextColor();
 
     return (
-        <>
-            <Heading color={textColor}>Welcome to TODO-Gaming</Heading>
-            <ThemeSwitch />
-        </>
+        <VStack padding="5%">
+            <Heading color={textColor}>Welcome to Chocotodo</Heading>
+            <Heading size="sm">Dark Mode Switcher: <ThemeSwitch /></Heading>
+            {/*<Heading size="xs">{JSON.stringify(store.getState().user)}</Heading>*/}
+        </VStack>
     )
 }
