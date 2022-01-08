@@ -15,10 +15,10 @@ export const Homepage = () => {
             maxH="100vh"
             spacing={0}
         >
-            <Box w="4%" h="100%" mt="20px">
+            <Box w="60px" h="100%" mt="20px">
                 <GameBar />
             </Box>
-            <Box w="96%" h="100%">
+            <Box w="100%" h="100%">
                 <GamePanel />
             </Box>
         </HStack>
