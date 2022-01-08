@@ -157,9 +157,7 @@ export const deleteTask =
             dispatch(
                 updateGame({
                     ...game,
-                    tasks: game.tasks.filter(
-                        (task) => task.id !== taskId
-                    ),
+                    tasks: game.tasks.filter((task) => task.id !== taskId),
                 })
             )
         }
@@ -176,9 +174,7 @@ export const editTask =
                 updateGame({
                     ...game,
                     tasks: game.tasks.map((task) =>
-                        task.id === taskObject.id
-                            ? taskObject
-                            : task
+                        task.id === taskObject.id ? taskObject : task
                     ),
                 })
             )
@@ -207,23 +203,22 @@ export const deleteAllTasksFromSection =
 export const toggleTasksFromReset =
     (gameId: number, taskType: TaskType) =>
     async (dispatch: Dispatch<any>, getState: () => RootState) => {
-        dispatch(updateUserLoading(true));
+        dispatch(updateUserLoading(true))
         const game = getState().user.gameList.find((game) => game.id === gameId)
         if (game) {
             dispatch(
                 updateGame({
                     ...game,
-                    tasks: game.tasks.map((task) => 
-                        task.taskType === taskType 
+                    tasks: game.tasks.map((task) =>
+                        task.taskType === taskType
                             ? { ...task, completed: false }
                             : task
-                    )
+                    ),
                 })
             )
         }
         dispatch(updateUserLoading(false))
     }
-
 
 export const toggleCompletedTask =
     (gameId: number, taskId: number) =>
@@ -236,7 +231,7 @@ export const toggleCompletedTask =
                     ...game,
                     tasks: game.tasks.map((task) =>
                         task.id === taskId
-                            ? {...task, completed: !task.completed}
+                            ? { ...task, completed: !task.completed }
                             : task
                     ),
                 })
@@ -244,7 +239,6 @@ export const toggleCompletedTask =
         }
         dispatch(updateUserLoading(false))
     }
-
 
 const gamesList = (state: RootState) => state.user.gameList
 const currentGame = (state: RootState) =>
@@ -255,16 +249,20 @@ const currentGame = (state: RootState) =>
           })[0]
 
 const tasks = (state: RootState, gameId: number, taskType: TaskType) =>
-    state.user.gameList.find((game) => game.id === gameId)?.tasks.filter((task) => task.taskType === taskType)
+    state.user.gameList
+        .find((game) => game.id === gameId)
+        ?.tasks.filter((task) => task.taskType === taskType)
 
 const section = (state: RootState, gameId: number, sectionId: number) =>
-    state.user.gameList.find((game) => game.id === gameId)?.sections.find((section) => section.id === sectionId)
+    state.user.gameList
+        .find((game) => game.id === gameId)
+        ?.sections.find((section) => section.id === sectionId)
 
 export const userSelectors = {
     gamesList,
     currentGame,
     tasks,
-    section
+    section,
 }
 
 export default userSlice

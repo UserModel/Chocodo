@@ -36,7 +36,7 @@ type PropTypes = {
 
 export const EditGame = (props: PropTypes) => {
     let gameData = props.gameData
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
     const [currentStep, setCurrentStep] = useState(0)
     const [gameName, setGameName] = useState(gameData.name)
     const [gameIconURL, setGameIconURL] = useState(gameData.gameIconURL)
@@ -334,11 +334,15 @@ export const EditGame = (props: PropTypes) => {
                 timezone: timezone,
                 weeklyResetDOW: weeklyResetDOW,
                 weeklyResetTime: weeklyResetTime,
-                nextWeeklyReset: weeklyResetDOW ? getNextWeeklyReset(
-                    weeklyResetDOW,
-                    weeklyResetTime,
-                    typeof timezone === 'string' ? timezone : timezone.value
-                ) : null,
+                nextWeeklyReset: weeklyResetDOW
+                    ? getNextWeeklyReset(
+                          weeklyResetDOW,
+                          weeklyResetTime,
+                          typeof timezone === 'string'
+                              ? timezone
+                              : timezone.value
+                      )
+                    : null,
                 dailyResetTime: dailyResetTime,
                 nextDailyReset: getNextDailyReset(
                     dailyResetTime,
@@ -353,9 +357,9 @@ export const EditGame = (props: PropTypes) => {
     }
 
     const removeCurrentGame = () => {
-        clearStates();
-        dispatch(deleteGame(gameData.id));
-        props.onClose();
+        clearStates()
+        dispatch(deleteGame(gameData.id))
+        props.onClose()
     }
 
     return (
@@ -384,7 +388,7 @@ export const EditGame = (props: PropTypes) => {
                             Delete Game
                         </Button>
                     )}
-                    <Spacer/>
+                    <Spacer />
                     {currentStep !== 0 && (
                         <Button
                             colorScheme="blue"

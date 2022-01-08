@@ -132,30 +132,36 @@ export const EditSection = (props: PropTypes) => {
                                 >
                                     General
                                 </Button>
-                                { props.gameData !== null && props.gameData.hasDaily &&
-                                    <Button
-                                        colorScheme={
-                                            taskType === TaskType.DAILY
-                                                ? 'blue'
-                                                : 'gray'
-                                        }
-                                        onClick={() => setTaskType(TaskType.DAILY)}
-                                    >
-                                        Daily
-                                    </Button>
-                                }
-                                { props.gameData !== null && props.gameData.hasWeekly &&
-                                    <Button
-                                        colorScheme={
-                                            taskType === TaskType.WEEKLY
-                                                ? 'blue'
-                                                : 'gray'
-                                        }
-                                        onClick={() => setTaskType(TaskType.WEEKLY)}
-                                    >
-                                        Weekly
-                                    </Button>
-                                }
+                                {props.gameData !== null &&
+                                    props.gameData.hasDaily && (
+                                        <Button
+                                            colorScheme={
+                                                taskType === TaskType.DAILY
+                                                    ? 'blue'
+                                                    : 'gray'
+                                            }
+                                            onClick={() =>
+                                                setTaskType(TaskType.DAILY)
+                                            }
+                                        >
+                                            Daily
+                                        </Button>
+                                    )}
+                                {props.gameData !== null &&
+                                    props.gameData.hasWeekly && (
+                                        <Button
+                                            colorScheme={
+                                                taskType === TaskType.WEEKLY
+                                                    ? 'blue'
+                                                    : 'gray'
+                                            }
+                                            onClick={() =>
+                                                setTaskType(TaskType.WEEKLY)
+                                            }
+                                        >
+                                            Weekly
+                                        </Button>
+                                    )}
                             </HStack>
                         </FormControl>
                     </VStack>

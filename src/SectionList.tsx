@@ -1,4 +1,9 @@
-import { AddIcon, ChevronDownIcon, ChevronRightIcon, SettingsIcon } from '@chakra-ui/icons'
+import {
+    AddIcon,
+    ChevronDownIcon,
+    ChevronRightIcon,
+    SettingsIcon,
+} from '@chakra-ui/icons'
 import {
     VStack,
     Flex,
@@ -6,7 +11,6 @@ import {
     Spacer,
     IconButton,
     Button,
-    Divider,
     useColorModeValue,
 } from '@chakra-ui/react'
 import React, { useState, useEffect } from 'react'
@@ -14,7 +18,7 @@ import { EditSectionList } from './components/EditSectionList'
 import { Game } from './models/game'
 import { Section } from './models/section'
 import { TaskType } from './models/task'
-import { useBorderColor, useMediumBgColor, useTextColor } from './theme'
+import { useMediumBgColor, useTextColor } from './theme'
 
 export type SectionListProps = {
     setIsNewSectionModalOpen: (value: boolean) => void
@@ -27,12 +31,12 @@ export const SectionList = ({
     setSelectedSection,
     currentGame,
 }: SectionListProps) => {
-    const [generalTasksOpen, setGeneralTasksOpen] = useState(true);
-    const [dailyTasksOpen, setDailyTasksOpen] = useState(true);
-    const [weeklyTasksOpen, setWeeklyTasksOpen] = useState(true);
-    const [editSectionListModal, setEditSectionListModal] = useState(false);
-    const bgColor = useMediumBgColor();
-    const textColor = useTextColor();
+    const [generalTasksOpen, setGeneralTasksOpen] = useState(true)
+    const [dailyTasksOpen, setDailyTasksOpen] = useState(true)
+    const [weeklyTasksOpen, setWeeklyTasksOpen] = useState(true)
+    const [editSectionListModal, setEditSectionListModal] = useState(false)
+    const bgColor = useMediumBgColor()
+    const textColor = useTextColor()
     const iconColor = useColorModeValue('black', 'white')
 
     useEffect(() => {
@@ -63,12 +67,37 @@ export const SectionList = ({
             h="100%"
             borderRight="0px"
         >
-            { editSectionListModal && <EditSectionList isModalOpen={editSectionListModal} gameData={currentGame} closeModal={() => setEditSectionListModal(false)} /> }
+            {editSectionListModal && (
+                <EditSectionList
+                    isModalOpen={editSectionListModal}
+                    gameData={currentGame}
+                    closeModal={() => setEditSectionListModal(false)}
+                />
+            )}
             <Flex w="100%" h="7%">
-                <Heading h="100%" width="80%" textAlign="start" borderBottom="1px" padding="5%" size="md">
+                <Heading
+                    h="100%"
+                    width="80%"
+                    textAlign="start"
+                    borderBottom="1px"
+                    padding="5%"
+                    size="md"
+                >
                     Sections
                 </Heading>
-                <IconButton sx={{borderRadius: "0px"}} bgColor={bgColor} color={iconColor} aria-label='section-settings' h="100%" w="20%" borderBottom="1px" marginBottom="4px" className='show-click' onClick={() => setEditSectionListModal(true)} icon={<SettingsIcon  />} />
+                <IconButton
+                    sx={{ borderRadius: '0px' }}
+                    bgColor={bgColor}
+                    color={iconColor}
+                    aria-label="section-settings"
+                    h="100%"
+                    w="20%"
+                    borderBottom="1px"
+                    marginBottom="4px"
+                    className="show-click"
+                    onClick={() => setEditSectionListModal(true)}
+                    icon={<SettingsIcon />}
+                />
             </Flex>
             <Flex w="100%">
                 <Button

@@ -1,7 +1,12 @@
 import { Box, Flex, VStack, Spacer, Heading } from '@chakra-ui/layout'
 import { SettingsIcon } from '@chakra-ui/icons'
 import { useSelector } from 'react-redux'
-import { addSection, editGame, userSelectors, toggleTasksFromReset } from './slices/userSlice'
+import {
+    addSection,
+    editGame,
+    userSelectors,
+    toggleTasksFromReset,
+} from './slices/userSlice'
 import { InformationPanel } from './InformationPanel'
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
@@ -11,9 +16,18 @@ import { EditGame } from './components/EditGame'
 import { Game } from './models/game'
 import { TaskPanel } from './TaskPanel'
 import { SectionList } from './SectionList'
-import { useMediumBgColor, useBorderColor, useTextColor, useLightestBgColor } from './theme'
-import Countdown from 'react-countdown';
-import { getDateTimeWithTimezone, getNextDailyReset, getNextWeeklyReset } from './timeUtils'
+import {
+    useMediumBgColor,
+    useBorderColor,
+    useTextColor,
+    useLightestBgColor,
+} from './theme'
+import Countdown from 'react-countdown'
+import {
+    getDateTimeWithTimezone,
+    getNextDailyReset,
+    getNextWeeklyReset,
+} from './timeUtils'
 import { TaskType } from './models/task'
 
 export const GamePanel = () => {
@@ -28,8 +42,24 @@ export const GamePanel = () => {
     const [selectedSection, setSelectedSection] = useState(0)
     const [editGameModal, setEditGameModal] = useState(false)
 
-    const nextDailyReset = (currentGame && currentGame.nextDailyReset !== null && typeof currentGame.timezone !== "string") ? getDateTimeWithTimezone(currentGame.nextDailyReset, currentGame?.timezone.value) : null;
-    const nextWeeklyReset = (currentGame && currentGame.nextWeeklyReset !== null && typeof currentGame.timezone !== "string") ? getDateTimeWithTimezone(currentGame.nextWeeklyReset, currentGame?.timezone.value) : null;
+    const nextDailyReset =
+        currentGame &&
+        currentGame.nextDailyReset !== null &&
+        typeof currentGame.timezone !== 'string'
+            ? getDateTimeWithTimezone(
+                  currentGame.nextDailyReset,
+                  currentGame?.timezone.value
+              )
+            : null
+    const nextWeeklyReset =
+        currentGame &&
+        currentGame.nextWeeklyReset !== null &&
+        typeof currentGame.timezone !== 'string'
+            ? getDateTimeWithTimezone(
+                  currentGame.nextWeeklyReset,
+                  currentGame?.timezone.value
+              )
+            : null
 
     const newSection: Section = {
         sectionName: '',
@@ -50,33 +80,79 @@ export const GamePanel = () => {
     }
 
     type RendererProps = {
-        days: number,
-        hours: number, 
-        minutes: number,
-        seconds: number,
+        days: number
+        hours: number
+        minutes: number
+        seconds: number
         completed: boolean
     }
 
     const timeRenderer = (props: RendererProps, taskType: TaskType) => {
         if (props.completed && currentGame) {
-          dispatch(toggleTasksFromReset(currentGame.id, taskType));
-          if ( typeof currentGame.timezone !== "string" ) {
-            if ( taskType === TaskType.DAILY ) {
-                dispatch(editGame({...currentGame, nextDailyReset: getNextDailyReset(currentGame.dailyResetTime, currentGame.timezone.value) }))
-            } else if ( taskType === TaskType.WEEKLY && currentGame.weeklyResetDOW ) {
-                dispatch(editGame({...currentGame, nextWeeklyReset: getNextWeeklyReset(currentGame.weeklyResetDOW, currentGame.weeklyResetTime, currentGame.timezone.value)}))
+            dispatch(toggleTasksFromReset(currentGame.id, taskType))
+            if (typeof currentGame.timezone !== 'string') {
+                if (taskType === TaskType.DAILY) {
+                    dispatch(
+                        editGame({
+                            ...currentGame,
+                            nextDailyReset: getNextDailyReset(
+                                currentGame.dailyResetTime,
+                                currentGame.timezone.value
+                            ),
+                        })
+                    )
+                } else if (
+                    taskType === TaskType.WEEKLY &&
+                    currentGame.weeklyResetDOW
+                ) {
+                    dispatch(
+                        editGame({
+                            ...currentGame,
+                            nextWeeklyReset: getNextWeeklyReset(
+                                currentGame.weeklyResetDOW,
+                                currentGame.weeklyResetTime,
+                                currentGame.timezone.value
+                            ),
+                        })
+                    )
+                }
             }
-        }
-          return <></>;
+            return <></>
         } else {
-          const daysLeft = props.days > 0 ? (props.days + (props.hours > 0 ? (props.days > 1 ? " days, " : " day, ") : (props.days > 1 ? " days" : " day"))) : ""
-          const hoursLeft = props.hours > 0 ? (props.hours + (props.minutes > 0 ? " hours, " : " hours")) : ""
-          const minutesLeft = props.minutes > 0 ? (props.minutes + (props.seconds > 0 ? " minutes, " : " minutes")) : ""
-          const secondsLeft = props.seconds > 0 ? props.seconds + " seconds" : ""
-          return <span> {daysLeft}{hoursLeft}{minutesLeft}{secondsLeft}</span>;
+            const daysLeft =
+                props.days > 0
+                    ? props.days +
+                      (props.hours > 0
+                          ? props.days > 1
+                              ? ' days, '
+                              : ' day, '
+                          : props.days > 1
+                          ? ' days'
+                          : ' day')
+                    : ''
+            const hoursLeft =
+                props.hours > 0
+                    ? props.hours + (props.minutes > 0 ? ' hours, ' : ' hours')
+                    : ''
+            const minutesLeft =
+                props.minutes > 0
+                    ? props.minutes +
+                      (props.seconds > 0 ? ' minutes, ' : ' minutes')
+                    : ''
+            const secondsLeft =
+                props.seconds > 0 ? props.seconds + ' seconds' : ''
+            return (
+                <span>
+                    {' '}
+                    {daysLeft}
+                    {hoursLeft}
+                    {minutesLeft}
+                    {secondsLeft}
+                </span>
+            )
         }
-      };
-    
+    }
+
     return (
         <Box
             width="100%"
@@ -111,16 +187,36 @@ export const GamePanel = () => {
                         </Heading>
                         <Spacer />
                         <VStack alignItems="end" paddingTop="0.7%" h="100%">
-                            { currentGame.hasDaily && (
-                                <Heading size="xs">Time until daily reset:
-                                    <Countdown date={nextDailyReset !== null ? nextDailyReset : 0} renderer={(props) => timeRenderer(props, TaskType.DAILY)} />
+                            {currentGame.hasDaily && (
+                                <Heading size="xs">
+                                    Time until daily reset:
+                                    <Countdown
+                                        date={
+                                            nextDailyReset !== null
+                                                ? nextDailyReset
+                                                : 0
+                                        }
+                                        renderer={(props) =>
+                                            timeRenderer(props, TaskType.DAILY)
+                                        }
+                                    />
                                 </Heading>
-                            ) }
-                            { currentGame.hasWeekly && (
-                                <Heading size="xs">Time until weekly reset:
-                                    <Countdown date={nextWeeklyReset !== null ? nextWeeklyReset : 0} renderer={(props) => timeRenderer(props, TaskType.WEEKLY)} />
+                            )}
+                            {currentGame.hasWeekly && (
+                                <Heading size="xs">
+                                    Time until weekly reset:
+                                    <Countdown
+                                        date={
+                                            nextWeeklyReset !== null
+                                                ? nextWeeklyReset
+                                                : 0
+                                        }
+                                        renderer={(props) =>
+                                            timeRenderer(props, TaskType.WEEKLY)
+                                        }
+                                    />
                                 </Heading>
-                            ) }
+                            )}
                         </VStack>
                         <SettingsIcon
                             onClick={() => setEditGameModal(true)}
