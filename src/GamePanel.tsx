@@ -63,6 +63,7 @@ export const GamePanel = () => {
         ) {
             resetTasks(TaskType.WEEKLY)
         }
+        setSelectedSection(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentGame?.id])
 

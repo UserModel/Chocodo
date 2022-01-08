@@ -1,8 +1,10 @@
 import { CheckIcon, CloseIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons'
 import {
+    Box,
     Button,
     Checkbox,
     Flex,
+    Heading,
     IconButton,
     Text,
     useColorModeValue,
@@ -92,7 +94,6 @@ export const TaskPanel = (props: PropTypes) => {
     }
 
     const displayTask = (task: Task) => {
-        console.log(task.subtasks);
         return (
             <>
                 <Checkbox
@@ -112,6 +113,8 @@ export const TaskPanel = (props: PropTypes) => {
                         as={task.completed ? 's' : 'h2'}
                         sx={{ color: task.completed ? 'gray' : textColor }}
                         marginLeft="1.5%"
+                        overflowWrap="break-word"
+                        wordBreak="break-word"
                         //onDoubleClick={() => taskBeingEdited === null ? setTaskBeingEdited(task.id) : ""}
                     >
                         {task.taskText}
@@ -222,80 +225,87 @@ export const TaskPanel = (props: PropTypes) => {
     )
 
     return (
-        <VStack maxH="100%" pb="6%" w="80%" overflowY="auto">
-            {props.sectionId === 0 ? (
-                <></>
-            ) : (
-                <>
-                    {taskList.map((task) => {
-                        return task.sectionId === props.sectionId
-                            ? renderTask(task)
-                            : null
-                    })}
-
-                    {!addingNewTask && (
-                        <Flex w="100%" padding="1%">
-                            <Button
-                                w="100%"
-                                colorScheme="green"
-                                onClick={() => setAddingNewTask(true)}
-                            >
-                                Add New Task
-                            </Button>
-                        </Flex>
-                    )}
-                    {addingNewTask && (
-                        <>
-                            <Flex w="100%" padding="1%">
-                                <Textarea
-                                    minH="unset"
-                                    overflow="hidden"
-                                    w="90%"
-                                    maxW="90%"
-                                    maxH="none"
-                                    resize="none"
-                                    minRows={1}
-                                    autoComplete='off'
-                                    as={ResizeTextarea}
-                                    fontSize="lg"
-                                    textAlign="justify"
-                                    marginLeft="1.5%"
-                                    className="textareaElement"
-                                    value={newTaskText}
-                                    onChange={(e) => {
-                                        setNewTaskText(e.target.value)
-                                        e.target.style.height = ''
-                                        e.target.style.height = e.target.scrollHeight + 'px'
-                                    }}
-                                    onFocus={(e) => {
-                                        setNewTaskText('')
-                                        e.target.style.height = ''
-                                        e.target.style.height = e.target.scrollHeight + 'px'
-                                    }}
-                                    autoFocus
-                                    onKeyPress={(event) =>
-                                        event.code === 'Enter' ? submitNewTask() : null
-                                    }
-                                />
-                                <IconButton
-                                    onClick={() => submitNewTask()}
-                                    colorScheme="green"
-                                    marginLeft="1%"
-                                    aria-label="AddNewTask"
-                                    icon={<CheckIcon />}
-                                />
-                                <IconButton
-                                    onClick={() => resetNewTask()}
-                                    colorScheme="red"
-                                    marginLeft="1%"
-                                    aria-label="AddNewTask"
-                                    icon={<CloseIcon />}
-                                />
-                            </Flex>
-                        </>
-                    )}
-                </>
+        <>
+            { props.sectionId !== null && section && (
+                <Box h="6.9%" textAlign="start" paddingLeft="1%" paddingTop="0.8%" borderBottom="1px">
+                    <Heading size="lg">{section.sectionName}</Heading>
+                </Box>
             )}
-        </VStack>
+            <VStack maxH="90%" pb="6%" w="100%" overflowY="auto">
+                {props.sectionId === 0 ? (
+                    <></>
+                ) : (
+                    <>
+                        {taskList.map((task) => {
+                            return task.sectionId === props.sectionId
+                                ? renderTask(task)
+                                : null
+                        })}
+
+                        {!addingNewTask && (
+                            <Flex w="100%" padding="1%">
+                                <Button
+                                    w="100%"
+                                    colorScheme="green"
+                                    onClick={() => setAddingNewTask(true)}
+                                >
+                                    Add New Task
+                                </Button>
+                            </Flex>
+                        )}
+                        {addingNewTask && (
+                            <>
+                                <Flex w="100%" padding="1%">
+                                    <Textarea
+                                        minH="unset"
+                                        overflow="hidden"
+                                        w="90%"
+                                        maxW="90%"
+                                        maxH="none"
+                                        resize="none"
+                                        minRows={1}
+                                        autoComplete='off'
+                                        as={ResizeTextarea}
+                                        fontSize="lg"
+                                        textAlign="justify"
+                                        marginLeft="1.5%"
+                                        className="textareaElement"
+                                        value={newTaskText}
+                                        onChange={(e) => {
+                                            setNewTaskText(e.target.value)
+                                            e.target.style.height = ''
+                                            e.target.style.height = e.target.scrollHeight + 'px'
+                                        }}
+                                        onFocus={(e) => {
+                                            setNewTaskText('')
+                                            e.target.style.height = ''
+                                            e.target.style.height = e.target.scrollHeight + 'px'
+                                        }}
+                                        autoFocus
+                                        onKeyPress={(event) =>
+                                            event.code === 'Enter' ? submitNewTask() : null
+                                        }
+                                    />
+                                    <IconButton
+                                        onClick={() => submitNewTask()}
+                                        colorScheme="green"
+                                        marginLeft="1%"
+                                        aria-label="AddNewTask"
+                                        icon={<CheckIcon />}
+                                    />
+                                    <IconButton
+                                        onClick={() => resetNewTask()}
+                                        colorScheme="red"
+                                        marginLeft="1%"
+                                        aria-label="AddNewTask"
+                                        icon={<CloseIcon />}
+                                    />
+                                </Flex>
+                            </>
+                        )}
+                    </>
+                )}
+            </VStack>
+        </>
     )
 }
