@@ -59,7 +59,6 @@ export const TaskPanel = (props: PropTypes) => {
 
     const submitNewTask = () => {
         if (section && section.taskType !== null && newTaskText) {
-            console.log(section && section.taskType && newTaskText)
             resetNewTask()
             const newTask: Task = {
                 taskText: newTaskText,
@@ -77,7 +76,6 @@ export const TaskPanel = (props: PropTypes) => {
         const task = props.gameData.tasks.find(
             (task) => task.id === taskBeingEdited
         )
-        console.log(task)
         if (task && editTaskText.trim()) {
             dispatch(
                 editTask(props.gameData.id, { ...task, taskText: editTaskText })
@@ -134,6 +132,7 @@ export const TaskPanel = (props: PropTypes) => {
                         marginLeft="1.5%"
                         className="textareaElement"
                         value={editTaskText}
+                        autoComplete='off'
                         onChange={(e) => {
                             setEditTaskText(e.target.value)
                             e.target.style.height = ''

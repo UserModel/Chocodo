@@ -118,7 +118,7 @@ export const EditGame = (props: PropTypes) => {
                         Game Title:
                     </FormLabel>
                     <Input
-                        autocomplete="off"
+                        autoComplete="off"
                         id="game-title"
                         isRequired={true}
                         value={gameName}
@@ -131,7 +131,7 @@ export const EditGame = (props: PropTypes) => {
                 <FormControl w="100%">
                     <FormLabel mb="8px">Game Icon URL:</FormLabel>
                     <Input
-                        autocomplete="off"
+                        autoComplete="off"
                         value={gameIconURL}
                         onChange={(event) => setGameIconURL(event.target.value)}
                         size="sm"

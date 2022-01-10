@@ -46,7 +46,6 @@ export const EditSectionList = (props: PropTypes) => {
     }
 
     const editSectionName = (section: Section) => {
-        console.log(editedSectionName)
         if (editedSectionName) {
             dispatch(
                 editSection(game.id, {
@@ -106,7 +105,7 @@ export const EditSectionList = (props: PropTypes) => {
                         ) : (
                             <>
                                 <Input
-                                    autocomplete="off"
+                                    autoComplete="off"
                                     padding="5px"
                                     autoFocus
                                     onFocus={(e) =>

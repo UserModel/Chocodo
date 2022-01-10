@@ -68,7 +68,6 @@ export const editGameById =
     async (dispatch: Dispatch<any>, getState: () => RootState) => {
         dispatch(updateUserLoading(true))
         const game = getState().user.gameList.find((game) => game.id === gameId)
-        console.log(gameObject);
         if ( game ) {
             dispatch(updateGame({...game, ...gameObject}))
         }

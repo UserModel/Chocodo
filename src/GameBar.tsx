@@ -53,6 +53,7 @@ export const GameBar = () => {
     function addGame(gameData: Game) {
         setIsModalOpen(false)
         dispatch(addNewGame(gameData))
+        dispatch(setCurrentGame(gameData.id))
     }
 
     function changeCurrentGame(id: number) {

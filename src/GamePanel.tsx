@@ -232,7 +232,7 @@ export const GamePanel = () => {
                                         date={
                                             nextDailyReset !== null
                                                 ? nextDailyReset
-                                                : 0
+                                                : 20000
                                         }
                                         renderer={(timeProps) =>
                                             timeRenderer(
@@ -254,7 +254,7 @@ export const GamePanel = () => {
                                         date={
                                             nextWeeklyReset !== null
                                                 ? nextWeeklyReset
-                                                : 0
+                                                : 20000
                                         }
                                         renderer={(timeProps) =>
                                             timeRenderer(
