@@ -42,6 +42,7 @@ export const GameBar = () => {
                 id: Math.floor(Math.random() * Date.now()),
             },
         ],
+        currentSection: undefined
     }
 
     const [isModalOpen, setIsModalOpen] = useState(false)

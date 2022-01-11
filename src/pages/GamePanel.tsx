@@ -44,7 +44,7 @@ export const GamePanel = () => {
         open: false,
         taskType: TaskType.NORMAL,
     })
-    const [selectedSection, setSelectedSection] = useState(0)
+    const [selectedSection, setSelectedSection] = useState(currentGame?.currentSection ? currentGame?.currentSection : 0)
     const [editGameModal, setEditGameModal] = useState(false)
 
     useEffect(() => {
@@ -63,9 +63,18 @@ export const GamePanel = () => {
         ) {
             resetTasks(TaskType.WEEKLY)
         }
-        setSelectedSection(0);
+        setSelectedSection(currentGame.currentSection ? currentGame.currentSection : 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentGame?.id])
+
+    const setCurrentSection = (sectionId: number) => {
+        setSelectedSection(sectionId);
+        if (currentGame) {
+            dispatch(editGameById(currentGame?.id, {
+                currentSection: sectionId
+            }))
+        } 
+    }
 
     const resetTasks = (taskType: TaskType) => {
         if (currentGame) {
@@ -283,7 +292,7 @@ export const GamePanel = () => {
                     <Flex h="100%" w="100%" bgColor={bgColor}>
                         <SectionList
                             setIsNewSectionModalOpen={setIsNewSectionModalOpen}
-                            setSelectedSection={setSelectedSection}
+                            setSelectedSection={setCurrentSection}
                             currentGame={currentGame}
                         />
                         <Box w="100%" h="100%" bgColor={lightestBgColor}>

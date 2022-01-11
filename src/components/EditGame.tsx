@@ -381,6 +381,7 @@ export const EditGame = (props: PropTypes) => {
                 ),
                 tasks: gameData.tasks,
                 sections: gameData.sections,
+                currentSection: gameData.currentSection
             }
             clearStates()
             props.addGame(newGame)
