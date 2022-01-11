@@ -5,6 +5,7 @@ export type Task = {
     id: number
     taskType: TaskType
     subtasks?: []
+    wikiLink?: string
 }
 
 export enum TaskType {

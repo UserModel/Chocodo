@@ -16,5 +16,5 @@ export type Game = {
     nextDailyReset: number | null
     tasks: Task[]
     sections: Section[]
-    currentSection: number | undefined
+    currentSection?: number
 }
