@@ -27,6 +27,7 @@ import {
     deleteAllTasksFromSection,
     deleteSection,
 } from '../slices/userSlice'
+import { DeleteConfirmation } from './DeleteConfirmation'
 
 type PropTypes = {
     isModalOpen: boolean
@@ -88,18 +89,24 @@ export const EditSectionList = (props: PropTypes) => {
                                         }
                                         onClick={() => setIsEditing(section.id)}
                                     />
-                                    <IconButton
-                                        size="xs"
-                                        marginLeft="5%"
-                                        aria-label="delete-button"
-                                        onClick={() => removeSection(section)}
-                                        icon={
-                                            <DeleteIcon
-                                                color={iconColor}
-                                                bgColor={iconBg}
-                                            />
-                                        }
-                                    />
+                                    { game.sections.filter((section) => section.taskType === taskType).length > 1 && 
+                                        <DeleteConfirmation
+                                            children={
+                                                <IconButton
+                                                    size="xs"
+                                                    marginLeft="5%"
+                                                    aria-label="delete-button"
+                                                    icon={
+                                                        <DeleteIcon
+                                                            color={iconColor}
+                                                            bgColor={iconBg}
+                                                        />
+                                                    }
+                                                />
+                                            }
+                                            onConfirm={() => removeSection(section)}
+                                        />
+                                    }
                                 </Flex>
                             </Flex>
                         ) : (

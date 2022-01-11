@@ -27,6 +27,7 @@ import { getNextDailyReset, getNextWeeklyReset } from '../utils/timeUtils'
 import { useDispatch } from 'react-redux'
 import { deleteGame } from '../slices/userSlice'
 import { useLightestBgColor, useMediumBgColor, useTextColor } from '../theme'
+import { DeleteConfirmation } from './DeleteConfirmation'
 
 type PropTypes = {
     isModalOpen: boolean
@@ -410,15 +411,17 @@ export const EditGame = (props: PropTypes) => {
 
                 <ModalFooter>
                     {gameData.id !== 0 && (
-                        <Button
-                            colorScheme="red"
-                            variant="outline"
-                            mr={3}
-                            onClick={() => removeCurrentGame()}
-                            leftIcon={<DeleteIcon />}
-                        >
-                            Delete Game
-                        </Button>
+                        <DeleteConfirmation 
+                            children={<Button
+                                colorScheme="red"
+                                variant="outline"
+                                mr={3}
+                                leftIcon={<DeleteIcon />}
+                            >
+                                Delete Game
+                            </Button>} 
+                            onConfirm={() => removeCurrentGame()}
+                        />
                     )}
                     <Spacer />
                     {currentStep !== 0 && (

@@ -24,6 +24,7 @@ import { Section } from '../models/section'
 import { useMediumBgColor, useTextColor } from '../theme'
 import { Textarea } from '@chakra-ui/react'
 import ResizeTextarea from 'react-textarea-autosize'
+import { DeleteConfirmation } from './DeleteConfirmation'
 
 type PropTypes = {
     gameData: Game
@@ -164,17 +165,20 @@ export const TaskPanel = (props: PropTypes) => {
                             }
                             onClick={() => setTaskBeingEdited(task.id)}
                         />
-                        <IconButton
-                            size="xs"
-                            marginLeft="5%"
-                            aria-label="delete-button"
-                            onClick={() => removeTask(task)}
-                            icon={
-                                <DeleteIcon
-                                    color={iconColor}
-                                    bgColor={iconBg}
-                                />
-                            }
+                        <DeleteConfirmation 
+                            children={<IconButton
+                                size="xs"
+                                marginLeft="5%"
+                                aria-label="delete-button"
+                                //onClick={() => removeTask(task)}
+                                icon={
+                                    <DeleteIcon
+                                        color={iconColor}
+                                        bgColor={iconBg}
+                                    />
+                                }
+                            />}
+                            onConfirm={() => removeTask(task)}
                         />
                     </Flex>
                 )}
