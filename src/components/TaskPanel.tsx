@@ -12,16 +12,16 @@ import {
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Game } from './models/game'
+import { Game } from '../models/game'
 import {
     addTask,
     toggleCompletedTask,
     editTask,
     deleteTask,
-} from './slices/userSlice'
-import { Task } from './models/task'
-import { Section } from './models/section'
-import { useMediumBgColor, useTextColor } from './theme'
+} from '../slices/userSlice'
+import { Task } from '../models/task'
+import { Section } from '../models/section'
+import { useMediumBgColor, useTextColor } from '../theme'
 import { Textarea } from '@chakra-ui/react'
 import ResizeTextarea from 'react-textarea-autosize'
 

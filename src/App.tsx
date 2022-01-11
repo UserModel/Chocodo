@@ -1,5 +1,5 @@
 import './scss/app.scss'
-import { Homepage } from './Homepage'
+import { Homepage } from './pages/Homepage'
 import { ChakraProvider } from '@chakra-ui/react'
 import { css, Global } from '@emotion/react'
 import theme from './theme'

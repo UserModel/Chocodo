@@ -1,13 +1,13 @@
 import { useState } from 'react'
-import { userSelectors } from './slices/userSlice'
+import { userSelectors } from '../slices/userSlice'
 import { useSelector } from 'react-redux'
-import { RoundButton } from './components/RoundButton'
+import { RoundButton } from '../components/RoundButton'
 import { useDispatch } from 'react-redux'
-import { setCurrentGame, addNewGame } from './slices/userSlice'
+import { setCurrentGame, addNewGame } from '../slices/userSlice'
 import { VStack, Box, Divider } from '@chakra-ui/react'
-import { EditGame } from './components/EditGame'
-import { Game } from './models/game'
-import { TaskType } from './models/task'
+import { EditGame } from '../components/EditGame'
+import { Game } from '../models/game'
+import { TaskType } from '../models/task'
 
 export const GameBar = () => {
     const dispatch = useDispatch()

@@ -14,11 +14,11 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react'
 import React, { useState, useEffect } from 'react'
-import { EditSectionList } from './components/EditSectionList'
-import { Game } from './models/game'
-import { Section } from './models/section'
-import { TaskType } from './models/task'
-import { useMediumBgColor, useTextColor } from './theme'
+import { EditSectionList } from './EditSectionList'
+import { Game } from '../models/game'
+import { Section } from '../models/section'
+import { TaskType } from '../models/task'
+import { useMediumBgColor, useTextColor } from '../theme'
 
 export type SectionListProps = {
     setIsNewSectionModalOpen: (value: {

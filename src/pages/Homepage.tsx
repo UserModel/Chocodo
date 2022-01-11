@@ -1,6 +1,6 @@
 import { GameBar } from './GameBar'
 import { HStack, Box } from '@chakra-ui/react'
-import { useDarkestBgColor } from './theme'
+import { useDarkestBgColor } from '../theme'
 import { GamePanel } from './GamePanel'
 
 export const Homepage = () => {

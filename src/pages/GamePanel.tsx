@@ -7,29 +7,29 @@ import {
     userSelectors,
     toggleTasksFromReset,
     editGameById,
-} from './slices/userSlice'
+} from '../slices/userSlice'
 import { InformationPanel } from './InformationPanel'
 import { useDispatch } from 'react-redux'
 import { useState, useEffect } from 'react'
-import { EditSection } from './components/EditSection'
-import { Section } from './models/section'
-import { EditGame } from './components/EditGame'
-import { Game } from './models/game'
-import { TaskPanel } from './TaskPanel'
-import { SectionList } from './SectionList'
+import { EditSection } from '../components/EditSection'
+import { Section } from '../models/section'
+import { EditGame } from '../components/EditGame'
+import { Game } from '../models/game'
+import { TaskPanel } from '../components/TaskPanel'
+import { SectionList } from '../components/SectionList'
 import {
     useMediumBgColor,
     useBorderColor,
     useTextColor,
     useLightestBgColor,
-} from './theme'
+} from '../theme'
 import Countdown, { zeroPad } from 'react-countdown'
 import {
     getDateTimeWithTimezone,
     getNextDailyReset,
     getNextWeeklyReset,
-} from './timeUtils'
-import { TaskType } from './models/task'
+} from '../utils/timeUtils'
+import { TaskType } from '../models/task'
 import { DateTime } from 'luxon'
 
 export const GamePanel = () => {

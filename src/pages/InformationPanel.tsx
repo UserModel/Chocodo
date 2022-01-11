@@ -1,6 +1,6 @@
 import { Heading, VStack } from '@chakra-ui/react'
-import { useTextColor } from './theme'
-import { ThemeSwitch } from './components/ThemeSwitcher'
+import { useTextColor } from '../theme'
+import { ThemeSwitch } from '../components/ThemeSwitcher'
 
 export const InformationPanel = () => {
     const textColor = useTextColor()
