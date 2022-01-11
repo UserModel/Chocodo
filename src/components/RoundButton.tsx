@@ -1,6 +1,8 @@
 import { Wrap, Tooltip, Avatar, useColorModeValue } from '@chakra-ui/react'
-import React from 'react'
+import React, { useState } from 'react'
 import { AddIcon, QuestionIcon } from '@chakra-ui/icons'
+import { useSelector } from 'react-redux'
+import { userSelectors } from '../slices/userSlice'
 
 type PropTypes = {
     name: string
@@ -14,6 +16,9 @@ export const RoundButton = (props: PropTypes) => {
     const iconBg = useColorModeValue('white', '#36393E')
     const iconColor = useColorModeValue('black', 'white')
 
+    const [isHovering, setIsHovering] = useState(false);
+    const currentGame = useSelector(userSelectors.currentGame)
+
     let imageURL = props.imageURL
     let onClickFunction = props.onClick
     let name = props.name
@@ -25,6 +30,10 @@ export const RoundButton = (props: PropTypes) => {
                     className="gamebar-avatar trans"
                     bgColor={bgColor}
                     icon={<AddIcon color="green" />}
+                    variant="roundable"
+                    sx={(isHovering || currentGame?.id === props.gameId) ? {borderRadius: "10px", transitionDuration: '0.3s'} : {borderRadius: "50%", transitionDuration: '0.3s'}}
+                    onMouseOver={() => setIsHovering(true)}
+                    onMouseLeave={() => setIsHovering(false)}
                 />
             )
         } else if (name === 'Home') {
@@ -33,6 +42,10 @@ export const RoundButton = (props: PropTypes) => {
                     className="gamebar-avatar trans"
                     bgColor={iconBg}
                     icon={<QuestionIcon color={iconColor} />}
+                    variant="roundable"
+                    sx={(isHovering || currentGame?.id === props.gameId) ? {borderRadius: "10px", transitionDuration: '0.3s'} : {borderRadius: "50%", transitionDuration: '0.3s'}}
+                    onMouseOver={() => setIsHovering(true)}
+                    onMouseLeave={() => setIsHovering(false)}
                 />
             )
         } else {
@@ -41,6 +54,10 @@ export const RoundButton = (props: PropTypes) => {
                     className="gamebar-avatar trans"
                     src={imageURL}
                     name={name}
+                    variant="roundable"
+                    sx={(isHovering || currentGame?.id === props.gameId) ? {borderRadius: "10px", transitionDuration: '0.3s'} : {borderRadius: "50%", transitionDuration: '0.3s'}}
+                    onMouseOver={() => setIsHovering(true)}
+                    onMouseLeave={() => setIsHovering(false)}
                 />
             )
         }
