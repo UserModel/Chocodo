@@ -1,4 +1,4 @@
-import { CheckIcon, CloseIcon, EditIcon, DeleteIcon, SearchIcon } from '@chakra-ui/icons'
+import { EditIcon, DeleteIcon, SearchIcon } from '@chakra-ui/icons'
 import {
     Box,
     Button,
@@ -6,19 +6,11 @@ import {
     Flex,
     Heading,
     IconButton,
-    Input,
     Tag,
     TagLeftIcon,
     Text,
     useColorModeValue,
     VStack,
-    Drawer,
-    DrawerBody,
-    DrawerFooter,
-    DrawerHeader,
-    DrawerOverlay,
-    DrawerContent,
-    DrawerCloseButton,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -32,8 +24,6 @@ import {
 import { Task, TaskType } from '../models/task'
 import { Section } from '../models/section'
 import { useMediumBgColor, useTextColor } from '../theme'
-import { Textarea } from '@chakra-ui/react'
-import ResizeTextarea from 'react-textarea-autosize'
 import { DeleteConfirmation } from './DeleteConfirmation'
 import { EditTask } from './EditTask'
 
@@ -47,31 +37,23 @@ export const TaskPanel = (props: PropTypes) => {
         a.completed === b.completed ? 0 : a.completed ? 1 : -1
     )
     const [addingNewTask, setAddingNewTask] = useState(false)
-    const [newTaskText, setNewTaskText] = useState('')
-    const [newTaskWiki, setNewTaskWiki] = useState('');
     const section: Section | undefined = props.gameData?.sections?.find(
         (section) => section.id === props.sectionId
     )
     const textColor = useTextColor()
     const dispatch = useDispatch()
     const [taskBeingEdited, setTaskBeingEdited] = useState<number | null>(null)
-    const [editTaskText, setEditTaskText] = useState('')
-    const [editTaskWiki, setEditTaskWiki] = useState('')
     const [hoveredTask, setHoveredTask] = useState(0)
     const mediumBgColor = useMediumBgColor()
     const iconBg = useColorModeValue('white', '#36393E')
     const iconColor = useColorModeValue('black', 'white')
 
     const resetNewTask = () => {
-        setAddingNewTask(false)
-        setNewTaskText('')
-        setNewTaskWiki('');
+        setAddingNewTask(false);
     }
 
     const resetEditTask = () => {
         setTaskBeingEdited(null);
-        setEditTaskText('');
-        setEditTaskWiki('');
     }
 
     const emptyTask: Task = {
@@ -112,15 +94,12 @@ export const TaskPanel = (props: PropTypes) => {
             dispatch(
                 editTask(props.gameData.id, { ...task, taskText: editedTask.taskText, wikiLink: editedTask.wikiLink })
             )
-            setTaskBeingEdited(null)
-            setEditTaskText('')
-            setEditTaskWiki('')
+            resetEditTask();
         }
     }
 
     const removeTask = (task: Task) => {
-        setTaskBeingEdited(null)
-        setEditTaskText('')
+        resetEditTask();
         dispatch(deleteTask(props.gameData.id, task.id))
     }
 

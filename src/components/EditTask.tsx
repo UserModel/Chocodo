@@ -1,25 +1,15 @@
 import {
-    Box,
     Button,
-    Checkbox,
     Flex,
     Heading,
-    IconButton,
     Input,
-    Tag,
-    TagLeftIcon,
-    Text,
-    useColorModeValue,
-    VStack,
     Drawer,
     DrawerBody,
     DrawerFooter,
     DrawerHeader,
     DrawerOverlay,
     DrawerContent,
-    DrawerCloseButton,
     Textarea,
-    extendTheme,
 } from '@chakra-ui/react'
 import { Task } from '../models/task'
 import ResizeTextarea from 'react-textarea-autosize'
