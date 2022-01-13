@@ -12,6 +12,13 @@ import {
     Text,
     useColorModeValue,
     VStack,
+    Drawer,
+    DrawerBody,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerOverlay,
+    DrawerContent,
+    DrawerCloseButton,
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -22,12 +29,13 @@ import {
     editTask,
     deleteTask,
 } from '../slices/userSlice'
-import { Task } from '../models/task'
+import { Task, TaskType } from '../models/task'
 import { Section } from '../models/section'
 import { useMediumBgColor, useTextColor } from '../theme'
 import { Textarea } from '@chakra-ui/react'
 import ResizeTextarea from 'react-textarea-autosize'
 import { DeleteConfirmation } from './DeleteConfirmation'
+import { EditTask } from './EditTask'
 
 type PropTypes = {
     gameData: Game
@@ -60,33 +68,49 @@ export const TaskPanel = (props: PropTypes) => {
         setNewTaskWiki('');
     }
 
+    const resetEditTask = () => {
+        setTaskBeingEdited(null);
+        setEditTaskText('');
+        setEditTaskWiki('');
+    }
+
+    const emptyTask: Task = {
+        taskText: '',
+        completed: false,
+        sectionId: 0,
+        id: 0,
+        taskType: TaskType.WEEKLY,
+        subtasks: [],
+        wikiLink: ''
+    }
+
     useEffect(() => {
         resetNewTask()
     }, [props.sectionId])
 
-    const submitNewTask = () => {
-        if (section && section.taskType !== null && newTaskText) {
+    const submitNewTask = (task: Task) => {
+        if (section && section.taskType !== null) {
             resetNewTask()
             const newTask: Task = {
-                taskText: newTaskText,
+                taskText: task.taskText,
                 completed: false,
                 sectionId: section?.id,
                 id: Math.floor(Math.random() * Date.now()),
                 taskType: section?.taskType,
                 subtasks: [],
-                wikiLink: newTaskWiki
+                wikiLink: task.wikiLink
             }
             dispatch(addTask(props.gameData.id, newTask))
         }
     }
 
-    const submitEditTask = () => {
+    const submitEditTask = (editedTask: Task) => {
         const task = props.gameData.tasks.find(
             (task) => task.id === taskBeingEdited
         )
-        if (task && editTaskText.trim()) {
+        if (task) {
             dispatch(
-                editTask(props.gameData.id, { ...task, taskText: editTaskText, wikiLink: editTaskWiki })
+                editTask(props.gameData.id, { ...task, taskText: editedTask.taskText, wikiLink: editedTask.wikiLink })
             )
             setTaskBeingEdited(null)
             setEditTaskText('')
@@ -112,80 +136,26 @@ export const TaskPanel = (props: PropTypes) => {
                     }
                     size="md"
                 />
-                {taskBeingEdited !== task.id ? (
-                    <>
-                        <Text
-                            fontSize="lg"
-                            textAlign="justify"
-                            w="90%"
-                            as={task.completed ? 's' : 'h2'}
-                            sx={{ color: task.completed ? 'gray' : textColor }}
-                            marginLeft="1.5%"
-                            overflowWrap="break-word"
-                            wordBreak="break-word"
-                            //onDoubleClick={() => taskBeingEdited === null ? setTaskBeingEdited(task.id) : ""}
-                        >
-                            {task.taskText}
-                        </Text>
-                        { task.wikiLink && (
-                            <Tag as='a' href={task.wikiLink} rel="noreferrer" target="_blank" h="2%" marginLeft='5px' size='md'>
-                                <TagLeftIcon boxSize='12px' as={SearchIcon} />
-                                Wiki
-                            </Tag>
-                        ) }
-                    </>
-                ) : (
-                    <VStack w="100%" alignItems='start'>
-                        <Textarea
-                            minH="unset"
-                            overflow="hidden"
-                            w="98%"
-                            maxW="98%"
-                            maxH="none"
-                            resize="none"
-                            minRows={1}
-                            as={ResizeTextarea}
-                            fontSize="lg"
-                            textAlign="justify"
-                            marginLeft="1.5%"
-                            className="textareaElement"
-                            value={editTaskText}
-                            autoComplete='off'
-                            onChange={(e) => {
-                                setEditTaskText(e.target.value)
-                                e.target.style.height = ''
-                                e.target.style.height = e.target.scrollHeight + 'px'
-                            }}
-                            onFocus={(e) => {
-                                setEditTaskText(task.taskText)
-                                setEditTaskWiki(task.wikiLink ? task.wikiLink : '')
-                                e.target.style.height = ''
-                                e.target.style.height = e.target.scrollHeight + 'px'
-                            }}
-                            autoFocus
-                            /*onBlur={(e) => {
-                            if (!e.currentTarget.contains(e.relatedTarget)) {
-                                setEditTaskText("");
-                                setTaskBeingEdited(null);
-                            }}}*/
-                            onKeyPress={(event) =>
-                                event.code === 'Enter' ? submitEditTask() : null
-                            }
-                        />
-                        <Flex w='100%' padding='1%' marginTop="0px">
-                            <Heading w='30%' size='xs'>Got a wiki link for this task? Paste it here: </Heading>
-                            <Input 
-                                size='xs' 
-                                w='70%' 
-                                value={editTaskWiki} 
-                                onChange={(e) => {
-                                    setEditTaskWiki(e.target.value)
-                                }}
-                            />
-                        </Flex>
-                    </VStack>
-                )}
-                {hoveredTask === task.id && taskBeingEdited === null && (
+                <Text
+                    fontSize="lg"
+                    textAlign="justify"
+                    w="90%"
+                    as={task.completed ? 's' : 'h2'}
+                    sx={{ color: task.completed ? 'gray' : textColor }}
+                    marginLeft="1.5%"
+                    overflowWrap="break-word"
+                    wordBreak="break-word"
+                    //onDoubleClick={() => taskBeingEdited === null ? setTaskBeingEdited(task.id) : ""}
+                >
+                    {task.taskText}
+                </Text>
+                { task.wikiLink && (
+                    <Tag as='a' href={task.wikiLink} rel="noreferrer" target="_blank" h="2%" marginLeft='5px' size='md'>
+                        <TagLeftIcon boxSize='12px' as={SearchIcon} />
+                        Wiki
+                    </Tag>
+                ) }
+                {hoveredTask === task.id && (
                     <Flex marginLeft="1%" h="100%">
                         <IconButton
                             size="xs"
@@ -212,30 +182,18 @@ export const TaskPanel = (props: PropTypes) => {
                         />
                     </Flex>
                 )}
-                {taskBeingEdited === task.id && (
-                    <Flex marginLeft="1%" h="100%">
-                        <IconButton
-                            size="xs"
-                            aria-label="edit-submit-button"
-                            icon={
-                                <CheckIcon color={iconColor} bgColor={iconBg} />
-                            }
-                            onClick={() => submitEditTask()}
-                        />
-                        <IconButton
-                            size="xs"
-                            marginLeft="5%"
-                            aria-label="edit-cancel-button"
-                            onClick={() => {
-                                setEditTaskText('')
-                                setTaskBeingEdited(null)
-                            }}
-                            icon={
-                                <CloseIcon color={iconColor} bgColor={iconBg} />
-                            }
-                        />
-                    </Flex>
-                )}
+            </>
+        )
+    }
+
+    const editingTask = (task: Task) => {
+        return (
+            <>
+                <EditTask 
+                    task={task} 
+                    onClose={() => resetEditTask()} 
+                    onSubmit={(editedTask: Task) => submitEditTask(editedTask)} 
+                    isOpen={taskBeingEdited === task.id} />
             </>
         )
     }
@@ -254,6 +212,9 @@ export const TaskPanel = (props: PropTypes) => {
             background={hoveredTask === task.id ? mediumBgColor : ''}
         >
             {displayTask(task)}
+            {taskBeingEdited === task.id &&
+                editingTask(task)
+            }
         </Flex>
     )
 
@@ -288,56 +249,12 @@ export const TaskPanel = (props: PropTypes) => {
                         )}
                         {addingNewTask && (
                             <>
-                                <Flex w="100%" paddingTop="1%" paddingLeft="1%" paddingRight="1%" marginBottom="0px">
-                                    <Textarea
-                                        minH="unset"
-                                        overflow="hidden"
-                                        w="90%"
-                                        maxW="90%"
-                                        maxH="none"
-                                        resize="none"
-                                        minRows={1}
-                                        autoComplete='off'
-                                        as={ResizeTextarea}
-                                        fontSize="lg"
-                                        textAlign="justify"
-                                        marginLeft="1.5%"
-                                        className="textareaElement"
-                                        value={newTaskText}
-                                        onChange={(e) => {
-                                            setNewTaskText(e.target.value)
-                                            e.target.style.height = ''
-                                            e.target.style.height = e.target.scrollHeight + 'px'
-                                        }}
-                                        onFocus={(e) => {
-                                            setNewTaskText('')
-                                            e.target.style.height = ''
-                                            e.target.style.height = e.target.scrollHeight + 'px'
-                                        }}
-                                        autoFocus
-                                        onKeyPress={(event) =>
-                                            event.code === 'Enter' ? submitNewTask() : null
-                                        }
-                                    />
-                                    <IconButton
-                                        onClick={() => submitNewTask()}
-                                        colorScheme="green"
-                                        marginLeft="1%"
-                                        aria-label="AddNewTask"
-                                        icon={<CheckIcon />}
-                                    />
-                                    <IconButton
-                                        onClick={() => resetNewTask()}
-                                        colorScheme="red"
-                                        marginLeft="1%"
-                                        aria-label="AddNewTask"
-                                        icon={<CloseIcon />}
-                                    />
-                                </Flex>
-                                <Flex w='100%' padding='1%' marginTop="0px">
-                                    <Heading w='30%' size='xs'>Got a wiki link for this task? Paste it here: </Heading>
-                                    <Input size='xs' w='70%' value={newTaskWiki} onChange={(e) => setNewTaskWiki(e.target.value)} />
-                                </Flex>
+                                <EditTask 
+                                    task={emptyTask} 
+                                    onClose={() => resetNewTask()} 
+                                    onSubmit={(task: Task) => submitNewTask(task)} 
+                                    isOpen={addingNewTask}
+                                />
                             </>
                         )}
                     </>
