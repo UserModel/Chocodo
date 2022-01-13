@@ -17,6 +17,7 @@
         "@types/react-dom": "^17.0.11",
         "autosize": "^5.0.1",
         "countdown": "^2.6.0",
+        "firebase": "^9.6.2",
         "focus-visible": "^5.2.0",
         "framer-motion": "^4.1.17",
         "luxon": "^2.3.0",
