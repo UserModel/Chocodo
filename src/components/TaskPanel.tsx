@@ -128,39 +128,41 @@ export const TaskPanel = (props: PropTypes) => {
                 >
                     {task.taskText}
                 </Text>
+                <VStack>
                 { task.wikiLink && (
                     <Tag as='a' href={task.wikiLink} rel="noreferrer" target="_blank" h="2%" marginLeft='5px' size='md'>
                         <TagLeftIcon boxSize='12px' as={SearchIcon} />
                         Wiki
                     </Tag>
                 ) }
-                {hoveredTask === task.id && (
-                    <Flex marginLeft="1%" h="100%">
-                        <IconButton
-                            size="xs"
-                            aria-label="edit-button"
-                            icon={
-                                <EditIcon color={iconColor} bgColor={iconBg} />
-                            }
-                            onClick={() => setTaskBeingEdited(task.id)}
-                        />
-                        <DeleteConfirmation 
-                            children={<IconButton
+                    {hoveredTask === task.id && (
+                        <Flex marginLeft="1%" h="100%">
+                            <IconButton
                                 size="xs"
-                                marginLeft="5%"
-                                aria-label="delete-button"
-                                //onClick={() => removeTask(task)}
+                                aria-label="edit-button"
                                 icon={
-                                    <DeleteIcon
-                                        color={iconColor}
-                                        bgColor={iconBg}
-                                    />
+                                    <EditIcon color={iconColor} bgColor={iconBg} />
                                 }
-                            />}
-                            onConfirm={() => removeTask(task)}
-                        />
-                    </Flex>
-                )}
+                                onClick={() => setTaskBeingEdited(task.id)}
+                            />
+                            <DeleteConfirmation 
+                                children={<IconButton
+                                    size="xs"
+                                    marginLeft="5%"
+                                    aria-label="delete-button"
+                                    //onClick={() => removeTask(task)}
+                                    icon={
+                                        <DeleteIcon
+                                            color={iconColor}
+                                            bgColor={iconBg}
+                                        />
+                                    }
+                                />}
+                                onConfirm={() => removeTask(task)}
+                            />
+                        </Flex>
+                    )}
+                </VStack>
             </>
         )
     }
