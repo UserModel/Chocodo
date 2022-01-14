@@ -44,7 +44,9 @@ export const GamePanel = () => {
         open: false,
         taskType: TaskType.NORMAL,
     })
-    const [selectedSection, setSelectedSection] = useState(currentGame?.currentSection ? currentGame?.currentSection : 0)
+    const [selectedSection, setSelectedSection] = useState(
+        currentGame?.currentSection ? currentGame?.currentSection : 0
+    )
     const [editGameModal, setEditGameModal] = useState(false)
 
     useEffect(() => {
@@ -63,17 +65,21 @@ export const GamePanel = () => {
         ) {
             resetTasks(TaskType.WEEKLY)
         }
-        setSelectedSection(currentGame.currentSection ? currentGame.currentSection : 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        setSelectedSection(
+            currentGame.currentSection ? currentGame.currentSection : 0
+        )
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentGame?.id])
 
     const setCurrentSection = (sectionId: number) => {
-        setSelectedSection(sectionId);
+        setSelectedSection(sectionId)
         if (currentGame) {
-            dispatch(editGameById(currentGame?.id, {
-                currentSection: sectionId
-            }))
-        } 
+            dispatch(
+                editGameById(currentGame?.id, {
+                    currentSection: sectionId,
+                })
+            )
+        }
     }
 
     const resetTasks = (taskType: TaskType) => {
@@ -131,7 +137,7 @@ export const GamePanel = () => {
                   )
                 : null
         )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentGame?.nextDailyReset])
 
     const [nextWeeklyReset, setNextWeeklyReset] = useState(
@@ -156,7 +162,7 @@ export const GamePanel = () => {
                   )
                 : null
         )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentGame?.nextWeeklyReset])
 
     const newSection: Section = {

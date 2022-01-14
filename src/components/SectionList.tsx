@@ -76,7 +76,6 @@ export const SectionList = ({
                     h="100%"
                     width="80%"
                     textAlign="start"
-                    borderBottom="1px"
                     padding="5%"
                     size="md"
                 >
@@ -89,7 +88,6 @@ export const SectionList = ({
                     aria-label="section-settings"
                     h="100%"
                     w="20%"
-                    borderBottom="1px"
                     marginBottom="4px"
                     className="show-click"
                     onClick={() => setEditSectionListModal(true)}

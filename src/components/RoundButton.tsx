@@ -1,8 +1,16 @@
-import { Wrap, Tooltip, Avatar, useColorModeValue } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import {
+    Wrap,
+    Tooltip,
+    Avatar,
+    useColorModeValue,
+    AvatarBadge,
+    Text,
+} from '@chakra-ui/react'
+import { useState } from 'react'
 import { AddIcon, QuestionIcon } from '@chakra-ui/icons'
 import { useSelector } from 'react-redux'
 import { userSelectors } from '../slices/userSlice'
+import { TaskType } from '../models/task'
 
 type PropTypes = {
     name: string
@@ -15,9 +23,20 @@ export const RoundButton = (props: PropTypes) => {
     const bgColor = useColorModeValue('#F0F0F0', '#36393E')
     const iconBg = useColorModeValue('white', '#36393E')
     const iconColor = useColorModeValue('black', 'white')
+    const badgeBgColor = useColorModeValue('black', 'white')
+    const badgeColor = useColorModeValue('white', 'black')
 
-    const [isHovering, setIsHovering] = useState(false);
+    const [isHovering, setIsHovering] = useState(false)
     const currentGame = useSelector(userSelectors.currentGame)
+    const buttonGame = useSelector(userSelectors.gamesList).find(
+        (game) => game.id === props.gameId
+    )
+    const resetableTodoTasks = buttonGame?.tasks.filter(
+        (task) =>
+            (task.taskType === TaskType.DAILY ||
+                task.taskType === TaskType.WEEKLY) &&
+            !task.completed
+    ).length
 
     let imageURL = props.imageURL
     let onClickFunction = props.onClick
@@ -31,7 +50,17 @@ export const RoundButton = (props: PropTypes) => {
                     bgColor={bgColor}
                     icon={<AddIcon color="green" />}
                     variant="roundable"
-                    sx={(isHovering || currentGame?.id === props.gameId) ? {borderRadius: "10px", transitionDuration: '0.3s'} : {borderRadius: "50%", transitionDuration: '0.3s'}}
+                    sx={
+                        isHovering || currentGame?.id === props.gameId
+                            ? {
+                                  borderRadius: '10px',
+                                  transitionDuration: '0.3s',
+                              }
+                            : {
+                                  borderRadius: '50%',
+                                  transitionDuration: '0.3s',
+                              }
+                    }
                     onMouseOver={() => setIsHovering(true)}
                     onMouseLeave={() => setIsHovering(false)}
                 />
@@ -43,7 +72,17 @@ export const RoundButton = (props: PropTypes) => {
                     bgColor={iconBg}
                     icon={<QuestionIcon color={iconColor} />}
                     variant="roundable"
-                    sx={(isHovering || currentGame?.id === props.gameId) ? {borderRadius: "10px", transitionDuration: '0.3s'} : {borderRadius: "50%", transitionDuration: '0.3s'}}
+                    sx={
+                        isHovering || currentGame?.id === props.gameId
+                            ? {
+                                  borderRadius: '10px',
+                                  transitionDuration: '0.3s',
+                              }
+                            : {
+                                  borderRadius: '50%',
+                                  transitionDuration: '0.3s',
+                              }
+                    }
                     onMouseOver={() => setIsHovering(true)}
                     onMouseLeave={() => setIsHovering(false)}
                 />
@@ -55,10 +94,34 @@ export const RoundButton = (props: PropTypes) => {
                     src={imageURL}
                     name={name}
                     variant="roundable"
-                    sx={(isHovering || currentGame?.id === props.gameId) ? {borderRadius: "10px", transitionDuration: '0.3s'} : {borderRadius: "50%", transitionDuration: '0.3s'}}
+                    sx={
+                        isHovering || currentGame?.id === props.gameId
+                            ? {
+                                  borderRadius: '10px',
+                                  transitionDuration: '0.3s',
+                              }
+                            : {
+                                  borderRadius: '50%',
+                                  transitionDuration: '0.3s',
+                              }
+                    }
                     onMouseOver={() => setIsHovering(true)}
                     onMouseLeave={() => setIsHovering(false)}
-                />
+                >
+                    {resetableTodoTasks && resetableTodoTasks > 0 ? (
+                        <AvatarBadge
+                            border="2px"
+                            boxSize="1em"
+                            color={badgeColor}
+                            borderColor={badgeBgColor}
+                            bg={badgeBgColor}
+                        >
+                            <Text fontSize="sm">
+                                {resetableTodoTasks.toString()}
+                            </Text>
+                        </AvatarBadge>
+                    ) : null}
+                </Avatar>
             )
         }
     }
