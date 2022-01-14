@@ -1,7 +1,5 @@
 import {
     Button,
-    Flex,
-    Heading,
     Input,
     Drawer,
     DrawerBody,
