@@ -1,9 +1,7 @@
 import { useState } from 'react'
-import { userSelectors } from '../slices/userSlice'
-import { useSelector } from 'react-redux'
+import { userSelectors, setCurrentGame, addNewGame } from '../slices/userSlice'
+import { useSelector, useDispatch } from 'react-redux'
 import { RoundButton } from '../components/RoundButton'
-import { useDispatch } from 'react-redux'
-import { setCurrentGame, addNewGame } from '../slices/userSlice'
 import { VStack, Box, Divider } from '@chakra-ui/react'
 import { EditGame } from '../components/EditGame'
 import { Game } from '../models/game'
@@ -42,7 +40,7 @@ export const GameBar = () => {
                 id: Math.floor(Math.random() * Date.now()),
             },
         ],
-        currentSection: undefined
+        currentSection: undefined,
     }
 
     const [isModalOpen, setIsModalOpen] = useState(false)

@@ -11,7 +11,7 @@ export const InformationPanel = () => {
             <Heading size="sm">
                 Dark Mode Switcher: <ThemeSwitch />
             </Heading>
-            {/*<Heading size="xs">{JSON.stringify(store.getState().user)}</Heading>*/}
+            {/* <Heading size="xs">{JSON.stringify(store.getState().user)}</Heading> */}
         </VStack>
     )
 }

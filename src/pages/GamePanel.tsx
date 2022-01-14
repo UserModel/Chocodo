@@ -1,6 +1,6 @@
 import { Box, Flex, VStack, Spacer, Heading } from '@chakra-ui/layout'
 import { SettingsIcon } from '@chakra-ui/icons'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import {
     addSection,
     editGame,
@@ -9,7 +9,6 @@ import {
     editGameById,
 } from '../slices/userSlice'
 import { InformationPanel } from './InformationPanel'
-import { useDispatch } from 'react-redux'
 import { useState, useEffect } from 'react'
 import { EditSection } from '../components/EditSection'
 import { Section } from '../models/section'

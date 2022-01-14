@@ -7,10 +7,10 @@ export const useMediumBgColor = () => useColorModeValue('#F2F3F5', '#2E3136')
 export const useLightestBgColor = () => useColorModeValue('#FFFFFF', '#36393E')
 
 const config = {
-  initialColorMode: "dark",
-  useSystemColorMode: false,
-};
+    initialColorMode: 'dark',
+    useSystemColorMode: false,
+}
 
-const theme = extendTheme({ config });
+const theme = extendTheme({ config })
 
-export default theme;
+export default theme

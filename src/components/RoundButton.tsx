@@ -38,9 +38,9 @@ export const RoundButton = (props: PropTypes) => {
             !task.completed
     ).length
 
-    let imageURL = props.imageURL
-    let onClickFunction = props.onClick
-    let name = props.name
+    const imageURL = props.imageURL
+    const onClickFunction = props.onClick
+    const name = props.name
 
     const avatarRender = () => {
         if (name === 'Add a Game') {

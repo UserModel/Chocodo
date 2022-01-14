@@ -131,7 +131,7 @@ export const TaskPanel = (props: PropTypes) => {
                     marginLeft="1.5%"
                     overflowWrap="break-word"
                     wordBreak="break-word"
-                    //onDoubleClick={() => taskBeingEdited === null ? setTaskBeingEdited(task.id) : ""}
+                    // onDoubleClick={() => taskBeingEdited === null ? setTaskBeingEdited(task.id) : ""}
                 >
                     {task.taskText}
                 </Text>
@@ -218,7 +218,7 @@ export const TaskPanel = (props: PropTypes) => {
                                 <IconButton
                                     size="xs"
                                     aria-label="delete-button"
-                                    //onClick={() => removeTask(task)}
+                                    // onClick={() => removeTask(task)}
                                     icon={<DeleteIcon color="#EF5350" />}
                                 />
                             }

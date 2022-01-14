@@ -1,3 +1,4 @@
+import React from 'react'
 import { GameBar } from './GameBar'
 import { HStack, Box } from '@chakra-ui/react'
 import { useDarkestBgColor } from '../theme'

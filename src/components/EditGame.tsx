@@ -16,7 +16,7 @@ import {
     Alert,
     AlertIcon,
     HStack,
-    Spacer
+    Spacer,
 } from '@chakra-ui/react'
 import { ArrowForwardIcon, ArrowBackIcon, DeleteIcon } from '@chakra-ui/icons'
 import { Game } from '../models/game'
@@ -37,7 +37,7 @@ type PropTypes = {
 }
 
 export const EditGame = (props: PropTypes) => {
-    let gameData = props.gameData
+    const gameData = props.gameData
     const dispatch = useDispatch()
     const [currentStep, setCurrentStep] = useState(0)
     const [gameName, setGameName] = useState(gameData.name)
@@ -268,7 +268,11 @@ export const EditGame = (props: PropTypes) => {
                 )}
                 {(hasDaily || hasWeekly) && (
                     <FormControl w="100%" alignItems="center">
-                        <FormLabel htmlFor="timezoneSelect" paddingBottom="8px" mb="0">
+                        <FormLabel
+                            htmlFor="timezoneSelect"
+                            paddingBottom="8px"
+                            mb="0"
+                        >
                             Server Timezone:
                         </FormLabel>
                         <TimezoneSelect
@@ -278,26 +282,26 @@ export const EditGame = (props: PropTypes) => {
                                 ...theme,
                                 borderRadius: 10,
                                 colors: {
-                                  ...theme.colors,
-                                  primary75: bgMediumColor,
-                                  primary50: bgMediumColor,
-                                  primary25: bgMediumColor,
-                                  primary: textColor,
-                                  neutral0: bgLightColor,
-                                  neutral10: textColor,
-                                  neutral20: textColor,
-                                  neutral30: textColor,
-                                  neutral40: textColor,
-                                  neutral5: textColor,
-                                  danger: textColor,
-                                  dangerLight: textColor,
-                                  neutral50: textColor,
-                                  neutral60: textColor,
-                                  neutral70: textColor,
-                                  neutral80: textColor,
-                                  neutral90: textColor,
+                                    ...theme.colors,
+                                    primary75: bgMediumColor,
+                                    primary50: bgMediumColor,
+                                    primary25: bgMediumColor,
+                                    primary: textColor,
+                                    neutral0: bgLightColor,
+                                    neutral10: textColor,
+                                    neutral20: textColor,
+                                    neutral30: textColor,
+                                    neutral40: textColor,
+                                    neutral5: textColor,
+                                    danger: textColor,
+                                    dangerLight: textColor,
+                                    neutral50: textColor,
+                                    neutral60: textColor,
+                                    neutral70: textColor,
+                                    neutral80: textColor,
+                                    neutral90: textColor,
                                 },
-                              })}
+                            })}
                         />
                     </FormControl>
                 )}
@@ -382,7 +386,7 @@ export const EditGame = (props: PropTypes) => {
                 ),
                 tasks: gameData.tasks,
                 sections: gameData.sections,
-                currentSection: gameData.currentSection
+                currentSection: gameData.currentSection,
             }
             clearStates()
             props.addGame(newGame)
@@ -411,15 +415,17 @@ export const EditGame = (props: PropTypes) => {
 
                 <ModalFooter>
                     {gameData.id !== 0 && (
-                        <DeleteConfirmation 
-                            children={<Button
-                                colorScheme="red"
-                                variant="outline"
-                                mr={3}
-                                leftIcon={<DeleteIcon />}
-                            >
-                                Delete Game
-                            </Button>} 
+                        <DeleteConfirmation
+                            children={
+                                <Button
+                                    colorScheme="red"
+                                    variant="outline"
+                                    mr={3}
+                                    leftIcon={<DeleteIcon />}
+                                >
+                                    Delete Game
+                                </Button>
+                            }
                             onConfirm={() => removeCurrentGame()}
                         />
                     )}

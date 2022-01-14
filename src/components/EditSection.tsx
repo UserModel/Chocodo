@@ -22,13 +22,13 @@ import { TaskType } from '../models/task'
 type PropTypes = {
     section: Section
     gameData: Game | null
-    isModalOpen: {open: boolean, taskType: TaskType}
+    isModalOpen: { open: boolean; taskType: TaskType }
     closeModal: Function
     onClick: Function
 }
 
 enum ErrorMessages {
-    NoSectionName = 'You must set a section name.'
+    NoSectionName = 'You must set a section name.',
 }
 
 export const EditSection = (props: PropTypes) => {
