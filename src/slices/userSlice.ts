@@ -64,12 +64,12 @@ export const editGame =
         dispatch(updateUserLoading(false))
     }
 export const editGameById =
-    (gameId: number, gameObject: Partial<Game>) => 
+    (gameId: number, gameObject: Partial<Game>) =>
     async (dispatch: Dispatch<any>, getState: () => RootState) => {
         dispatch(updateUserLoading(true))
         const game = getState().user.gameList.find((game) => game.id === gameId)
-        if ( game ) {
-            dispatch(updateGame({...game, ...gameObject}))
+        if (game) {
+            dispatch(updateGame({ ...game, ...gameObject }))
         }
         dispatch(updateUserLoading(false))
     }

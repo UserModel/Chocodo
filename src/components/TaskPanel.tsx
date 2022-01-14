@@ -28,6 +28,9 @@ import { Section } from '../models/section'
 import { useMediumBgColor, useTextColor } from '../theme'
 import { DeleteConfirmation } from './DeleteConfirmation'
 import { EditTask } from './EditTask'
+import UseAnimations from 'react-useanimations'
+import trash2 from 'react-useanimations/lib/trash2'
+import edit from 'react-useanimations/lib/edit'
 
 type PropTypes = {
     gameData: Game
@@ -192,7 +195,7 @@ export const TaskPanel = (props: PropTypes) => {
                     border="none"
                     padding="5px"
                 >
-                    <Flex h="100%" gap="5px">
+                    <Flex h="100%" gap="5px" className="export-btn">
                         {task.wikiLink && (
                             <Button
                                 as="a"
@@ -208,9 +211,7 @@ export const TaskPanel = (props: PropTypes) => {
                         <IconButton
                             size="xs"
                             aria-label="edit-button"
-                            icon={
-                                <EditIcon color={iconColor} bgColor={iconBg} />
-                            }
+                            icon={<EditIcon color={iconColor} bgColor="none" />}
                             onClick={() => setTaskBeingEdited(task.id)}
                         />
                         <DeleteConfirmation
@@ -219,7 +220,15 @@ export const TaskPanel = (props: PropTypes) => {
                                     size="xs"
                                     aria-label="delete-button"
                                     //onClick={() => removeTask(task)}
-                                    icon={<DeleteIcon color="#EF5350" />}
+                                    icon={
+                                        <UseAnimations
+                                            animation={trash2}
+                                            size={20}
+                                            style={{
+                                                cursor: 'pointer',
+                                            }}
+                                        />
+                                    }
                                 />
                             }
                             onConfirm={() => removeTask(task)}
