@@ -124,7 +124,8 @@ export const TaskPanel = (props: PropTypes) => {
                 <Text
                     fontSize="lg"
                     textAlign="justify"
-                    w="90%"
+                    w="100%"
+                    paddingRight="10px"
                     as={task.completed ? 's' : 'h2'}
                     sx={{ color: task.completed ? 'gray' : textColor }}
                     marginLeft="1.5%"
@@ -155,6 +156,9 @@ export const TaskPanel = (props: PropTypes) => {
         <Box
             w="100%"
             onMouseOver={(e) => {
+                setHoveredTask(task.id)
+            }}
+            onFocus={(e) => {
                 setHoveredTask(task.id)
             }}
             onMouseLeave={(e) => {
@@ -189,6 +193,18 @@ export const TaskPanel = (props: PropTypes) => {
                     padding="5px"
                 >
                     <Flex h="100%" gap="5px">
+                        {task.wikiLink && (
+                            <Button
+                                as="a"
+                                href={task.wikiLink}
+                                rel="noreferrer"
+                                target="_blank"
+                                size="xs"
+                            >
+                                <TagLeftIcon boxSize="12px" as={SearchIcon} />
+                                Wiki
+                            </Button>
+                        )}
                         <IconButton
                             size="xs"
                             aria-label="edit-button"
@@ -208,18 +224,6 @@ export const TaskPanel = (props: PropTypes) => {
                             }
                             onConfirm={() => removeTask(task)}
                         />
-                        {task.wikiLink && (
-                            <Button
-                                as="a"
-                                href={task.wikiLink}
-                                rel="noreferrer"
-                                target="_blank"
-                                size="xs"
-                            >
-                                <TagLeftIcon boxSize="12px" as={SearchIcon} />
-                                Wiki
-                            </Button>
-                        )}
                     </Flex>
                 </PopoverContent>
             </Popover>
