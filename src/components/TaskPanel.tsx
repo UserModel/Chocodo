@@ -1,4 +1,4 @@
-import { EditIcon, DeleteIcon, SearchIcon } from '@chakra-ui/icons'
+import { EditIcon, SearchIcon } from '@chakra-ui/icons'
 import {
     Box,
     Button,
@@ -30,7 +30,6 @@ import { DeleteConfirmation } from './DeleteConfirmation'
 import { EditTask } from './EditTask'
 import UseAnimations from 'react-useanimations'
 import trash2 from 'react-useanimations/lib/trash2'
-import edit from 'react-useanimations/lib/edit'
 
 type PropTypes = {
     gameData: Game
@@ -50,7 +49,6 @@ export const TaskPanel = (props: PropTypes) => {
     const [taskBeingEdited, setTaskBeingEdited] = useState<number | null>(null)
     const [hoveredTask, setHoveredTask] = useState(0)
     const mediumBgColor = useMediumBgColor()
-    const iconBg = useColorModeValue('white', '#36393E')
     const iconColor = useColorModeValue('black', 'white')
 
     const resetNewTask = () => {
