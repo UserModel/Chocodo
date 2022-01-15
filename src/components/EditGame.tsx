@@ -60,6 +60,18 @@ export const EditGame = (props: PropTypes) => {
     const [hasWeekly, setHasWeekly] = useState(gameData.hasWeekly)
     const [errorMessage, setErrorMessage] = useState('')
 
+    const timePickerStyle = {
+        div: {
+            bgColor: bgMediumColor,
+            select: {
+                bgColor: bgMediumColor,
+            },
+            option: {
+                bgColor: bgMediumColor,
+            },
+        },
+    }
+
     enum errorMessages {
         NoGameTitle = 'Must set a game title.',
         NoDailyResetTime = 'Must set a daily reset time.',
@@ -162,12 +174,16 @@ export const EditGame = (props: PropTypes) => {
                     />
                 </FormControl>
                 {hasDaily && (
-                    <FormControl w="100%" display="flex" alignItems="center">
+                    <FormControl
+                        w="100%"
+                        display="flex"
+                        alignItems="center"
+                        sx={timePickerStyle}
+                    >
                         <FormLabel htmlFor="dailyTimeSelect" mb="0">
                             Daily Reset Time:
                         </FormLabel>
                         <TimePicker
-                            className="timePicker"
                             disableClock={true}
                             value={dailyResetTime}
                             onChange={(value) => {
@@ -192,6 +208,7 @@ export const EditGame = (props: PropTypes) => {
                             w="100%"
                             display="flex"
                             alignItems="center"
+                            sx={timePickerStyle}
                         >
                             <FormLabel htmlFor="weeklyTimeSelect" mb="0">
                                 Weekly Reset Time:
