@@ -1,4 +1,4 @@
-import { EditIcon, SearchIcon } from '@chakra-ui/icons'
+import { CheckIcon, EditIcon, SearchIcon } from '@chakra-ui/icons'
 import {
     Box,
     Button,
@@ -26,7 +26,6 @@ import {
 import { Task, TaskType } from '../models/task'
 import { Section } from '../models/section'
 import { useMediumBgColor, useTextColor } from '../theme'
-import { DeleteConfirmation } from './DeleteConfirmation'
 import { EditTask } from './EditTask'
 import UseAnimations from 'react-useanimations'
 import trash2 from 'react-useanimations/lib/trash2'
@@ -47,6 +46,7 @@ export const TaskPanel = (props: PropTypes) => {
     const textColor = useTextColor()
     const dispatch = useDispatch()
     const [taskBeingEdited, setTaskBeingEdited] = useState<number | null>(null)
+    const [isGettingDeleted, setIsGettingDeleted] = useState(false)
     const [hoveredTask, setHoveredTask] = useState(0)
     const mediumBgColor = useMediumBgColor()
     const iconColor = useColorModeValue('black', 'white')
@@ -71,7 +71,12 @@ export const TaskPanel = (props: PropTypes) => {
 
     useEffect(() => {
         resetNewTask()
+        resetEditTask()
     }, [props.sectionId])
+
+    useEffect(() => {
+        setIsGettingDeleted(false)
+    }, [hoveredTask])
 
     const submitNewTask = (task: Task) => {
         if (section && section.taskType !== null) {
@@ -212,24 +217,28 @@ export const TaskPanel = (props: PropTypes) => {
                             icon={<EditIcon color={iconColor} bgColor="none" />}
                             onClick={() => setTaskBeingEdited(task.id)}
                         />
-                        <DeleteConfirmation
-                            children={
-                                <IconButton
-                                    size="xs"
-                                    aria-label="delete-button"
-                                    //onClick={() => removeTask(task)}
-                                    icon={
-                                        <UseAnimations
-                                            animation={trash2}
-                                            size={20}
-                                            style={{
-                                                cursor: 'pointer',
-                                            }}
-                                        />
-                                    }
-                                />
+                        <IconButton
+                            size="xs"
+                            aria-label="delete-button"
+                            //onClick={() => removeTask(task)}
+                            icon={
+                                !isGettingDeleted ? (
+                                    <UseAnimations
+                                        animation={trash2}
+                                        size={20}
+                                        style={{
+                                            cursor: 'pointer',
+                                        }}
+                                    />
+                                ) : (
+                                    <CheckIcon color="#26a69a" />
+                                )
                             }
-                            onConfirm={() => removeTask(task)}
+                            onClick={() =>
+                                !isGettingDeleted
+                                    ? setIsGettingDeleted(true)
+                                    : removeTask(task)
+                            }
                         />
                     </Flex>
                 </PopoverContent>
