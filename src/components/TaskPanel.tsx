@@ -231,7 +231,7 @@ export const TaskPanel = (props: PropTypes) => {
                                         }}
                                     />
                                 ) : (
-                                    <CheckIcon color="#26a69a" />
+                                    <CheckIcon color="#4caf50" />
                                 )
                             }
                             onClick={() =>

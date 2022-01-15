@@ -48,7 +48,7 @@ export const RoundButton = (props: PropTypes) => {
                 <Avatar
                     className="gamebar-avatar trans"
                     bgColor={bgColor}
-                    icon={<AddIcon color="green" />}
+                    icon={<AddIcon color="#4caf50" />}
                     variant="roundable"
                     sx={
                         isHovering || currentGame?.id === props.gameId
