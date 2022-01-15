@@ -1,12 +1,10 @@
 import { Heading, Image, useColorMode, VStack } from '@chakra-ui/react'
-import { useTextColor } from '../theme'
 import { ThemeSwitch } from '../components/ThemeSwitcher'
 import chocodoLight from '../images/chocodoLight.png'
 import chocodoDark from '../images/chocodoDark.png'
 
 export const InformationPanel = () => {
-    const textColor = useTextColor()
-    const { colorMode, toggleColorMode } = useColorMode()
+    const { colorMode } = useColorMode()
 
     return (
         <VStack padding="5%">
