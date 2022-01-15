@@ -72,7 +72,7 @@ export const EditTask = (props: PropTypes) => {
                         autoFocus
                         onKeyPress={(event) => {
                             if (
-                                event.code === 'Enter' &&
+                                event.key === 'Enter' &&
                                 !event.shiftKey &&
                                 taskText.trim() !== ''
                             ) {

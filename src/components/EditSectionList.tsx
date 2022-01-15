@@ -89,7 +89,10 @@ export const EditSectionList = (props: PropTypes) => {
                                         }
                                         onClick={() => setIsEditing(section.id)}
                                     />
-                                    { game.sections.filter((section) => section.taskType === taskType).length > 1 && 
+                                    {game.sections.filter(
+                                        (section) =>
+                                            section.taskType === taskType
+                                    ).length > 1 && (
                                         <DeleteConfirmation
                                             children={
                                                 <IconButton
@@ -104,9 +107,11 @@ export const EditSectionList = (props: PropTypes) => {
                                                     }
                                                 />
                                             }
-                                            onConfirm={() => removeSection(section)}
+                                            onConfirm={() =>
+                                                removeSection(section)
+                                            }
                                         />
-                                    }
+                                    )}
                                 </Flex>
                             </Flex>
                         ) : (
@@ -125,7 +130,7 @@ export const EditSectionList = (props: PropTypes) => {
                                         setEditedSectionName(event.target.value)
                                     }
                                     onKeyPress={(event) =>
-                                        event.code === 'Enter'
+                                        event.key === 'Enter'
                                             ? editSectionName(section)
                                             : null
                                     }
