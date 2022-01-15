@@ -1,5 +1,5 @@
-![GitHub-Mark-Light](src/images/chocodoLight.png)
-![GitHub-Mark-Dark](src/images/chocodoDark.png)
+![Chocodo-Light-Mode](src/images/chocodoLight.png#gh-light-mode-only)
+![Chocodo-Dark-Mode](src/images/chocodoDark.png#gh-dark-mode-only)
 
 # Chocodo
 
