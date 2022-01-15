@@ -1,9 +1,4 @@
-import {
-    AddIcon,
-    ChevronDownIcon,
-    ChevronRightIcon,
-    SettingsIcon,
-} from '@chakra-ui/icons'
+import { AddIcon, SettingsIcon } from '@chakra-ui/icons'
 import {
     VStack,
     Flex,
