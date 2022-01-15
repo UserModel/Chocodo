@@ -83,6 +83,7 @@ export const SectionList = ({
                 setSelectedSection(0)
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentGame.hasDaily])
 
     useEffect(() => {
@@ -99,6 +100,7 @@ export const SectionList = ({
                 setSelectedSection(0)
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentGame.hasWeekly])
 
     return (
