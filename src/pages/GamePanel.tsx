@@ -299,6 +299,7 @@ export const GamePanel = () => {
                         <SectionList
                             setIsNewSectionModalOpen={setIsNewSectionModalOpen}
                             setSelectedSection={setCurrentSection}
+                            selectedSection={selectedSection}
                             currentGame={currentGame}
                         />
                         <Box w="100%" h="100%" bgColor={lightestBgColor}>

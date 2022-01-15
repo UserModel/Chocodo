@@ -74,9 +74,7 @@ export const TaskPanel = (props: PropTypes) => {
         resetEditTask()
     }, [props.sectionId])
 
-    useEffect(() => {
-        setIsGettingDeleted(false)
-    }, [hoveredTask])
+    useEffect(() => () => setIsGettingDeleted(false), [hoveredTask])
 
     const submitNewTask = (task: Task) => {
         if (section && section.taskType !== null) {
@@ -220,7 +218,6 @@ export const TaskPanel = (props: PropTypes) => {
                         <IconButton
                             size="xs"
                             aria-label="delete-button"
-                            //onClick={() => removeTask(task)}
                             icon={
                                 !isGettingDeleted ? (
                                     <UseAnimations
