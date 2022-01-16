@@ -1,34 +1,12 @@
-import { CheckIcon, EditIcon, SearchIcon } from '@chakra-ui/icons'
-import {
-    Box,
-    Button,
-    Checkbox,
-    Flex,
-    Heading,
-    IconButton,
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-    TagLeftIcon,
-    Text,
-    useColorModeValue,
-    VStack,
-} from '@chakra-ui/react'
+import { Box, Button, Flex, Heading, VStack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Game } from '../models/game'
-import {
-    addTask,
-    toggleCompletedTask,
-    editTask,
-    deleteTask,
-} from '../slices/userSlice'
+import { addTask } from '../slices/userSlice'
 import { Task, TaskType } from '../models/task'
 import { Section } from '../models/section'
-import { useMediumBgColor, useTextColor } from '../theme'
 import { EditTask } from './EditTask'
-import UseAnimations from 'react-useanimations'
-import trash2 from 'react-useanimations/lib/trash2'
+import { RenderTask } from './RenderTask'
 
 type PropTypes = {
     gameData: Game
@@ -43,21 +21,9 @@ export const TaskPanel = (props: PropTypes) => {
     const section: Section | undefined = props.gameData?.sections?.find(
         (section) => section.id === props.sectionId
     )
-    const textColor = useTextColor()
     const dispatch = useDispatch()
     const [taskBeingEdited, setTaskBeingEdited] = useState<number | null>(null)
-    const [isGettingDeleted, setIsGettingDeleted] = useState(false)
     const [hoveredTask, setHoveredTask] = useState(0)
-    const mediumBgColor = useMediumBgColor()
-    const iconColor = useColorModeValue('black', 'white')
-
-    const resetNewTask = () => {
-        setAddingNewTask(false)
-    }
-
-    const resetEditTask = () => {
-        setTaskBeingEdited(null)
-    }
 
     const emptyTask: Task = {
         taskText: '',
@@ -69,12 +35,18 @@ export const TaskPanel = (props: PropTypes) => {
         wikiLink: '',
     }
 
+    const resetEditTask = () => {
+        setTaskBeingEdited(null)
+    }
+
+    const resetNewTask = () => {
+        setAddingNewTask(false)
+    }
+
     useEffect(() => {
         resetNewTask()
         resetEditTask()
     }, [props.sectionId])
-
-    useEffect(() => () => setIsGettingDeleted(false), [hoveredTask])
 
     const submitNewTask = (task: Task) => {
         if (section && section.taskType !== null) {
@@ -91,158 +63,6 @@ export const TaskPanel = (props: PropTypes) => {
             dispatch(addTask(props.gameData.id, newTask))
         }
     }
-
-    const submitEditTask = (editedTask: Task) => {
-        const task = props.gameData.tasks.find(
-            (task) => task.id === taskBeingEdited
-        )
-        if (task) {
-            dispatch(
-                editTask(props.gameData.id, {
-                    ...task,
-                    taskText: editedTask.taskText,
-                    wikiLink: editedTask.wikiLink,
-                })
-            )
-            resetEditTask()
-        }
-    }
-
-    const removeTask = (task: Task) => {
-        resetEditTask()
-        dispatch(deleteTask(props.gameData.id, task.id))
-    }
-
-    const displayTask = (task: Task) => {
-        return (
-            <>
-                <Checkbox
-                    isChecked={task.completed}
-                    onChange={(e) =>
-                        dispatch(
-                            toggleCompletedTask(props.gameData.id, task.id)
-                        )
-                    }
-                    size="md"
-                />
-                <Text
-                    fontSize="lg"
-                    textAlign="justify"
-                    w="100%"
-                    paddingRight="10px"
-                    as={task.completed ? 's' : 'h2'}
-                    sx={{ color: task.completed ? 'gray' : textColor }}
-                    marginLeft="1.5%"
-                    overflowWrap="break-word"
-                    wordBreak="break-word"
-                    //onDoubleClick={() => taskBeingEdited === null ? setTaskBeingEdited(task.id) : ""}
-                >
-                    {task.taskText}
-                </Text>
-            </>
-        )
-    }
-
-    const editingTask = (task: Task) => {
-        return (
-            <>
-                <EditTask
-                    task={task}
-                    onClose={() => resetEditTask()}
-                    onSubmit={(editedTask: Task) => submitEditTask(editedTask)}
-                    isOpen={taskBeingEdited === task.id}
-                />
-            </>
-        )
-    }
-
-    const renderTask = (task: Task, index: number) => (
-        <Box
-            key={index}
-            w="100%"
-            onMouseOver={(e) => {
-                setHoveredTask(task.id)
-            }}
-            onFocus={(e) => {
-                setHoveredTask(task.id)
-            }}
-            onMouseLeave={(e) => {
-                setHoveredTask(0)
-            }}
-        >
-            <Popover
-                placement="top"
-                gutter={0}
-                isOpen={task.id === hoveredTask}
-                offset={[600, -10]}
-            >
-                <PopoverTrigger>
-                    <Flex
-                        w="100%"
-                        padding="1%"
-                        key={task.id}
-                        background={
-                            hoveredTask === task.id ? mediumBgColor : ''
-                        }
-                    >
-                        {displayTask(task)}
-                        {taskBeingEdited === task.id && editingTask(task)}
-                    </Flex>
-                </PopoverTrigger>
-                <PopoverContent
-                    w="auto"
-                    p="0px"
-                    m="0px"
-                    bgColor={mediumBgColor}
-                    border="none"
-                    padding="5px"
-                >
-                    <Flex h="100%" gap="5px" className="export-btn">
-                        {task.wikiLink && (
-                            <Button
-                                as="a"
-                                href={task.wikiLink}
-                                rel="noreferrer"
-                                target="_blank"
-                                size="xs"
-                            >
-                                <TagLeftIcon boxSize="12px" as={SearchIcon} />
-                                Wiki
-                            </Button>
-                        )}
-                        <IconButton
-                            size="xs"
-                            aria-label="edit-button"
-                            icon={<EditIcon color={iconColor} bgColor="none" />}
-                            onClick={() => setTaskBeingEdited(task.id)}
-                        />
-                        <IconButton
-                            size="xs"
-                            aria-label="delete-button"
-                            icon={
-                                !isGettingDeleted ? (
-                                    <UseAnimations
-                                        animation={trash2}
-                                        size={20}
-                                        style={{
-                                            cursor: 'pointer',
-                                        }}
-                                    />
-                                ) : (
-                                    <CheckIcon color="#4caf50" />
-                                )
-                            }
-                            onClick={() =>
-                                !isGettingDeleted
-                                    ? setIsGettingDeleted(true)
-                                    : removeTask(task)
-                            }
-                        />
-                    </Flex>
-                </PopoverContent>
-            </Popover>
-        </Box>
-    )
 
     return (
         <>
@@ -264,9 +84,18 @@ export const TaskPanel = (props: PropTypes) => {
                 ) : (
                     <>
                         {taskList.map((task, index) => {
-                            return task.sectionId === props.sectionId
-                                ? renderTask(task, index)
-                                : null
+                            return task.sectionId === props.sectionId ? (
+                                <RenderTask
+                                    task={task}
+                                    index={index}
+                                    hoveredTask={hoveredTask}
+                                    setHoveredTask={setHoveredTask}
+                                    setTaskBeingEdited={setTaskBeingEdited}
+                                    gameData={props.gameData}
+                                    taskBeingEdited={taskBeingEdited}
+                                    sectionId={props.sectionId}
+                                />
+                            ) : null
                         })}
 
                         {!addingNewTask && (
