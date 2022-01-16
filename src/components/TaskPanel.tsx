@@ -156,8 +156,9 @@ export const TaskPanel = (props: PropTypes) => {
         )
     }
 
-    const renderTask = (task: Task) => (
+    const renderTask = (task: Task, index: number) => (
         <Box
+            key={index}
             w="100%"
             onMouseOver={(e) => {
                 setHoveredTask(task.id)
@@ -262,9 +263,9 @@ export const TaskPanel = (props: PropTypes) => {
                     <></>
                 ) : (
                     <>
-                        {taskList.map((task) => {
+                        {taskList.map((task, index) => {
                             return task.sectionId === props.sectionId
-                                ? renderTask(task)
+                                ? renderTask(task, index)
                                 : null
                         })}
 

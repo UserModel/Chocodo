@@ -104,99 +104,112 @@ export const SectionList = ({
     }, [currentGame.hasWeekly])
 
     return (
-        <VStack
-            spacing={-2}
-            color={textColor}
-            bgColor={bgColor}
-            h="100%"
-            borderRight="0px"
-            w="22%"
-        >
-            {editSectionListModal && (
-                <EditSectionList
-                    isModalOpen={editSectionListModal}
-                    gameData={currentGame}
-                    closeModal={() => setEditSectionListModal(false)}
-                />
-            )}
-            <Flex w="100%">
-                <Heading
+        <>
+            {currentGame && (
+                <VStack
+                    spacing={-2}
+                    color={textColor}
+                    bgColor={bgColor}
                     h="100%"
-                    width="80%"
-                    textAlign="start"
-                    padding="5%"
-                    size="md"
+                    borderRight="0px"
+                    w="22%"
                 >
-                    Sections
-                </Heading>
-                <IconButton
-                    sx={{ borderRadius: '0px' }}
-                    bgColor={bgColor}
-                    color={iconColor}
-                    aria-label="new-task"
-                    h="100%"
-                    w="20%"
-                    marginBottom="4px"
-                    className="show-click"
-                    onClick={() =>
-                        setIsNewSectionModalOpen({
-                            open: true,
-                            taskType: TaskType.NORMAL,
-                        })
-                    }
-                    icon={<AddIcon />}
-                />
-                <IconButton
-                    sx={{ borderRadius: '0px' }}
-                    bgColor={bgColor}
-                    color={iconColor}
-                    aria-label="section-settings"
-                    h="100%"
-                    w="20%"
-                    marginBottom="4px"
-                    className="show-click"
-                    onClick={() => setEditSectionListModal(true)}
-                    icon={<SettingsIcon />}
-                />
-            </Flex>
-            <Tabs
-                w="100%"
-                index={sectionTab}
-                isFitted
-                onChange={(index) => setSectionTab(index)}
-            >
-                <TabList>
-                    <Tab>Normal</Tab>
-                    <Tab isDisabled={!currentGame.hasDaily}>Daily</Tab>
-                    <Tab isDisabled={!currentGame.hasWeekly}>Weekly</Tab>
-                </TabList>
-                <TabPanels>
-                    <TabPanel>
-                        {currentGame.sections
-                            .filter(
-                                (section) =>
-                                    section.taskType === TaskType.NORMAL
-                            )
-                            .map((section) => renderTaskSection(section))}
-                    </TabPanel>
-                    <TabPanel>
-                        {currentGame.sections
-                            .filter(
-                                (section) => section.taskType === TaskType.DAILY
-                            )
-                            .map((section) => renderTaskSection(section))}
-                    </TabPanel>
-                    <TabPanel>
-                        {currentGame.sections
-                            .filter(
-                                (section) =>
-                                    section.taskType === TaskType.WEEKLY
-                            )
-                            .map((section) => renderTaskSection(section))}
-                    </TabPanel>
-                </TabPanels>
-            </Tabs>
-            <Spacer />
-        </VStack>
+                    {editSectionListModal && (
+                        <EditSectionList
+                            isModalOpen={editSectionListModal}
+                            gameData={currentGame}
+                            closeModal={() => setEditSectionListModal(false)}
+                        />
+                    )}
+                    <Flex w="100%">
+                        <Heading
+                            h="100%"
+                            width="80%"
+                            textAlign="start"
+                            padding="5%"
+                            size="md"
+                        >
+                            Sections
+                        </Heading>
+                        <IconButton
+                            sx={{ borderRadius: '0px' }}
+                            bgColor={bgColor}
+                            color={iconColor}
+                            aria-label="new-task"
+                            h="100%"
+                            w="20%"
+                            marginBottom="4px"
+                            className="show-click"
+                            onClick={() =>
+                                setIsNewSectionModalOpen({
+                                    open: true,
+                                    taskType: TaskType.NORMAL,
+                                })
+                            }
+                            icon={<AddIcon />}
+                        />
+                        <IconButton
+                            sx={{ borderRadius: '0px' }}
+                            bgColor={bgColor}
+                            color={iconColor}
+                            aria-label="section-settings"
+                            h="100%"
+                            w="20%"
+                            marginBottom="4px"
+                            className="show-click"
+                            onClick={() => setEditSectionListModal(true)}
+                            icon={<SettingsIcon />}
+                        />
+                    </Flex>
+                    <Tabs
+                        w="100%"
+                        index={sectionTab}
+                        isFitted
+                        onChange={(index) => setSectionTab(index)}
+                    >
+                        <TabList>
+                            <Tab>Normal</Tab>
+                            <Tab isDisabled={!currentGame.hasDaily}>Daily</Tab>
+                            <Tab isDisabled={!currentGame.hasWeekly}>
+                                Weekly
+                            </Tab>
+                        </TabList>
+                        <TabPanels>
+                            <TabPanel>
+                                {currentGame.sections
+                                    .filter(
+                                        (section) =>
+                                            section.taskType === TaskType.NORMAL
+                                    )
+                                    .map((section) =>
+                                        renderTaskSection(section)
+                                    )}
+                            </TabPanel>
+                            <TabPanel>
+                                {currentGame.sections
+                                    .filter(
+                                        (section) =>
+                                            section.taskType === TaskType.DAILY
+                                    )
+                                    .map((section) =>
+                                        renderTaskSection(section)
+                                    )}
+                            </TabPanel>
+                            <TabPanel>
+                                {currentGame.sections
+                                    .filter(
+                                        (section) =>
+                                            section.taskType === TaskType.WEEKLY
+                                    )
+                                    .map((section) =>
+                                        renderTaskSection(section)
+                                    )}
+                            </TabPanel>
+                        </TabPanels>
+                    </Tabs>
+                    <Spacer />
+                </VStack>
+            )}
+        </>
     )
 }
