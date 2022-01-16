@@ -25,18 +25,25 @@ export type SectionListProps = {
         open: boolean
         taskType: TaskType
     }) => void
-    selectedSection: number
+    selectedSectionId: number
     setSelectedSection: (value: number) => void
     currentGame: Game
 }
 
 export const SectionList = ({
     setIsNewSectionModalOpen,
-    selectedSection,
+    selectedSectionId,
     setSelectedSection,
     currentGame,
 }: SectionListProps) => {
-    const [sectionTab, setSectionTab] = React.useState(0)
+    const selectedSection = currentGame.sections.find(
+        (section) => section.id === selectedSectionId
+    )
+    const [sectionTab, setSectionTab] = React.useState<number>(
+        selectedSection && selectedSection.taskType
+            ? selectedSection.taskType
+            : 0
+    )
     const [editSectionListModal, setEditSectionListModal] = useState(false)
     const [hoveredSection, setHoveredSection] = useState(0)
     const bgColorLight = useLightestBgColor()
@@ -53,7 +60,7 @@ export const SectionList = ({
             onClick={() => setSelectedSection(taskSection.id)}
             bgColor={
                 hoveredSection === taskSection.id ||
-                selectedSection === taskSection.id
+                selectedSection?.id === taskSection.id
                     ? bgColorLight
                     : bgColor
             }
@@ -77,7 +84,7 @@ export const SectionList = ({
             if (
                 selectedSection &&
                 currentGame.sections.find(
-                    (section) => section.id === selectedSection
+                    (section) => section.id === selectedSection.id
                 )?.taskType === TaskType.DAILY
             ) {
                 setSelectedSection(0)
@@ -94,7 +101,7 @@ export const SectionList = ({
             if (
                 selectedSection &&
                 currentGame.sections.find(
-                    (section) => section.id === selectedSection
+                    (section) => section.id === selectedSection.id
                 )?.taskType === TaskType.WEEKLY
             ) {
                 setSelectedSection(0)

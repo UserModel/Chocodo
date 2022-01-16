@@ -6,7 +6,7 @@ import {
     AvatarBadge,
     Text,
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AddIcon, QuestionIcon } from '@chakra-ui/icons'
 import { useSelector } from 'react-redux'
 import { userSelectors } from '../slices/userSlice'
@@ -27,6 +27,7 @@ export const RoundButton = (props: PropTypes) => {
     const badgeColor = useColorModeValue('white', 'black')
 
     const [isHovering, setIsHovering] = useState(false)
+    const [isRealImage, setIsRealImage] = useState(false)
     const currentGame = useSelector(userSelectors.currentGame)
     const buttonGame = useSelector(userSelectors.gamesList).find(
         (game) => game.id === props.gameId
@@ -41,6 +42,27 @@ export const RoundButton = (props: PropTypes) => {
     let imageURL = props.imageURL
     let onClickFunction = props.onClick
     let name = props.name
+
+    const checkImage = (url: string) => {
+        console.log(url)
+        var request = new XMLHttpRequest()
+        request.open('GET', url, true)
+        request.send()
+        request.onload = function () {
+            if (request.status === 200) {
+                console.log(request)
+                return setIsRealImage(true)
+            } else {
+                console.log('no')
+                return setIsRealImage(false)
+            }
+        }
+    }
+
+    useEffect(() => {
+        checkImage(imageURL)
+        // eslint-disable-next-line
+    }, [])
 
     const avatarRender = () => {
         if (name === 'Add a Game') {
@@ -107,6 +129,8 @@ export const RoundButton = (props: PropTypes) => {
                     }
                     onMouseOver={() => setIsHovering(true)}
                     onMouseLeave={() => setIsHovering(false)}
+                    showBorder={true}
+                    bgColor={imageURL && isRealImage ? bgColor : ''}
                 >
                     {resetableTodoTasks && resetableTodoTasks > 0 ? (
                         <AvatarBadge
