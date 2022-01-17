@@ -21,7 +21,6 @@ import { deleteTask, editTask, toggleCompletedTask } from '../slices/userSlice'
 import { useMediumBgColor, useTextColor } from '../theme'
 import { EditTask } from './EditTask'
 import trash2 from 'react-useanimations/lib/trash2'
-import { useEffect, useState } from 'react'
 import { DeleteConfirmation } from './DeleteConfirmation'
 
 type PropTypes = {
