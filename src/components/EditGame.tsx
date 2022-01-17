@@ -17,7 +17,6 @@ import {
     AlertIcon,
     HStack,
     Spacer,
-    toast,
     useToast,
 } from '@chakra-ui/react'
 import { ArrowForwardIcon, ArrowBackIcon, DeleteIcon } from '@chakra-ui/icons'

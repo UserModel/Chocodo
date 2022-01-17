@@ -13,7 +13,6 @@ import {
     useColorModeValue,
     Spacer,
     Modal,
-    toast,
     useToast,
 } from '@chakra-ui/react'
 import { useLightestBgColor } from '../theme'
