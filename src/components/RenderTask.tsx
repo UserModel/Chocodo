@@ -16,12 +16,19 @@ import {
 import { useDispatch } from 'react-redux'
 import UseAnimations from 'react-useanimations'
 import { Game } from '../models/game'
-import { Task } from '../models/task'
-import { deleteTask, editTask, toggleCompletedTask } from '../slices/userSlice'
+import { SubTask, Task } from '../models/task'
+import {
+    deleteTask,
+    editTask,
+    toggleAllSubtasksAndTask,
+    toggleCompletedSubtask,
+    toggleCompletedTask,
+} from '../slices/userSlice'
 import { useMediumBgColor, useTextColor } from '../theme'
 import { EditTask } from './EditTask'
 import trash2 from 'react-useanimations/lib/trash2'
 import { DeleteConfirmation } from './DeleteConfirmation'
+import { useEffect } from 'react'
 
 type PropTypes = {
     task: Task
@@ -45,14 +52,60 @@ export const RenderTask = (props: PropTypes) => {
     const mediumBgColor = useMediumBgColor()
     const iconColor = useColorModeValue('black', 'white')
     const toast = useToast()
+    const allChecked =
+        task.subtasks &&
+        task.subtasks?.filter((subtask) => subtask.completed).length ===
+            task.subtasks?.length
+    const isIndeterminate =
+        task.subtasks &&
+        task.subtasks?.filter((subtask) => subtask.completed).length !==
+            task.subtasks?.length &&
+        task.subtasks?.filter((subtask) => subtask.completed).length > 0
 
-    const displayTask = (task: Task) => {
+    useEffect(() => {
+        if (allChecked && !task.completed) {
+            dispatch(toggleCompletedTask(gameData.id, task.id))
+        }
+        if (!allChecked && task.completed) {
+            dispatch(toggleCompletedTask(gameData.id, task.id))
+        }
+        // eslint-disable-next-line
+    }, [allChecked])
+
+    const displayTask = (currentTask: Task | SubTask, isSubtask: boolean) => {
         return (
             <>
                 <Checkbox
-                    isChecked={task.completed}
+                    isChecked={
+                        task.subtasks && task.subtasks?.length > 0
+                            ? isSubtask
+                                ? currentTask.completed
+                                : allChecked
+                            : task.completed
+                    }
+                    isIndeterminate={
+                        task.subtasks && task.subtasks?.length > 0
+                            ? isSubtask
+                                ? false
+                                : isIndeterminate
+                            : false
+                    }
+                    ml={isSubtask ? '25px' : ''}
                     onChange={(e) =>
-                        dispatch(toggleCompletedTask(gameData.id, task.id))
+                        !isSubtask
+                            ? dispatch(
+                                  toggleAllSubtasksAndTask(
+                                      gameData.id,
+                                      currentTask.id
+                                  )
+                              )
+                            : dispatch(
+                                  toggleCompletedSubtask(
+                                      gameData.id,
+                                      task.id,
+                                      currentTask.id
+                                  )
+                              )
                     }
                     size="md"
                 />
@@ -61,14 +114,14 @@ export const RenderTask = (props: PropTypes) => {
                     textAlign="justify"
                     w="100%"
                     paddingRight="10px"
-                    as={task.completed ? 's' : 'h2'}
-                    sx={{ color: task.completed ? 'gray' : textColor }}
+                    as={currentTask.completed ? 's' : 'h2'}
+                    sx={{ color: currentTask.completed ? 'gray' : textColor }}
                     marginLeft="1.5%"
                     overflowWrap="break-word"
                     wordBreak="break-word"
                     //onDoubleClick={() => taskBeingEdited === null ? setTaskBeingEdited(task.id) : ""}
                 >
-                    {task.taskText}
+                    {currentTask.taskText}
                 </Text>
             </>
         )
@@ -91,12 +144,20 @@ export const RenderTask = (props: PropTypes) => {
 
     const submitEditTask = (editedTask: Task) => {
         const task = gameData.tasks.find((task) => task.id === taskBeingEdited)
-        if (task) {
+        const allowSubtaskEdit =
+            (editedTask.subtasks &&
+                editedTask.subtasks.filter((sub) => sub.taskText.trim() === '')
+                    .length === 0) ||
+            !editedTask.subtasks ||
+            editedTask.subtasks.length === 0
+
+        if (task && allowSubtaskEdit) {
             dispatch(
                 editTask(gameData.id, {
                     ...task,
                     taskText: editedTask.taskText,
                     wikiLink: editedTask.wikiLink,
+                    subtasks: editedTask.subtasks,
                 })
             )
             resetEditTask()
@@ -117,7 +178,7 @@ export const RenderTask = (props: PropTypes) => {
             }}
         >
             <Popover
-                placement="top"
+                placement="top-end"
                 gutter={0}
                 isOpen={task.id === hoveredTask}
                 offset={[999999, -10]}
@@ -131,7 +192,7 @@ export const RenderTask = (props: PropTypes) => {
                             hoveredTask === task.id ? mediumBgColor : ''
                         }
                     >
-                        {displayTask(task)}
+                        {displayTask(task, false)}
                         {taskBeingEdited === task.id && (
                             <EditTask
                                 task={task}
@@ -192,6 +253,20 @@ export const RenderTask = (props: PropTypes) => {
                     </Flex>
                 </PopoverContent>
             </Popover>
+            {task.subtasks?.map((subtask) => {
+                return (
+                    <Flex
+                        w="100%"
+                        padding="1%"
+                        key={subtask.id}
+                        background={
+                            hoveredTask === task.id ? mediumBgColor : ''
+                        }
+                    >
+                        {displayTask(subtask, true)}
+                    </Flex>
+                )
+            })}
         </Box>
     )
 }

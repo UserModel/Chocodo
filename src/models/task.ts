@@ -4,8 +4,14 @@ export type Task = {
     sectionId: number
     id: number
     taskType: TaskType
-    subtasks?: []
+    subtasks?: SubTask[]
     wikiLink?: string
+}
+
+export type SubTask = {
+    taskText: string
+    completed: boolean
+    id: number
 }
 
 export enum TaskType {

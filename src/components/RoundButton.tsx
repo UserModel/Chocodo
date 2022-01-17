@@ -32,8 +32,8 @@ export const RoundButton = (props: PropTypes) => {
     )
     const resetableTodoTasks = buttonGame?.tasks.filter(
         (task) =>
-            (task.taskType === TaskType.DAILY ||
-                task.taskType === TaskType.WEEKLY) &&
+            ((task.taskType === TaskType.DAILY && buttonGame?.hasDaily) ||
+                (task.taskType === TaskType.WEEKLY && buttonGame?.hasWeekly)) &&
             !task.completed
     ).length
 

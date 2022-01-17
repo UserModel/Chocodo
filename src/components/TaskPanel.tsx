@@ -57,7 +57,7 @@ export const TaskPanel = (props: PropTypes) => {
                 sectionId: section?.id,
                 id: Math.floor(Math.random() * Date.now()),
                 taskType: section?.taskType,
-                subtasks: [],
+                subtasks: task.subtasks,
                 wikiLink: task.wikiLink,
             }
             dispatch(addTask(props.gameData.id, newTask))

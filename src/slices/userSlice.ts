@@ -221,7 +221,13 @@ export const toggleTasksFromReset =
                     ...game,
                     tasks: game.tasks.map((task) =>
                         task.taskType === taskType
-                            ? { ...task, completed: false }
+                            ? {
+                                  ...task,
+                                  completed: false,
+                                  subtasks: task.subtasks?.map((subtask) => {
+                                      return { ...subtask, completed: false }
+                                  }),
+                              }
                             : task
                     ),
                 })
@@ -242,6 +248,68 @@ export const toggleCompletedTask =
                     tasks: game.tasks.map((task) =>
                         task.id === taskId
                             ? { ...task, completed: !task.completed }
+                            : task
+                    ),
+                })
+            )
+        }
+        dispatch(updateUserLoading(false))
+    }
+
+export const toggleCompletedSubtask =
+    (gameId: number, taskId: number, subtaskId: number) =>
+    async (dispatch: Dispatch<any>, getState: () => RootState) => {
+        dispatch(updateUserLoading(true))
+        const game = getState().user.gameList.find((game) => game.id === gameId)
+        if (game) {
+            dispatch(
+                updateGame({
+                    ...game,
+                    tasks: game.tasks.map((task) =>
+                        task.id === taskId &&
+                        task.subtasks?.find(
+                            (subTask) => subTask.id === subtaskId
+                        )
+                            ? {
+                                  ...task,
+                                  subtasks: task.subtasks.map((subtask) => {
+                                      return subtask.id === subtaskId
+                                          ? {
+                                                ...subtask,
+                                                completed: !subtask.completed,
+                                            }
+                                          : subtask
+                                  }),
+                              }
+                            : task
+                    ),
+                })
+            )
+        }
+        dispatch(updateUserLoading(false))
+    }
+
+export const toggleAllSubtasksAndTask =
+    (gameId: number, taskId: number) =>
+    async (dispatch: Dispatch<any>, getState: () => RootState) => {
+        dispatch(updateUserLoading(true))
+        const game = getState().user.gameList.find((game) => game.id === gameId)
+        if (game) {
+            dispatch(
+                updateGame({
+                    ...game,
+                    tasks: game.tasks.map((task) =>
+                        task.id === taskId
+                            ? {
+                                  ...task,
+                                  completed: !task.completed,
+                                  subtasks: task.subtasks?.map((subtask) => {
+                                      return {
+                                          ...subtask,
+                                          completed: !task.completed,
+                                      }
+                                  }),
+                              }
                             : task
                     ),
                 })
