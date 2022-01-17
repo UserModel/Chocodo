@@ -46,12 +46,12 @@ export const RoundButton = (props: PropTypes) => {
     const checkImage = (url: string) => {
         try {
             const imageURL = new URL(url)
-            fetch(imageURL.toString())
+            fetch(imageURL.toString(), { method: 'GET', mode: 'no-cors' })
                 .then((response) => response.blob())
                 .then((imageBlob) => {
                     setIsRealImage(imageBlob.type !== 'text/html')
                 })
-        } catch {
+        } catch (e) {
             setIsRealImage(false)
         }
     }
