@@ -238,7 +238,7 @@ export const GamePanel = () => {
                     <Flex
                         alignItems="center"
                         w="100%"
-                        h="70px"
+                        h="7%"
                         borderBottom="1px"
                         borderColor={borderColor}
                         padding="15px"
