@@ -44,18 +44,14 @@ export const RoundButton = (props: PropTypes) => {
     let name = props.name
 
     const checkImage = (url: string) => {
-        console.log(url)
-        var request = new XMLHttpRequest()
-        request.open('GET', url, true)
-        request.send()
-        request.onload = function () {
-            if (request.status === 200) {
-                console.log(request)
-                return setIsRealImage(true)
-            } else {
-                console.log('no')
-                return setIsRealImage(false)
-            }
+        try {
+            fetch(url)
+                .then((response) => response.blob())
+                .then((imageBlob) => {
+                    setIsRealImage(imageBlob.type !== 'text/html')
+                })
+        } catch {
+            setIsRealImage(false)
         }
     }
 
