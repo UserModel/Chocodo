@@ -222,7 +222,6 @@ export const SectionList = ({
                 </VStack>
             ) : (
                 <VStack
-                    w="5%"
                     spacing={0}
                     color={textColor}
                     bgColor={bgColor}

@@ -67,12 +67,7 @@ export const TaskPanel = (props: PropTypes) => {
     return (
         <>
             {props.sectionId !== null && section && (
-                <Box
-                    h="6.9%"
-                    textAlign="start"
-                    paddingLeft="1%"
-                    paddingTop="0.8%"
-                >
+                <Box textAlign="start" paddingLeft="1%" paddingTop="0.8%">
                     <Heading size="lg" marginBottom="10px">
                         {section.sectionName}
                     </Heading>

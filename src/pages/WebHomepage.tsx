@@ -3,7 +3,7 @@ import { HStack, Box } from '@chakra-ui/react'
 import { useDarkestBgColor } from '../theme'
 import { GamePanel } from './GamePanel'
 
-export const Homepage = () => {
+export const WebHomepage = () => {
     const bgColor = useDarkestBgColor()
     return (
         <HStack

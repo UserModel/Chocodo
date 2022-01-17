@@ -1,8 +1,10 @@
 import './scss/app.scss'
-import { Homepage } from './pages/Homepage'
+import { WebHomepage } from './pages/WebHomepage'
+import { MobileHomepage } from './pages/MobileHomepage'
 import { ChakraProvider } from '@chakra-ui/react'
 import { css, Global } from '@emotion/react'
 import theme from './theme'
+import { isMobile } from 'react-device-detect'
 
 const GlobalStyles = css`
     /*
@@ -19,7 +21,7 @@ function App() {
         <div className="App">
             <ChakraProvider theme={theme}>
                 <Global styles={GlobalStyles} />
-                <Homepage />
+                {isMobile ? <MobileHomepage /> : <WebHomepage />}
             </ChakraProvider>
         </div>
     )

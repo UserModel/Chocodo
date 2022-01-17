@@ -234,12 +234,18 @@ export const GamePanel = () => {
                             addGame={editExistingGame}
                         />
                     )}
-                    <Flex w="100%" borderBottom="1px" borderColor={borderColor}>
-                        <Heading color={textColor} py="0.7%" paddingLeft="1.5%">
+                    <Flex
+                        alignItems="center"
+                        w="100%"
+                        borderBottom="1px"
+                        borderColor={borderColor}
+                        p="2%"
+                    >
+                        <Heading size="lg" color={textColor}>
                             {currentGame.name}
                         </Heading>
                         <Spacer />
-                        <VStack alignItems="end" paddingTop="0.7%" h="100%">
+                        <VStack alignItems="end">
                             {currentGame.hasDaily && (
                                 <Heading size="xs">
                                     Next daily reset:
@@ -288,8 +294,6 @@ export const GamePanel = () => {
                         <SettingsIcon
                             onClick={() => setEditGameModal(true)}
                             className="show-click"
-                            h="100%"
-                            w="3.5%"
                             marginLeft="2%"
                             paddingTop="0.0%"
                             paddingRight="1.5%"
