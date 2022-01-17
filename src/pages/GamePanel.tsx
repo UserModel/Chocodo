@@ -48,6 +48,7 @@ export const GamePanel = () => {
         currentGame?.currentSection ? currentGame?.currentSection : 0
     )
     const [editGameModal, setEditGameModal] = useState(false)
+    const [sectionListOpen, setSectionListOpen] = useState(true)
 
     useEffect(() => {
         if (!currentGame) {
@@ -237,9 +238,10 @@ export const GamePanel = () => {
                     <Flex
                         alignItems="center"
                         w="100%"
+                        h="70px"
                         borderBottom="1px"
                         borderColor={borderColor}
-                        p="2%"
+                        padding="15px"
                     >
                         <Heading size="lg" color={textColor}>
                             {currentGame.name}
@@ -294,19 +296,27 @@ export const GamePanel = () => {
                         <SettingsIcon
                             onClick={() => setEditGameModal(true)}
                             className="show-click"
-                            marginLeft="2%"
-                            paddingTop="0.0%"
-                            paddingRight="1.5%"
+                            mx="20px"
                         />
                     </Flex>
                     <Flex h="100%" w="100%" bgColor={bgColor}>
-                        <SectionList
-                            setIsNewSectionModalOpen={setIsNewSectionModalOpen}
-                            setSelectedSection={setCurrentSection}
-                            selectedSectionId={selectedSection}
-                            currentGame={currentGame}
-                        />
-                        <Box w="100%" h="100%" bgColor={lightestBgColor}>
+                        <Box w={sectionListOpen ? '25%' : '5%'}>
+                            <SectionList
+                                sectionListOpen={sectionListOpen}
+                                setSectionListOpen={setSectionListOpen}
+                                setIsNewSectionModalOpen={
+                                    setIsNewSectionModalOpen
+                                }
+                                setSelectedSection={setCurrentSection}
+                                selectedSectionId={selectedSection}
+                                currentGame={currentGame}
+                            />
+                        </Box>
+                        <Box
+                            w={sectionListOpen ? '75%' : '95%'}
+                            h="100%"
+                            bgColor={lightestBgColor}
+                        >
                             <TaskPanel
                                 gameData={currentGame}
                                 sectionId={selectedSection}

@@ -33,12 +33,16 @@ export type SectionListProps = {
     selectedSectionId: number
     setSelectedSection: (value: number) => void
     currentGame: Game
+    setSectionListOpen: (value: boolean) => void
+    sectionListOpen: boolean
 }
 
 export const SectionList = ({
     setIsNewSectionModalOpen,
     selectedSectionId,
     setSelectedSection,
+    setSectionListOpen,
+    sectionListOpen,
     currentGame,
 }: SectionListProps) => {
     const selectedSection = currentGame.sections.find(
@@ -55,7 +59,6 @@ export const SectionList = ({
     const bgColor = useMediumBgColor()
     const textColor = useTextColor()
     const iconColor = useColorModeValue('black', 'white')
-    const [sectionListOpen, setSectionListOpen] = useState(true)
     const renderTaskSection = (taskSection: Section) => (
         <Button
             color={textColor}
@@ -119,6 +122,7 @@ export const SectionList = ({
         <>
             {sectionListOpen ? (
                 <VStack
+                    w="100%"
                     spacing={0}
                     color={textColor}
                     bgColor={bgColor}
@@ -132,9 +136,10 @@ export const SectionList = ({
                         />
                     )}
                     <Flex w="100%" alignItems="baseline">
-                        <Heading px="7%" size="md">
+                        <Heading px="15px" size="md">
                             Sections
                         </Heading>
+                        <Spacer />
                         <IconButton
                             sx={{ borderRadius: '0px' }}
                             bgColor={bgColor}
@@ -226,10 +231,12 @@ export const SectionList = ({
                     color={textColor}
                     bgColor={bgColor}
                     h="100%"
+                    w="100%"
                     borderRight="0px"
                 >
                     <Flex w="100%" alignItems="baseline">
                         <IconButton
+                            w="100%"
                             alignSelf="top"
                             sx={{ borderRadius: '0px' }}
                             bgColor={bgColor}

@@ -115,7 +115,7 @@ export const RenderTask = (props: PropTypes) => {
                 placement="top"
                 gutter={0}
                 isOpen={task.id === hoveredTask}
-                offset={[600, -10]}
+                offset={[999999, -10]}
             >
                 <PopoverTrigger>
                     <Flex

@@ -7,7 +7,6 @@ import {
     ModalContent,
     ModalOverlay,
     Heading,
-    Box,
     Text,
     Flex,
     IconButton,
@@ -38,7 +37,6 @@ type PropTypes = {
 export const EditSectionList = (props: PropTypes) => {
     const dispatch = useDispatch()
     const game = props.gameData
-    const iconBg = useColorModeValue('white', '#36393E')
     const iconColor = useColorModeValue('black', 'white')
     const bgColor = useLightestBgColor()
 
@@ -68,106 +66,126 @@ export const EditSectionList = (props: PropTypes) => {
     const [isEditing, setIsEditing] = useState(0)
 
     const renderSection = (taskType: TaskType) => {
-        return game.sections
-            .filter((section) => section.taskType === taskType)
-            .map((section) => {
-                return (
-                    <Flex w="100%" bgColor={bgColor}>
-                        {isEditing !== section.id ? (
+        return (
+            <VStack w="100%" bgColor={bgColor}>
+                {game.sections
+                    .filter((section) => section.taskType === taskType)
+                    .map((section) => {
+                        return (
                             <Flex w="100%">
-                                <Text padding="5px">{section.sectionName}</Text>
-                                <Spacer />
-                                <Flex marginLeft="1%" h="100%">
-                                    <IconButton
-                                        size="xs"
-                                        aria-label="edit-button"
-                                        icon={
-                                            <EditIcon
-                                                color={iconColor}
-                                                bgColor={iconBg}
+                                {isEditing !== section.id ? (
+                                    <Flex w="100%">
+                                        <Text padding="5px">
+                                            {section.sectionName}
+                                        </Text>
+                                        <Spacer />
+                                        <Flex
+                                            alignItems="center"
+                                            marginLeft="1%"
+                                            h="100%"
+                                        >
+                                            <IconButton
+                                                size="xs"
+                                                aria-label="edit-button"
+                                                icon={
+                                                    <EditIcon
+                                                        color={iconColor}
+                                                    />
+                                                }
+                                                onClick={() =>
+                                                    setIsEditing(section.id)
+                                                }
                                             />
-                                        }
-                                        onClick={() => setIsEditing(section.id)}
-                                    />
-                                    {game.sections.filter(
-                                        (section) =>
-                                            section.taskType === taskType
-                                    ).length > 1 && (
-                                        <DeleteConfirmation
-                                            children={
-                                                <IconButton
-                                                    size="xs"
-                                                    marginLeft="5%"
-                                                    aria-label="delete-button"
-                                                    icon={
-                                                        <DeleteIcon
-                                                            color={iconColor}
-                                                            bgColor={iconBg}
+                                            {game.sections.filter(
+                                                (section) =>
+                                                    section.taskType ===
+                                                    taskType
+                                            ).length > 1 && (
+                                                <DeleteConfirmation
+                                                    children={
+                                                        <IconButton
+                                                            size="xs"
+                                                            marginLeft="5%"
+                                                            aria-label="delete-button"
+                                                            icon={
+                                                                <DeleteIcon
+                                                                    color={
+                                                                        iconColor
+                                                                    }
+                                                                />
+                                                            }
                                                         />
                                                     }
+                                                    onConfirm={() =>
+                                                        removeSection(section)
+                                                    }
                                                 />
-                                            }
-                                            onConfirm={() =>
-                                                removeSection(section)
-                                            }
-                                        />
-                                    )}
-                                </Flex>
+                                            )}
+                                        </Flex>
+                                    </Flex>
+                                ) : (
+                                    <>
+                                        <Flex
+                                            marginLeft="1%"
+                                            w="100%"
+                                            alignItems="center"
+                                        >
+                                            <Input
+                                                autoComplete="off"
+                                                padding="5px"
+                                                autoFocus
+                                                onFocus={(e) =>
+                                                    setEditedSectionName(
+                                                        section.sectionName
+                                                    )
+                                                }
+                                                value={editedSectionName}
+                                                onChange={(event) =>
+                                                    setEditedSectionName(
+                                                        event.target.value
+                                                    )
+                                                }
+                                                onKeyPress={(event) =>
+                                                    event.key === 'Enter'
+                                                        ? editSectionName(
+                                                              section
+                                                          )
+                                                        : null
+                                                }
+                                            />
+                                            <IconButton
+                                                size="xs"
+                                                aria-label="edit-submit-button"
+                                                icon={
+                                                    <CheckIcon
+                                                        color={iconColor}
+                                                    />
+                                                }
+                                                onClick={() =>
+                                                    editSectionName(section)
+                                                }
+                                            />
+                                            <IconButton
+                                                size="xs"
+                                                aria-label="edit-cancel-button"
+                                                onClick={() => {
+                                                    setEditedSectionName('')
+                                                    setIsEditing(0)
+                                                }}
+                                                icon={
+                                                    <CloseIcon
+                                                        color={iconColor}
+                                                    />
+                                                }
+                                            />
+                                        </Flex>
+                                    </>
+                                )}
                             </Flex>
-                        ) : (
-                            <>
-                                <Input
-                                    autoComplete="off"
-                                    padding="5px"
-                                    autoFocus
-                                    onFocus={(e) =>
-                                        setEditedSectionName(
-                                            section.sectionName
-                                        )
-                                    }
-                                    value={editedSectionName}
-                                    onChange={(event) =>
-                                        setEditedSectionName(event.target.value)
-                                    }
-                                    onKeyPress={(event) =>
-                                        event.key === 'Enter'
-                                            ? editSectionName(section)
-                                            : null
-                                    }
-                                />
-                                <Flex marginLeft="1%" h="100%">
-                                    <IconButton
-                                        size="xs"
-                                        aria-label="edit-submit-button"
-                                        icon={
-                                            <CheckIcon
-                                                color={iconColor}
-                                                bgColor={iconBg}
-                                            />
-                                        }
-                                        onClick={() => editSectionName(section)}
-                                    />
-                                    <IconButton
-                                        size="xs"
-                                        marginLeft="5%"
-                                        aria-label="edit-cancel-button"
-                                        onClick={() => {
-                                            setEditedSectionName('')
-                                            setIsEditing(0)
-                                        }}
-                                        icon={
-                                            <CloseIcon
-                                                color={iconColor}
-                                                bgColor={iconBg}
-                                            />
-                                        }
-                                    />
-                                </Flex>
-                            </>
-                        )}
-                    </Flex>
-                )
-            })
+                        )
+                    })}
+            </VStack>
+        )
     }
 
     return (
@@ -179,29 +197,11 @@ export const EditSectionList = (props: PropTypes) => {
                 <ModalBody overflowY="auto">
                     <VStack spacing={4} paddingBottom="5%">
                         <Heading size="sm">General Task Sections</Heading>
-                        <Box
-                            bgColor={bgColor}
-                            w="400px"
-                            minH="auto"
-                            maxH="400px"
-                            overflowY="auto"
-                            border="2px"
-                        >
-                            {renderSection(TaskType.NORMAL)}
-                        </Box>
+                        {renderSection(TaskType.NORMAL)}
                         {game.hasDaily && (
                             <>
                                 <Heading size="sm">Daily Task Sections</Heading>
-                                <Box
-                                    bgColor={bgColor}
-                                    w="400px"
-                                    minH="auto"
-                                    maxH="400px"
-                                    overflowY="auto"
-                                    border="2px"
-                                >
-                                    {renderSection(TaskType.DAILY)}
-                                </Box>
+                                {renderSection(TaskType.DAILY)}
                             </>
                         )}
                         {game.hasWeekly && (
@@ -209,16 +209,7 @@ export const EditSectionList = (props: PropTypes) => {
                                 <Heading size="sm">
                                     Weekly Task Sections
                                 </Heading>
-                                <Box
-                                    bgColor={bgColor}
-                                    w="400px"
-                                    minH="auto"
-                                    maxH="400px"
-                                    overflowY="auto"
-                                    border="2px"
-                                >
-                                    {renderSection(TaskType.WEEKLY)}
-                                </Box>
+                                {renderSection(TaskType.WEEKLY)}
                             </>
                         )}
                     </VStack>
