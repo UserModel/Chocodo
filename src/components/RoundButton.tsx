@@ -45,7 +45,8 @@ export const RoundButton = (props: PropTypes) => {
 
     const checkImage = (url: string) => {
         try {
-            fetch(url)
+            const imageURL = new URL(url)
+            fetch(imageURL.toString())
                 .then((response) => response.blob())
                 .then((imageBlob) => {
                     setIsRealImage(imageBlob.type !== 'text/html')
@@ -115,10 +116,18 @@ export const RoundButton = (props: PropTypes) => {
                     sx={
                         isHovering || currentGame?.id === props.gameId
                             ? {
+                                  img: {
+                                      borderRadius: '10px',
+                                      transitionDuration: '0.3s',
+                                  },
                                   borderRadius: '10px',
                                   transitionDuration: '0.3s',
                               }
                             : {
+                                  img: {
+                                      borderRadius: '50%',
+                                      transitionDuration: '0.3s',
+                                  },
                                   borderRadius: '50%',
                                   transitionDuration: '0.3s',
                               }
