@@ -86,6 +86,7 @@ export const TaskPanel = (props: PropTypes) => {
                         {taskList.map((task, index) => {
                             return task.sectionId === props.sectionId ? (
                                 <RenderTask
+                                    key={task.id}
                                     task={task}
                                     index={index}
                                     hoveredTask={hoveredTask}
