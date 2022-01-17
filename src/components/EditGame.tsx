@@ -17,6 +17,8 @@ import {
     AlertIcon,
     HStack,
     Spacer,
+    toast,
+    useToast,
 } from '@chakra-ui/react'
 import { ArrowForwardIcon, ArrowBackIcon, DeleteIcon } from '@chakra-ui/icons'
 import { Game } from '../models/game'
@@ -44,6 +46,7 @@ export const EditGame = (props: PropTypes) => {
     const [gameIconURL, setGameIconURL] = useState(gameData.gameIconURL)
     const bgLightColor = useLightestBgColor()
     const bgMediumColor = useMediumBgColor()
+    const toast = useToast()
 
     const textColor = useTextColor()
     const [weeklyResetDOW, setWeeklyResetDOW] = useState(
@@ -416,6 +419,12 @@ export const EditGame = (props: PropTypes) => {
         clearStates()
         dispatch(deleteGame(gameData.id))
         props.onClose()
+        toast({
+            variant: 'left-accent',
+            status: 'success',
+            title: `Game deleted!`,
+            isClosable: true,
+        })
     }
 
     return (

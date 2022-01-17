@@ -300,7 +300,7 @@ export const GamePanel = () => {
                         />
                     </Flex>
                     <Flex h="100%" w="100%" bgColor={bgColor}>
-                        <Box w={sectionListOpen ? '25%' : '5%'}>
+                        <Box w={sectionListOpen ? '20%' : '5%'}>
                             <SectionList
                                 sectionListOpen={sectionListOpen}
                                 setSectionListOpen={setSectionListOpen}
@@ -313,7 +313,7 @@ export const GamePanel = () => {
                             />
                         </Box>
                         <Box
-                            w={sectionListOpen ? '75%' : '95%'}
+                            w={sectionListOpen ? '80%' : '95%'}
                             h="100%"
                             bgColor={lightestBgColor}
                         >

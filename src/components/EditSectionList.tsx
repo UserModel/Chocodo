@@ -13,6 +13,8 @@ import {
     useColorModeValue,
     Spacer,
     Modal,
+    toast,
+    useToast,
 } from '@chakra-ui/react'
 import { useLightestBgColor } from '../theme'
 import { EditIcon, DeleteIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons'
@@ -39,6 +41,7 @@ export const EditSectionList = (props: PropTypes) => {
     const game = props.gameData
     const iconColor = useColorModeValue('black', 'white')
     const bgColor = useLightestBgColor()
+    const toast = useToast()
 
     const closeModal = () => {
         props.closeModal()
@@ -60,6 +63,12 @@ export const EditSectionList = (props: PropTypes) => {
     const removeSection = (section: Section) => {
         dispatch(deleteAllTasksFromSection(game.id, section.id))
         dispatch(deleteSection(game.id, section.id))
+        toast({
+            variant: 'left-accent',
+            status: 'success',
+            title: `Section deleted!`,
+            isClosable: true,
+        })
     }
 
     const [editedSectionName, setEditedSectionName] = useState('')
