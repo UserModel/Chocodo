@@ -1,4 +1,9 @@
-import { AddIcon, SettingsIcon } from '@chakra-ui/icons'
+import {
+    AddIcon,
+    ArrowLeftIcon,
+    ArrowRightIcon,
+    SettingsIcon,
+} from '@chakra-ui/icons'
 import {
     VStack,
     Flex,
@@ -50,7 +55,7 @@ export const SectionList = ({
     const bgColor = useMediumBgColor()
     const textColor = useTextColor()
     const iconColor = useColorModeValue('black', 'white')
-
+    const [sectionListOpen, setSectionListOpen] = useState(true)
     const renderTaskSection = (taskSection: Section) => (
         <Button
             color={textColor}
@@ -110,16 +115,14 @@ export const SectionList = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentGame.hasWeekly])
 
-    return (
+    return !currentGame ? null : (
         <>
-            {currentGame && (
+            {sectionListOpen ? (
                 <VStack
-                    spacing={-2}
+                    spacing={0}
                     color={textColor}
                     bgColor={bgColor}
-                    h="100%"
                     borderRight="0px"
-                    w="22%"
                 >
                     {editSectionListModal && (
                         <EditSectionList
@@ -128,14 +131,8 @@ export const SectionList = ({
                             closeModal={() => setEditSectionListModal(false)}
                         />
                     )}
-                    <Flex w="100%">
-                        <Heading
-                            h="100%"
-                            width="80%"
-                            textAlign="start"
-                            padding="5%"
-                            size="md"
-                        >
+                    <Flex w="100%" alignItems="baseline">
+                        <Heading px="7%" size="md">
                             Sections
                         </Heading>
                         <IconButton
@@ -143,8 +140,6 @@ export const SectionList = ({
                             bgColor={bgColor}
                             color={iconColor}
                             aria-label="new-task"
-                            h="100%"
-                            w="20%"
                             marginBottom="4px"
                             className="show-click"
                             onClick={() =>
@@ -155,17 +150,26 @@ export const SectionList = ({
                             }
                             icon={<AddIcon />}
                         />
+
                         <IconButton
                             sx={{ borderRadius: '0px' }}
                             bgColor={bgColor}
                             color={iconColor}
                             aria-label="section-settings"
-                            h="100%"
-                            w="20%"
                             marginBottom="4px"
                             className="show-click"
                             onClick={() => setEditSectionListModal(true)}
                             icon={<SettingsIcon />}
+                        />
+                        <IconButton
+                            sx={{ borderRadius: '0px' }}
+                            bgColor={bgColor}
+                            color={iconColor}
+                            aria-label="section-settings"
+                            marginBottom="4px"
+                            className="show-click"
+                            onClick={() => setSectionListOpen(!sectionListOpen)}
+                            icon={<ArrowLeftIcon />}
                         />
                     </Flex>
                     <Tabs
@@ -215,6 +219,28 @@ export const SectionList = ({
                         </TabPanels>
                     </Tabs>
                     <Spacer />
+                </VStack>
+            ) : (
+                <VStack
+                    w="5%"
+                    spacing={0}
+                    color={textColor}
+                    bgColor={bgColor}
+                    h="100%"
+                    borderRight="0px"
+                >
+                    <Flex w="100%" alignItems="baseline">
+                        <IconButton
+                            alignSelf="top"
+                            sx={{ borderRadius: '0px' }}
+                            bgColor={bgColor}
+                            color={iconColor}
+                            aria-label="section-settings"
+                            className="show-click"
+                            onClick={() => setSectionListOpen(!sectionListOpen)}
+                            icon={<ArrowRightIcon />}
+                        />
+                    </Flex>
                 </VStack>
             )}
         </>
