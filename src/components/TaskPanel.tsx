@@ -88,7 +88,6 @@ export const TaskPanel = (props: PropTypes) => {
                                 <RenderTask
                                     key={task.id}
                                     task={task}
-                                    index={index}
                                     hoveredTask={hoveredTask}
                                     setHoveredTask={setHoveredTask}
                                     setTaskBeingEdited={setTaskBeingEdited}

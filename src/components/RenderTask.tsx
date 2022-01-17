@@ -24,7 +24,6 @@ import { useEffect, useState } from 'react'
 
 type PropTypes = {
     task: Task
-    index: number
     hoveredTask: number
     setHoveredTask: Function
     setTaskBeingEdited: Function
@@ -35,7 +34,6 @@ type PropTypes = {
 
 export const RenderTask = (props: PropTypes) => {
     const task = props.task
-    const index = props.index
     const hoveredTask = props.hoveredTask
     const setHoveredTask = props.setHoveredTask
     const gameData = props.gameData
@@ -102,7 +100,6 @@ export const RenderTask = (props: PropTypes) => {
 
     return (
         <Box
-            key={index}
             w="100%"
             onMouseOver={(e) => {
                 setHoveredTask(task.id)
