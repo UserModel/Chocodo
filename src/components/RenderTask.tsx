@@ -63,10 +63,20 @@ export const RenderTask = (props: PropTypes) => {
         task.subtasks?.filter((subtask) => subtask.completed).length > 0
 
     useEffect(() => {
-        if (allChecked && !task.completed) {
+        if (
+            allChecked &&
+            !task.completed &&
+            task.subtasks &&
+            task.subtasks.length > 0
+        ) {
             dispatch(toggleCompletedTask(gameData.id, task.id))
         }
-        if (!allChecked && task.completed) {
+        if (
+            !allChecked &&
+            task.completed &&
+            task.subtasks &&
+            task.subtasks.length > 0
+        ) {
             dispatch(toggleCompletedTask(gameData.id, task.id))
         }
         // eslint-disable-next-line
