@@ -11,6 +11,7 @@ import {
     TagLeftIcon,
     Text,
     useColorModeValue,
+    useToast,
 } from '@chakra-ui/react'
 import { useDispatch } from 'react-redux'
 import UseAnimations from 'react-useanimations'
@@ -44,6 +45,7 @@ export const RenderTask = (props: PropTypes) => {
     const textColor = useTextColor()
     const mediumBgColor = useMediumBgColor()
     const iconColor = useColorModeValue('black', 'white')
+    const toast = useToast()
 
     useEffect(() => () => setIsGettingDeleted(false), [hoveredTask])
 
@@ -82,6 +84,12 @@ export const RenderTask = (props: PropTypes) => {
     const removeTask = (task: Task) => {
         resetEditTask()
         dispatch(deleteTask(gameData.id, task.id))
+        toast({
+            variant: 'left-accent',
+            status: 'success',
+            title: `Task deleted!`,
+            isClosable: true,
+        })
     }
 
     const submitEditTask = (editedTask: Task) => {

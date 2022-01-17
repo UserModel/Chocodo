@@ -6,8 +6,8 @@ import {
     AvatarBadge,
     Text,
 } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
-import { AddIcon, QuestionIcon } from '@chakra-ui/icons'
+import { useState } from 'react'
+import { AddIcon } from '@chakra-ui/icons'
 import { useSelector } from 'react-redux'
 import { userSelectors } from '../slices/userSlice'
 import { TaskType } from '../models/task'
@@ -21,13 +21,11 @@ type PropTypes = {
 
 export const RoundButton = (props: PropTypes) => {
     const bgColor = useColorModeValue('#F0F0F0', '#36393E')
-    const iconBg = useColorModeValue('white', '#36393E')
-    const iconColor = useColorModeValue('black', 'white')
     const badgeBgColor = useColorModeValue('black', 'white')
     const badgeColor = useColorModeValue('white', 'black')
 
     const [isHovering, setIsHovering] = useState(false)
-    const [isRealImage, setIsRealImage] = useState(false)
+    const [isRealImage, setIsRealImage] = useState(true)
     const currentGame = useSelector(userSelectors.currentGame)
     const buttonGame = useSelector(userSelectors.gamesList).find(
         (game) => game.id === props.gameId
@@ -42,24 +40,6 @@ export const RoundButton = (props: PropTypes) => {
     let imageURL = props.imageURL
     let onClickFunction = props.onClick
     let name = props.name
-
-    const checkImage = (url: string) => {
-        try {
-            const imageURL = new URL(url)
-            fetch(imageURL.toString(), { method: 'GET', mode: 'no-cors' })
-                .then((response) => response.blob())
-                .then((imageBlob) => {
-                    setIsRealImage(imageBlob.type !== 'text/html')
-                })
-        } catch (e) {
-            setIsRealImage(false)
-        }
-    }
-
-    useEffect(() => {
-        checkImage(imageURL)
-        // eslint-disable-next-line
-    }, [])
 
     const avatarRender = () => {
         if (name === 'Add a Game') {
@@ -88,16 +68,25 @@ export const RoundButton = (props: PropTypes) => {
             return (
                 <Avatar
                     className="gamebar-avatar trans"
-                    bgColor={iconBg}
-                    icon={<QuestionIcon color={iconColor} />}
+                    bg="none"
+                    src={'chocodo192.png'}
                     variant="roundable"
                     sx={
-                        isHovering || currentGame?.id === props.gameId
+                        isHovering || !currentGame
                             ? {
+                                  bg: bgColor,
+                                  img: {
+                                      padding: '5px',
+                                      borderRadius: 'none',
+                                  },
                                   borderRadius: '10px',
                                   transitionDuration: '0.3s',
                               }
                             : {
+                                  img: {
+                                      padding: '5px',
+                                      borderRadius: 'none',
+                                  },
                                   borderRadius: '50%',
                                   transitionDuration: '0.3s',
                               }
@@ -111,6 +100,7 @@ export const RoundButton = (props: PropTypes) => {
                 <Avatar
                     className="gamebar-avatar trans"
                     src={imageURL}
+                    onError={() => setIsRealImage(false)}
                     name={name}
                     variant="roundable"
                     sx={

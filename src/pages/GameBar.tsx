@@ -72,7 +72,7 @@ export const GameBar = () => {
             <VStack spacing="10%" align="center">
                 <RoundButton
                     name="Home"
-                    onClick={changeCurrentGame}
+                    onClick={() => changeCurrentGame(0)}
                     imageURL=""
                     gameId={0}
                 />
