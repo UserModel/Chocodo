@@ -19,6 +19,7 @@ import { Section } from '../models/section'
 import { useState, useEffect } from 'react'
 import { Game } from '../models/game'
 import { TaskType } from '../models/task'
+import { useMediumBgColor, useTextColor } from '../theme'
 
 type PropTypes = {
     section: Section
@@ -37,6 +38,19 @@ export const EditSection = (props: PropTypes) => {
     const [sectionName, setSectionName] = useState(props.section.sectionName)
     const [errorMessage, setErrorMessage] = useState('')
     const [taskType, setTaskType] = useState<TaskType | null>(null)
+    const bgMediumColor = useMediumBgColor()
+    const textColor = useTextColor()
+
+    useEffect(() => {
+        if (props.isModalOpen) {
+            setTaskType(
+                !props.gameData?.hasDaily && !props.gameData?.hasWeekly
+                    ? TaskType.NORMAL
+                    : null
+            )
+        }
+        // eslint-disable-next-line
+    }, [props.isModalOpen])
 
     const closeModal = () => {
         setSectionName('')
@@ -91,7 +105,9 @@ export const EditSection = (props: PropTypes) => {
                     onClose={() => closeModal()}
                 >
                     <ModalOverlay />
-                    <ModalContent>
+                    <ModalContent
+                        sx={{ bgColor: bgMediumColor, color: textColor }}
+                    >
                         {props.section.id === 0 && (
                             <ModalHeader>Add a New Section</ModalHeader>
                         )}

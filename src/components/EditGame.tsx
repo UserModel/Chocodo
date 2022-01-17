@@ -429,7 +429,7 @@ export const EditGame = (props: PropTypes) => {
     return (
         <Modal isOpen={props.isModalOpen} onClose={() => closeModal()}>
             <ModalOverlay />
-            <ModalContent>
+            <ModalContent sx={{ bgColor: bgMediumColor, color: textColor }}>
                 {gameData.id === 0 && <ModalHeader>Add a New Game</ModalHeader>}
                 {gameData.id !== 0 && (
                     <ModalHeader>Edit Existing Game</ModalHeader>

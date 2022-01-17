@@ -2,12 +2,12 @@ import {
     Button,
     Heading,
     Popover,
-    PopoverArrow,
     PopoverBody,
     PopoverCloseButton,
     PopoverContent,
     PopoverTrigger,
 } from '@chakra-ui/react'
+import { useDarkestBgColor, useTextColor } from '../theme'
 
 type PropTypes = {
     onConfirm: Function
@@ -15,13 +15,15 @@ type PropTypes = {
 }
 
 export const DeleteConfirmation = (props: PropTypes) => {
+    const bgColor = useDarkestBgColor()
+    const textColor = useTextColor()
+
     return (
-        <Popover size="sm">
+        <Popover size="sm" arrowSize={0}>
             {({ isOpen, onClose }) => (
                 <>
                     <PopoverTrigger>{props.children}</PopoverTrigger>
-                    <PopoverContent>
-                        <PopoverArrow />
+                    <PopoverContent sx={{ bgColor: bgColor, color: textColor }}>
                         <PopoverCloseButton />
                         <PopoverBody
                             alignSelf="center"

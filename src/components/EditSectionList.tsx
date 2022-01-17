@@ -15,7 +15,7 @@ import {
     Modal,
     useToast,
 } from '@chakra-ui/react'
-import { useLightestBgColor } from '../theme'
+import { useLightestBgColor, useMediumBgColor, useTextColor } from '../theme'
 import { EditIcon, DeleteIcon, CheckIcon, CloseIcon } from '@chakra-ui/icons'
 import { Section } from '../models/section'
 import { useState } from 'react'
@@ -40,6 +40,8 @@ export const EditSectionList = (props: PropTypes) => {
     const game = props.gameData
     const iconColor = useColorModeValue('black', 'white')
     const bgColor = useLightestBgColor()
+    const bgMediumColor = useMediumBgColor()
+    const textColor = useTextColor()
     const toast = useToast()
 
     const closeModal = () => {
@@ -78,9 +80,9 @@ export const EditSectionList = (props: PropTypes) => {
             <VStack w="100%" bgColor={bgColor}>
                 {game.sections
                     .filter((section) => section.taskType === taskType)
-                    .map((section) => {
+                    .map((section, index) => {
                         return (
-                            <Flex w="100%">
+                            <Flex w="100%" key={index}>
                                 {isEditing !== section.id ? (
                                     <Flex w="100%">
                                         <Text padding="5px">
@@ -199,7 +201,11 @@ export const EditSectionList = (props: PropTypes) => {
     return (
         <Modal isOpen={props.isModalOpen} onClose={() => closeModal()}>
             <ModalOverlay />
-            <ModalContent h="auto" maxH="75%">
+            <ModalContent
+                sx={{ bgColor: bgMediumColor, color: textColor }}
+                h="auto"
+                maxH="75%"
+            >
                 <ModalHeader>Edit Sections</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody overflowY="auto">

@@ -1,4 +1,4 @@
-import { CheckIcon, EditIcon, SearchIcon } from '@chakra-ui/icons'
+import { EditIcon, SearchIcon } from '@chakra-ui/icons'
 import {
     Box,
     Button,
@@ -22,6 +22,7 @@ import { useMediumBgColor, useTextColor } from '../theme'
 import { EditTask } from './EditTask'
 import trash2 from 'react-useanimations/lib/trash2'
 import { useEffect, useState } from 'react'
+import { DeleteConfirmation } from './DeleteConfirmation'
 
 type PropTypes = {
     task: Task
@@ -40,14 +41,11 @@ export const RenderTask = (props: PropTypes) => {
     const gameData = props.gameData
     const taskBeingEdited = props.taskBeingEdited
     const setTaskBeingEdited = props.setTaskBeingEdited
-    const [isGettingDeleted, setIsGettingDeleted] = useState(false)
     const dispatch = useDispatch()
     const textColor = useTextColor()
     const mediumBgColor = useMediumBgColor()
     const iconColor = useColorModeValue('black', 'white')
     const toast = useToast()
-
-    useEffect(() => () => setIsGettingDeleted(false), [hoveredTask])
 
     const displayTask = (task: Task) => {
         return (
@@ -174,26 +172,22 @@ export const RenderTask = (props: PropTypes) => {
                             icon={<EditIcon color={iconColor} bgColor="none" />}
                             onClick={() => setTaskBeingEdited(task.id)}
                         />
-                        <IconButton
-                            size="xs"
-                            aria-label="delete-button"
-                            icon={
-                                !isGettingDeleted ? (
-                                    <UseAnimations
-                                        animation={trash2}
-                                        size={20}
-                                        style={{
-                                            cursor: 'pointer',
-                                        }}
-                                    />
-                                ) : (
-                                    <CheckIcon color="#4caf50" />
-                                )
-                            }
-                            onClick={() =>
-                                !isGettingDeleted
-                                    ? setIsGettingDeleted(true)
-                                    : removeTask(task)
+                        <DeleteConfirmation
+                            onConfirm={() => removeTask(task)}
+                            children={
+                                <IconButton
+                                    size="xs"
+                                    aria-label="delete-button"
+                                    icon={
+                                        <UseAnimations
+                                            animation={trash2}
+                                            size={20}
+                                            style={{
+                                                cursor: 'pointer',
+                                            }}
+                                        />
+                                    }
+                                />
                             }
                         />
                     </Flex>
