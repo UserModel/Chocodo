@@ -209,7 +209,6 @@ export const GamePanel = () => {
             bgColor={bgColor}
             color={textColor}
             borderTopLeftRadius="15px"
-            overflow="hidden"
         >
             {isNewSectionModalOpen && (
                 <EditSection

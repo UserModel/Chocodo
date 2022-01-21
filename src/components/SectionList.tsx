@@ -123,6 +123,7 @@ export const SectionList = ({
             {sectionListOpen ? (
                 <VStack
                     w="100%"
+                    h="100%"
                     spacing={0}
                     color={textColor}
                     bgColor={bgColor}

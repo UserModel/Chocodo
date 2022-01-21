@@ -18,6 +18,7 @@
         "autosize": "^5.0.1",
         "countdown": "^2.6.0",
         "focus-visible": "^5.2.0",
+        "formik": "^2.2.9",
         "framer-motion": "^4.1.17",
         "luxon": "^2.3.0",
         "prop-types": "^15.8.0",
