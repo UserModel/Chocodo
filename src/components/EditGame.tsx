@@ -18,8 +18,14 @@ import {
     HStack,
     Spacer,
     useToast,
+    Text,
 } from '@chakra-ui/react'
-import { ArrowForwardIcon, ArrowBackIcon, DeleteIcon } from '@chakra-ui/icons'
+import {
+    ArrowForwardIcon,
+    ArrowBackIcon,
+    DeleteIcon,
+    CopyIcon,
+} from '@chakra-ui/icons'
 import { Game } from '../models/game'
 import { useState, useEffect } from 'react'
 import TimePicker, { TimePickerValue } from 'react-time-picker'
@@ -366,6 +372,40 @@ export const EditGame = (props: PropTypes) => {
         errorMessage,
     ])
 
+    const copyGameData = () => {
+        navigator.clipboard.writeText(JSON.stringify(gameData))
+        toast({
+            variant: 'left-accent',
+            status: 'success',
+            title: `Game data copied to clipboard!`,
+            isClosable: true,
+        })
+    }
+
+    const addGameFromClipboard = () => {
+        navigator.clipboard
+            .readText()
+            .then((gameText) => {
+                const clipboardGame: Game = JSON.parse(gameText)
+                clipboardGame.id = Math.floor(Math.random() * Date.now())
+                props.addGame(clipboardGame)
+                toast({
+                    variant: 'left-accent',
+                    status: 'success',
+                    title: `Game data added to Chocodo!`,
+                    isClosable: true,
+                })
+            })
+            .catch(() => {
+                toast({
+                    variant: 'left-accent',
+                    status: 'error',
+                    title: `Not a valid game object!`,
+                    isClosable: true,
+                })
+            })
+    }
+
     const addGame = () => {
         if (gameName === '') {
             setErrorMessage(errorMessages.NoGameTitle)
@@ -438,23 +478,48 @@ export const EditGame = (props: PropTypes) => {
                 <ModalBody>
                     {currentStep === 0 && stepZero()}
                     {currentStep === 1 && stepOne()}
+                    {currentStep === 0 && gameData.id === 0 && (
+                        <>
+                            <VStack spacing={3} mt={3}>
+                                <Text>Or import a game below:</Text>
+
+                                <Button
+                                    colorScheme="green"
+                                    onClick={() => addGameFromClipboard()}
+                                >
+                                    Click here to import a game from clipboard!
+                                </Button>
+                            </VStack>
+                        </>
+                    )}
                 </ModalBody>
 
                 <ModalFooter>
-                    {gameData.id !== 0 && (
-                        <DeleteConfirmation
-                            children={
-                                <Button
-                                    colorScheme="red"
-                                    variant="outline"
-                                    mr={3}
-                                    leftIcon={<DeleteIcon />}
-                                >
-                                    Delete Game
-                                </Button>
-                            }
-                            onConfirm={() => removeCurrentGame()}
-                        />
+                    {gameData.id !== 0 && currentStep === 0 && (
+                        <>
+                            <DeleteConfirmation
+                                children={
+                                    <Button
+                                        colorScheme="red"
+                                        variant="outline"
+                                        mr={3}
+                                        leftIcon={<DeleteIcon />}
+                                    >
+                                        Delete Game
+                                    </Button>
+                                }
+                                onConfirm={() => removeCurrentGame()}
+                            />
+                            <Button
+                                colorScheme="blue"
+                                variant="outline"
+                                mr={3}
+                                leftIcon={<CopyIcon />}
+                                onClick={() => copyGameData()}
+                            >
+                                Copy Game Data
+                            </Button>
+                        </>
                     )}
                     <Spacer />
                     {currentStep !== 0 && (

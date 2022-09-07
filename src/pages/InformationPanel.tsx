@@ -1,7 +1,16 @@
-import { Heading, Image, useColorMode, VStack } from '@chakra-ui/react'
+import {
+    Heading,
+    Image,
+    Button,
+    useColorMode,
+    VStack,
+    useToast,
+} from '@chakra-ui/react'
 import { ThemeSwitch } from '../components/ThemeSwitcher'
 import chocodoLight from '../images/chocodoLight.png'
 import chocodoDark from '../images/chocodoDark.png'
+import { store } from '../store'
+import { CopyIcon } from '@chakra-ui/icons'
 
 export const InformationPanel = () => {
     const { colorMode } = useColorMode()
@@ -16,7 +25,6 @@ export const InformationPanel = () => {
             <Heading size="sm">
                 Dark Mode Switcher: <ThemeSwitch />
             </Heading>
-            {/*<Heading size="xs">{JSON.stringify(store.getState().user)}</Heading>*/}
         </VStack>
     )
 }
